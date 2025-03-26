@@ -36,7 +36,9 @@ export const createPlaylist = async (
 
 export const addSongToPlaylist = async (
   accessToken: string,
-  playlistId: string
+  playlistId: string,
+  songName: string,
+  artist: string
 ) => {
   const songTrackUri = "spotify:track:4cOdK2wGLETKBW3PvgPWqT";
   const response = await spotifyService.post(
@@ -45,6 +47,8 @@ export const addSongToPlaylist = async (
       accessToken,
       playlistId,
       trackUri: songTrackUri,
+      songName,
+      artist,
     }
   );
 

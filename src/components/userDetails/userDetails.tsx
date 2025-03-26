@@ -1,3 +1,5 @@
+import "./UserDetails.css";
+
 import { UserSpotifyProfile } from "../../models/UserSpotifyProfile";
 import {
   addSongToPlaylist,
@@ -12,6 +14,8 @@ function UserDetails() {
   const [user, setUser] = useState<UserSpotifyProfile | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [playlistId, setPlaylistId] = useState<string | null>(null);
+  const [songName, setSongName] = useState("");
+  const [artistName, setArtistName] = useState("");
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -50,11 +54,20 @@ function UserDetails() {
   };
 
   const addSongToSpotifyPlaylist = async () => {
-    if (playlistId) {
-      const songDetails = await addSongToPlaylist(accessToken!, playlistId);
+    if (!songName || !artistName) {
+      toast("Please provide song and artist name");
+    } else {
+      if (playlistId) {
+        const songDetails = await addSongToPlaylist(
+          accessToken!,
+          playlistId,
+          songName,
+          artistName
+        );
 
-      if (songDetails) {
-        toast("Song added successfully");
+        if (songDetails) {
+          toast("Song added successfully");
+        }
       }
     }
   };
@@ -62,37 +75,38 @@ function UserDetails() {
   if (!user) return <p>Loading...</p>;
 
   return (
-    <>
+    <div className="user-details">
       <h1>Display your Spotify profile data</h1>
 
       <section id="profile">
         <h2>
           Logged in as <span>{user.display_name}</span>
         </h2>
-        <ul>
-          <li>
-            User ID: <span>{user.id}</span>
-          </li>
-          <li>
-            Email: <span>{user.email}</span>
-          </li>
-          <li>
-            Spotify URI: <a href={user.uri}>{user.uri}</a>
-          </li>
-          <li>
-            Link:{" "}
-            <a href={user.external_urls.spotify}>
-              {user.external_urls.spotify}
-            </a>
-          </li>
-        </ul>
       </section>
       <button onClick={createPlaylistInSpotify}>Create Playlist</button>
       {playlistId && (
-        <button onClick={addSongToSpotifyPlaylist}>Add Song</button>
+        <div className="song-form">
+          <input
+            type="text"
+            placeholder="Song name"
+            value={songName}
+            onChange={(e) => setSongName(e.target.value)}
+            className="song-input"
+          />
+          <input
+            type="text"
+            placeholder="Artist name"
+            value={artistName}
+            onChange={(e) => setArtistName(e.target.value)}
+            className="song-input"
+          />
+          <button onClick={addSongToSpotifyPlaylist} className="song-button">
+            Add Song
+          </button>
+        </div>
       )}
       <ToastContainer />
-    </>
+    </div>
   );
 }
 

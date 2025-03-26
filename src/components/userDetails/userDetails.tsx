@@ -14,6 +14,7 @@ function UserDetails() {
   const [user, setUser] = useState<UserSpotifyProfile | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [playlistId, setPlaylistId] = useState<string | null>(null);
+  const [playlistName, setPlaylistName] = useState("");
   const [songName, setSongName] = useState("");
   const [artistName, setArtistName] = useState("");
 
@@ -41,15 +42,19 @@ function UserDetails() {
   }, []);
 
   const createPlaylistInSpotify = async () => {
-    const playlistDetails = await createPlaylist(
-      accessToken!,
-      "tryCarmel",
-      user!.id
-    );
-    if (playlistDetails) {
-      console.log(playlistDetails);
-      setPlaylistId(playlistDetails.id);
-      toast("Playlist created successfully");
+    if (!playlistName) {
+      toast("Please provide playlist name");
+    } else {
+      const playlistDetails = await createPlaylist(
+        accessToken!,
+        playlistName,
+        user!.id
+      );
+      if (playlistDetails) {
+        console.log(playlistDetails);
+        setPlaylistId(playlistDetails.id);
+        toast("Playlist created successfully");
+      }
     }
   };
 
@@ -76,14 +81,25 @@ function UserDetails() {
 
   return (
     <div className="user-details">
-      <h1>Display your Spotify profile data</h1>
+      <h1>BeatMatch</h1>
 
-      <section id="profile">
-        <h2>
-          Logged in as <span>{user.display_name}</span>
-        </h2>
-      </section>
-      <button onClick={createPlaylistInSpotify}>Create Playlist</button>
+      {!playlistId && (
+        <div>
+          <section id="profile">
+            <h2>
+              Logged in as <span>{user.display_name}</span>
+            </h2>
+          </section>
+          <input
+            type="text"
+            placeholder="Playlist name"
+            value={playlistName}
+            onChange={(e) => setPlaylistName(e.target.value)}
+            className="song-input"
+          />
+          <button onClick={createPlaylistInSpotify}>Create Playlist</button>
+        </div>
+      )}
       {playlistId && (
         <div className="song-form">
           <input

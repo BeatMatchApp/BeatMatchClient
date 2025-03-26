@@ -1,5 +1,6 @@
 import { UserSpotifyProfile } from "../../models/UserSpotifyProfile";
 import {
+  addSongToPlaylist,
   createPlaylist,
   getUserDetails,
   redirectToSpotify,
@@ -10,6 +11,7 @@ import { toast, ToastContainer } from "react-toastify";
 function UserDetails() {
   const [user, setUser] = useState<UserSpotifyProfile | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [playlistId, setPlaylistId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -41,7 +43,19 @@ function UserDetails() {
       user!.id
     );
     if (playlistDetails) {
+      console.log(playlistDetails);
+      setPlaylistId(playlistDetails.id);
       toast("Playlist created successfully");
+    }
+  };
+
+  const addSongToSpotifyPlaylist = async () => {
+    if (playlistId) {
+      const songDetails = await addSongToPlaylist(accessToken!, playlistId);
+
+      if (songDetails) {
+        toast("Song added successfully");
+      }
     }
   };
 
@@ -74,6 +88,9 @@ function UserDetails() {
         </ul>
       </section>
       <button onClick={createPlaylistInSpotify}>Create Playlist</button>
+      {playlistId && (
+        <button onClick={addSongToSpotifyPlaylist}>Add Song</button>
+      )}
       <ToastContainer />
     </>
   );

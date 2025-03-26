@@ -33,3 +33,20 @@ export const createPlaylist = async (
 
   return response.data;
 };
+
+export const addSongToPlaylist = async (
+  accessToken: string,
+  playlistId: string
+) => {
+  const songTrackUri = "spotify:track:4cOdK2wGLETKBW3PvgPWqT";
+  const response = await spotifyService.post(
+    `${import.meta.env.VITE_SPOTIFY_SERVICE_URL}/playlists/addSong`,
+    {
+      accessToken,
+      playlistId,
+      trackUri: songTrackUri,
+    }
+  );
+
+  return response.data;
+};

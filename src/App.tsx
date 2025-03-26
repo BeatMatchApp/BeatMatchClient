@@ -19,7 +19,7 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => redirectToSpotify()}>count is {count}</button>
+        <button onClick={() => redirectToSpotify()}>Login</button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>

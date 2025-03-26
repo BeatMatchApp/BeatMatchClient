@@ -1,5 +1,3 @@
-import { spotifyService } from "./httpCommon";
-
-export const redirectToSpotify = async () => {
-  window.location.href = `${spotifyService}/login`;
+export const redirectToSpotify = () => {
+  window.location.href = `${import.meta.env.VITE_SPOTIFY_SERVICE_URL}/login`;
 };

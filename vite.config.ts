@@ -5,6 +5,6 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   define: {
-    __SPOTIFY_SERVICE_URL__: `"${process.env.SPOTIFY_SERVICE_URL}"`,
+    __VITE_SPOTIFY_SERVICE_URL__: `"${process.env.VITE_SPOTIFY_SERVICE_URL}"`,
   },
 });

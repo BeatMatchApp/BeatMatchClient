@@ -1,12 +1,15 @@
 import { UserSpotifyProfile } from "../../models/UserSpotifyProfile";
 import {
+  createPlaylist,
   getUserDetails,
   redirectToSpotify,
 } from "../../services/spotifyService";
 import { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 function UserDetails() {
   const [user, setUser] = useState<UserSpotifyProfile | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -19,6 +22,7 @@ function UserDetails() {
       }
 
       try {
+        setAccessToken(token);
         const userData = await getUserDetails(token);
         setUser(userData);
       } catch (error) {
@@ -29,6 +33,17 @@ function UserDetails() {
 
     fetchUser();
   }, []);
+
+  const createPlaylistInSpotify = async () => {
+    const playlistDetails = await createPlaylist(
+      accessToken!,
+      "tryCarmel",
+      user!.id
+    );
+    if (playlistDetails) {
+      toast("Playlist created successfully");
+    }
+  };
 
   if (!user) return <p>Loading...</p>;
 
@@ -58,6 +73,8 @@ function UserDetails() {
           </li>
         </ul>
       </section>
+      <button onClick={createPlaylistInSpotify}>Create Playlist</button>
+      <ToastContainer />
     </>
   );
 }

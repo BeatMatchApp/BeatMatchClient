@@ -1,30 +1,19 @@
 import { redirectToSpotify } from "../../services/spotifyService";
+import { useEffect } from "react";
 
-async function UserDetails() {
-  //   const params = new URLSearchParams(window.location.search);
-  //   const code = params.get("code");
+function UserDetails() {
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+    const name = params.get("name");
 
-  //   if (!code) {
-  //     redirectToSpotify();
-  //   } else {
-  //     const accessToken = await getAccessToken(clientId, code);
-  //     const profile = await fetchProfile(accessToken);
-  //     populateUI(profile);
-  //   }
-  const aa = redirectToSpotify();
-  console.log(aa);
-
-  async function getAccessToken(clientId: string, code: string) {
-    // TODO: Get access token for code
-  }
-
-  async function fetchProfile(token: string): Promise<any> {
-    // TODO: Call Web API
-  }
-
-  function populateUI(profile: any) {
-    // TODO: Update UI with profile data
-  }
+    if (token) {
+      console.log("Logged in as", name);
+      // store token in localStorage or context
+    } else {
+      redirectToSpotify();
+    }
+  }, []);
 
   return (
     <>

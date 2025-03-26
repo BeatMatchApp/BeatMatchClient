@@ -50,9 +50,11 @@ function UserDetails() {
         user!.id
       );
 
-      if (playlistDetails) {
+      if (playlistDetails.success) {
         setPlaylistId(playlistDetails.id);
         toast("Playlist created successfully");
+      } else {
+        toast("Failed to create playlist");
       }
     }
   };
@@ -69,8 +71,10 @@ function UserDetails() {
           artistName
         );
 
-        if (songDetails) {
+        if (songDetails.success) {
           toast("Song added successfully");
+        } else {
+          toast("Failed to add song");
         }
       }
     }

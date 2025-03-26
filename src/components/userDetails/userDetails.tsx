@@ -34,7 +34,6 @@ function UserDetails() {
         setUser(userData);
       } catch (error) {
         console.error("Failed to fetch user details:", error);
-        // Optionally redirect again or show error UI
       }
     };
 

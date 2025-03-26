@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const spotifyService = axios.create({
-  baseURL: import.meta.env.SPOTIFY_SERVICE_URL + "/api",
+export const spotifyService = axios.create({
+  baseURL: import.meta.env.SPOTIFY_SERVICE_URL,
   headers: {
     "Content-type": "application/json",
   },

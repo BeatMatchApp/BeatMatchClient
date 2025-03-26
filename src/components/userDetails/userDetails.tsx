@@ -1,19 +1,32 @@
-import { redirectToSpotify } from "../../services/spotifyService";
-import { useEffect } from "react";
+import {
+  getUserDetails,
+  redirectToSpotify,
+} from "../../services/spotifyService";
+import { useEffect, useState } from "react";
+
+interface CurrentUsersProfileResponse {
+  id: string;
+  email: string;
+  display_name: string;
+}
 
 function UserDetails() {
+  const [user, setUser] = useState<CurrentUsersProfileResponse | null>(null);
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
-    const name = params.get("name");
+    const token = params.get("accessToken");
 
     if (token) {
-      console.log("Logged in as", name);
-      // store token in localStorage or context
+      getUserDetails(token).then((userData) => {
+        setUser(userData);
+      });
     } else {
       redirectToSpotify();
     }
   }, []);
+
+  if (!user) return <p>Loading...</p>;
 
   return (
     <>
@@ -21,24 +34,14 @@ function UserDetails() {
 
       <section id="profile">
         <h2>
-          Logged in as <span id="displayName"></span>
+          Logged in as <span>{user.display_name}</span>
         </h2>
-        <span id="avatar"></span>
         <ul>
           <li>
-            User ID: <span id="id"></span>
+            User ID: <span>{user.id}</span>
           </li>
           <li>
-            Email: <span id="email"></span>
-          </li>
-          <li>
-            Spotify URI: <a id="uri" href="#"></a>
-          </li>
-          <li>
-            Link: <a id="url" href="#"></a>
-          </li>
-          <li>
-            Profile Image: <span id="imgUrl"></span>
+            Email: <span>{user.email}</span>
           </li>
         </ul>
       </section>

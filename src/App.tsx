@@ -9,9 +9,6 @@ function App() {
       {!isUserDetailsOpen && (
         <div className="card">
           <button onClick={() => setIsUserDetailsOpen(true)}>Login</button>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test HMR
-          </p>
         </div>
       )}
       {isUserDetailsOpen && <UserDetails />}

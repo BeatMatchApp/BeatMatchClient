@@ -1,3 +1,4 @@
+import { envConfig } from "../config/config";
 import { UserSpotifyProfile } from "../models/UserSpotifyProfile";
 import { spotifyService } from "./httpCommon";
 
@@ -9,9 +10,7 @@ export const getUserDetails = async (
   token: string
 ): Promise<UserSpotifyProfile> => {
   const response = await spotifyService.get(
-    `${
-      import.meta.env.VITE_SPOTIFY_SERVICE_URL
-    }/users/userDetails/?accessToken=${token}`
+    `${envConfig.SPOTIFY_SERVICE_URL}/users/userDetails/?accessToken=${token}`
   );
 
   return response.data;
@@ -23,7 +22,7 @@ export const createPlaylist = async (
   userId: string
 ) => {
   const response = await spotifyService.post(
-    `${import.meta.env.VITE_SPOTIFY_SERVICE_URL}/playlists/createPlaylist`,
+    `${envConfig.SPOTIFY_SERVICE_URL}/playlists/createPlaylist`,
     {
       accessToken,
       playlistName,
@@ -40,13 +39,11 @@ export const addSongToPlaylist = async (
   songName: string,
   artist: string
 ) => {
-  const songTrackUri = "spotify:track:4cOdK2wGLETKBW3PvgPWqT";
   const response = await spotifyService.post(
-    `${import.meta.env.VITE_SPOTIFY_SERVICE_URL}/playlists/addSong`,
+    `${envConfig.SPOTIFY_SERVICE_URL}/playlists/addSong`,
     {
       accessToken,
       playlistId,
-      trackUri: songTrackUri,
       songName,
       artist,
     }

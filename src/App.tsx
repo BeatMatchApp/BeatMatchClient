@@ -6,12 +6,11 @@ function App() {
   const [isUserDetailsOpen, setIsUserDetailsOpen] = useState(false);
   return (
     <>
-      <div className="card">
-        <button onClick={() => setIsUserDetailsOpen(true)}>Login</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
+      {!isUserDetailsOpen && (
+        <div className="card">
+          <button onClick={() => setIsUserDetailsOpen(true)}>Login</button>
+        </div>
+      )}
       {isUserDetailsOpen && <UserDetails />}
     </>
   );

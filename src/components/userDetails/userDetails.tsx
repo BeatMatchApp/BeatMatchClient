@@ -50,8 +50,8 @@ function UserDetails() {
         playlistName,
         user!.id
       );
+
       if (playlistDetails) {
-        console.log(playlistDetails);
         setPlaylistId(playlistDetails.id);
         toast("Playlist created successfully");
       }

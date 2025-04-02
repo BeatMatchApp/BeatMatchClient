@@ -6,3 +6,10 @@ export const spotifyService = axios.create({
     "Content-type": "application/json",
   },
 });
+
+export const backendService = axios.create({
+  baseURL: import.meta.env.BACKEND_SERVICE_URL,
+  headers: {
+    "Content-type": "application/json",
+  },
+});

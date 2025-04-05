@@ -90,9 +90,8 @@ function UserDetails() {
     try {
       const response = await getGeminiAnswer(favoriteArtist, mood);
       setSuggestion(response.suggestion);
-    } catch (error) {
-      console.error("Error fetching suggestion:", error);
-      alert("Failed to fetch suggestion. Please try again.");
+    } catch {
+      toast("Failed to fetch suggestion. Please try again.");
     }
   };
 

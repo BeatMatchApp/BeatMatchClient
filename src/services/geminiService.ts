@@ -1,10 +1,14 @@
 import { envConfig } from "../config/config";
-import { backendService } from "./httpCommon";
+import { serverService } from "./httpCommon";
+export interface GeminiParams {
+  favoriteArtist?: string;
+  mood?: string;
+}
 
-export const getGeminiAnswer = async (favoriteArtist: string | null, mood: string | null) => {
-  const response = await backendService.get(
+export const getGeminiAnswer = async (geminiParams: GeminiParams) => {
+  const response = await serverService.get(
     `${envConfig.BACKEND_SERVICE_URL}/playlist/suggestion`, {
-      params: { favoriteArtist, mood }
+      params: { geminiParams }
     }
   );
 

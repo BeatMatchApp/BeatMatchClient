@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { Box, CircularProgress, TextField, Typography } from "@mui/material";
 import { StyledMenuButton } from "../styledComponents";
-import { getGeminiAnswer } from "../../services/geminiService";
+import { GeminiParams, getGeminiAnswer } from "../../services/geminiService";
 
 function UserDetails() {
   const [user, setUser] = useState<UserSpotifyProfile | null>(null);
@@ -20,8 +20,7 @@ function UserDetails() {
   const [playlistName, setPlaylistName] = useState("");
   const [songName, setSongName] = useState("");
   const [artistName, setArtistName] = useState("");
-  const [mood, setMood] = useState("");
-  const [favoriteArtist, setFavoriteArtist] = useState("");
+  const [geminiParams, setGeminiParams] = useState<GeminiParams>({});
   const [suggestion, setSuggestion] = useState("");
 
   useEffect(() => {
@@ -88,7 +87,7 @@ function UserDetails() {
 
   const handleGetSuggestion = async () => {
     try {
-      const response = await getGeminiAnswer(favoriteArtist, mood);
+      const response = await getGeminiAnswer(geminiParams);
       setSuggestion(response.suggestion);
     } catch {
       toast("Failed to fetch suggestion. Please try again.");
@@ -112,8 +111,8 @@ function UserDetails() {
           <TextField id="playlistName" label="Playlist name" onChange={(e) => setPlaylistName(e.target.value)}/>
           <StyledMenuButton onClick={createPlaylistInSpotify}>Create Playlist</StyledMenuButton>
 
-          <TextField id="mood" label="mood" onChange={(e) => setMood(e.target.value)}/>
-          <TextField id="favoriteArtist" label="favorite artist" onChange={(e) => setFavoriteArtist(e.target.value)}/>
+          <TextField id="mood" label="mood" onChange={(e) => setGeminiParams(prevState => ({ ...prevState, mood: e.target.value }))}          />
+          <TextField id="favoriteArtist" label="favorite artist" onChange={(e) => setGeminiParams(prevState => ({ ...prevState, favoriteArtist: e.target.value }))}          />
           <StyledMenuButton onClick={handleGetSuggestion}>Get suggestion</StyledMenuButton>
           {suggestion && <Typography sx={{ color: '#715cf8', fontWeight: 'bold'}}> {`The suggestion is ${suggestion}`}</Typography> }
           </>

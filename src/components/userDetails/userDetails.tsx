@@ -1,21 +1,18 @@
 import "./UserDetails.css";
-
-import { UserSpotifyProfile } from "../../models/UserSpotifyProfile";
 import {
   addSongToPlaylist,
   createPlaylist,
-  getUserDetails,
-  redirectToSpotify,
 } from "../../services/spotifyService";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { Box, CircularProgress, TextField, Typography } from "@mui/material";
-import { StyledMenuButton } from "../styledComponents";
+import { StyledLoadingBox, StyledMenuButton } from "../styledComponents";
 import { GeminiParams, getGeminiAnswer } from "../../services/geminiService";
+import { useSelector } from 'react-redux';
+import { RootState } from "../../redux/store";
 
 function UserDetails() {
-  const [user, setUser] = useState<UserSpotifyProfile | null>(null);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const spotifyInfo = useSelector((state: RootState) => state.spotifyUser);
   const [playlistId, setPlaylistId] = useState<string | null>(null);
   const [playlistName, setPlaylistName] = useState("");
   const [songName, setSongName] = useState("");
@@ -23,36 +20,14 @@ function UserDetails() {
   const [geminiParams, setGeminiParams] = useState<GeminiParams>({});
   const [suggestion, setSuggestion] = useState("");
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const params = new URLSearchParams(window.location.search);
-      const token = params.get("accessToken");
-
-      if (!token) {
-        redirectToSpotify();
-        return;
-      }
-
-      try {
-        setAccessToken(token);
-        const userData = await getUserDetails(token);
-        setUser(userData);
-      } catch (error) {
-        console.error("Failed to fetch user details:", error);
-      }
-    };
-
-    fetchUser();
-  }, []);
-
   const createPlaylistInSpotify = async () => {
     if (!playlistName) {
       toast("Please provide playlist name");
     } else {
       const playlistDetails = await createPlaylist(
-        accessToken!,
+        spotifyInfo.accessToken!,
         playlistName,
-        user!.id
+        spotifyInfo.user!.id
       );
 
       if (playlistDetails.id) {
@@ -70,7 +45,7 @@ function UserDetails() {
     } else {
       if (playlistId) {
         const songDetails = await addSongToPlaylist(
-          accessToken!,
+          spotifyInfo.accessToken!,
           playlistId,
           songName,
           artistName
@@ -94,11 +69,11 @@ function UserDetails() {
     }
   };
 
-  if (!user) 
+  if (!spotifyInfo.user) 
     return (
-    <Box sx={{ display: 'flex' }}>
-      <CircularProgress size="5em" color="secondary"/>
-    </Box>
+      <StyledLoadingBox>
+        <CircularProgress size="5em" color="secondary"/>
+      </StyledLoadingBox>
     );
 
   return (
@@ -107,7 +82,7 @@ function UserDetails() {
 
       {!playlistId && (
         <>
-          <Typography sx={{ color: '#715cf8', fontWeight: 'bold'}}> Logged in as {user.display_name} </Typography>
+          <Typography sx={{ color: '#715cf8', fontWeight: 'bold'}}> Logged in as {spotifyInfo.user.display_name} </Typography>
           <TextField id="playlistName" label="Playlist name" onChange={(e) => setPlaylistName(e.target.value)}/>
           <StyledMenuButton onClick={createPlaylistInSpotify}>Create Playlist</StyledMenuButton>
 

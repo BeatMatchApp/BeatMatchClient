@@ -47,6 +47,8 @@ body {
   gap: 1em;
   justify-content: center;
   align-items: center;
+  margin: auto;
+  width: 30%;
 }
 
 .read-the-docs {
@@ -73,5 +75,9 @@ body {
 }
 
 .MuiTextField-root{
+  width: 100%;
+}
+
+.MuiPickersTextField-root{
   width: 100%;
 }

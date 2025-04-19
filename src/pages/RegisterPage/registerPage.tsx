@@ -1,20 +1,13 @@
-import React, { useState } from 'react';
-import { Box, TextField, Button, Tooltip, IconButton } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, TextField, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { StyledMenuButton, StyledPageTitle } from '../../components/styledComponents';
 import { DatePicker } from '@mui/x-date-pickers';
-import { getUserDetails, redirectToSpotify } from '../../services/spotifyService';
-import { setSpotifyUser } from '../../redux/spotifyUserSlice';
-import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { RootState } from "../../redux/store";
-import SpotifyIcon from '../../../public/assets/spotifyIcon.png'; 
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { green } from '@mui/material/colors'; 
+import { RootState } from "../../redux/store"; 
 
 const RegisterPage = () => {
   const spotifyInfo = useSelector((state: RootState) => state.spotifyUser);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [newUser, setNewUser] = useState({
     name: '',
@@ -32,21 +25,11 @@ const RegisterPage = () => {
     birthDate: ''
   });
 
-  const fetchSpotifyUser = async () => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("accessToken");
-
-    if (!token) {
-      redirectToSpotify();
-      return;
+  useEffect(() => {
+    if (!spotifyInfo.user){
+      navigate('/register/spotify')
     }
-    try {
-      const userData = await getUserDetails(token);
-      dispatch(setSpotifyUser({user: userData, accessToken: token }));
-    } catch (error) {
-      console.error("Failed to fetch user details:", error);
-    }
-  };
+  }, []);
 
   const validateName = (name: string) => {
     if (!name) {
@@ -158,19 +141,6 @@ const RegisterPage = () => {
             validatePassword(confirmPassword);
           }}
         />
-        <Tooltip title={spotifyInfo.user ? "" : "Connect to Spotify"}>
-          <IconButton
-            onClick={fetchSpotifyUser}
-            sx={{ color: spotifyInfo.user ? green[500] : '#1DB954' }}
-            disabled={!!spotifyInfo.user} // Disable button once done
-          >
-            {spotifyInfo.user ? (
-              <CheckCircleIcon style={{ width: 40, height: 40 }}/>
-            ) : (
-              <img src={SpotifyIcon} alt="Spotify" style={{ width: 40, height: 40 }} />
-            )}
-          </IconButton>
-      </Tooltip>
       </Box>
       <StyledMenuButton disabled={disableContinue()} onClick={() => navigate('/details')}>Continue</StyledMenuButton>
     </Box>

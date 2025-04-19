@@ -5,7 +5,6 @@ import {
   addSongToPlaylist,
   createPlaylist,
   getUserDetails,
-  redirectToSpotify,
 } from "../../services/spotifyService";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
@@ -15,7 +14,6 @@ import { GeminiParams, getGeminiAnswer } from "../../services/geminiService";
 
 function UserDetails() {
   const [user, setUser] = useState<UserSpotifyProfile | null>(null);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
   const [playlistId, setPlaylistId] = useState<string | null>(null);
   const [playlistName, setPlaylistName] = useState("");
   const [songName, setSongName] = useState("");
@@ -25,17 +23,8 @@ function UserDetails() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const params = new URLSearchParams(window.location.search);
-      const token = params.get("accessToken");
-
-      if (!token) {
-        redirectToSpotify();
-        return;
-      }
-
       try {
-        setAccessToken(token);
-        const userData = await getUserDetails(token);
+        const userData = await getUserDetails();
         setUser(userData);
       } catch (error) {
         console.error("Failed to fetch user details:", error);
@@ -49,11 +38,7 @@ function UserDetails() {
     if (!playlistName) {
       toast("Please provide playlist name");
     } else {
-      const playlistDetails = await createPlaylist(
-        accessToken!,
-        playlistName,
-        user!.id
-      );
+      const playlistDetails = await createPlaylist(playlistName, user!.id);
 
       if (playlistDetails.id) {
         setPlaylistId(playlistDetails.id);
@@ -70,7 +55,6 @@ function UserDetails() {
     } else {
       if (playlistId) {
         const songDetails = await addSongToPlaylist(
-          accessToken!,
           playlistId,
           songName,
           artistName

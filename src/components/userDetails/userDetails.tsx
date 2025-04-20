@@ -20,6 +20,19 @@ function UserDetails() {
   const [geminiParams, setGeminiParams] = useState<GeminiParams>({});
   const [suggestion, setSuggestion] = useState("");
 
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     try {
+  //       const userData = await getUserDetails();
+  //       setUser(userData);
+  //     } catch (error) {
+  //       console.error("Failed to fetch user details:", error);
+  //     }
+  //   };
+
+  //   fetchUser();
+  // }, []);
+
   const createPlaylistInSpotify = async () => {
     if (!playlistName) {
       toast("Please provide playlist name");

@@ -7,7 +7,7 @@ import {
 } from "../../components/styledComponents";
 import { DatePicker } from "@mui/x-date-pickers";
 import { register } from "../../services/userService";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -83,18 +83,17 @@ const RegisterPage = () => {
   const handleContinue = async () => {
     if (disableContinue()) return;
 
-    const registerResponse = await register({
-      name: newUser.name,
-      email: newUser.email,
-      password: newUser.password,
-      birthDate: newUser.birthDate!,
-    });
+    try {
+      await register({
+        name: newUser.name,
+        email: newUser.email,
+        password: newUser.password,
+        birthDate: newUser.birthDate!,
+      });
 
-    if (registerResponse.status === 201) {
       navigate("/details");
-    } else {
+    } catch {
       toast.error("Failed to register user");
-      console.error("Registration error:", registerResponse);
     }
   };
 
@@ -168,6 +167,7 @@ const RegisterPage = () => {
       <StyledMenuButton disabled={disableContinue()} onClick={handleContinue}>
         Continue
       </StyledMenuButton>
+      <ToastContainer />
     </Box>
   );
 };

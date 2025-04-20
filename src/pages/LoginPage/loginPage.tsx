@@ -7,7 +7,7 @@ import {
 } from "../../components/styledComponents";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../services/userService";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -25,11 +25,11 @@ function LoginPage() {
   };
 
   const handleLogin = async () => {
-    const loginResponse = await login({ email, password });
-    if (loginResponse.status !== 200) {
-      toast.error("Failed to login");
-    } else {
+    try {
+      await login({ email, password });
       navigate("/details");
+    } catch {
+      toast.error("Failed to login");
     }
   };
 
@@ -60,6 +60,7 @@ function LoginPage() {
         />
         <StyledMenuButton onClick={handleLogin}>Login</StyledMenuButton>
       </Box>
+      <ToastContainer />
     </Box>
   );
 }

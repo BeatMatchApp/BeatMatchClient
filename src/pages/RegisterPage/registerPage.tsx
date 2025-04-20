@@ -1,41 +1,60 @@
-import React, { useEffect, useState } from 'react';
-import { Box, TextField, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { StyledMenuButton, StyledPageTitle } from '../../components/styledComponents';
-import { DatePicker } from '@mui/x-date-pickers';
-import { useSelector } from 'react-redux';
-import { RootState } from "../../redux/store"; 
+import React, { useEffect, useState } from "react";
+import { Box, TextField, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import {
+  StyledMenuButton,
+  StyledPageTitle,
+} from "../../components/styledComponents";
+import { DatePicker } from "@mui/x-date-pickers";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { getUserDetails } from "../../services/spotifyService";
+import { setSpotifyUser } from "../../redux/spotifyUserSlice";
 
 const RegisterPage = () => {
   const spotifyInfo = useSelector((state: RootState) => state.spotifyUser);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [newUser, setNewUser] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    birthDate: null as Date | null
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    birthDate: null as Date | null,
   });
 
   const [errors, setErrors] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    birthDate: ''
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    birthDate: "",
   });
 
   useEffect(() => {
-    if (!spotifyInfo.user){
-      navigate('/register/spotify')
-    }
-  }, []);
+    const fetchUser = async () => {
+      try {
+        const userData = await getUserDetails();
+        dispatch(setSpotifyUser({ user: userData }));
+
+        if (!userData) {
+          navigate("/register/spotify");
+        }
+      } catch (error) {
+        console.error("Failed to fetch user details:", error);
+        navigate("/register/spotify"); // optionally handle error case
+      }
+    };
+
+    fetchUser();
+  }, [dispatch, navigate]);
 
   const validateName = (name: string) => {
     if (!name) {
-      setErrors((prev) => ({ ...prev, name: 'Name is required' }));
+      setErrors((prev) => ({ ...prev, name: "Name is required" }));
     } else {
-      setErrors((prev) => ({ ...prev, name: '' }));
+      setErrors((prev) => ({ ...prev, name: "" }));
     }
   };
 
@@ -43,42 +62,57 @@ const RegisterPage = () => {
     const today = new Date();
 
     if (!birthDate) {
-      setErrors((prev) => ({ ...prev, birthDate: 'Your birthday date is required' }));
-    } else if(birthDate >= today){
-      setErrors((prev) => ({ ...prev, birthDate: 'Your birthday date cannot be in the future' }));
+      setErrors((prev) => ({
+        ...prev,
+        birthDate: "Your birthday date is required",
+      }));
+    } else if (birthDate >= today) {
+      setErrors((prev) => ({
+        ...prev,
+        birthDate: "Your birthday date cannot be in the future",
+      }));
     } else {
-      setErrors((prev) => ({ ...prev, birthDate: '' }));
+      setErrors((prev) => ({ ...prev, birthDate: "" }));
     }
   };
 
   const validatePassword = (confirmPassword: string) => {
     if (confirmPassword !== newUser.password) {
-      setErrors((prev) => ({ ...prev, confirmPassword: 'Passwords do not match' }));
+      setErrors((prev) => ({
+        ...prev,
+        confirmPassword: "Passwords do not match",
+      }));
     } else {
-      setErrors((prev) => ({ ...prev, confirmPassword: '' }));
+      setErrors((prev) => ({ ...prev, confirmPassword: "" }));
     }
   };
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     if (!emailRegex.test(email)) {
-      setErrors((prev) => ({ ...prev, email: 'Invalid email format' }));
+      setErrors((prev) => ({ ...prev, email: "Invalid email format" }));
     } else {
-      setErrors((prev) => ({ ...prev, email: '' }));
+      setErrors((prev) => ({ ...prev, email: "" }));
     }
   };
 
   const disableContinue = () => {
-    if ( Object.values(newUser).some(value => value === '')) return true;
-    if ( Object.values(errors).some(erorr => erorr !== '')) return true;
+    if (Object.values(newUser).some((value) => value === "")) return true;
+    if (Object.values(errors).some((erorr) => erorr !== "")) return true;
     if (!spotifyInfo.user) return true;
     return false;
   };
 
+  const handleContinue = () => {
+    if (disableContinue()) return;
+
+    navigate("/details");
+  };
+
   return (
-    <Box className="center" sx={{ flexDirection: 'column' }}>
+    <Box className="center" sx={{ flexDirection: "column" }}>
       <StyledPageTitle>Create new account</StyledPageTitle>
-      <Button sx={{ textTransform: 'none' }} onClick={() => navigate('/login')}>
+      <Button sx={{ textTransform: "none" }} onClick={() => navigate("/login")}>
         Already Registered? Login
       </Button>
       <Box className="MenuCard">
@@ -142,7 +176,11 @@ const RegisterPage = () => {
           }}
         />
       </Box>
-      <StyledMenuButton disabled={disableContinue()} onClick={() => navigate('/details')}>Continue</StyledMenuButton>
+      <StyledMenuButton
+        disabled={disableContinue()}
+        onClick={() => navigate("/details")}>
+        Continue
+      </StyledMenuButton>
     </Box>
   );
 };

@@ -6,25 +6,18 @@ export const redirectToSpotify = () => {
   window.location.href = `${import.meta.env.VITE_SPOTIFY_SERVICE_URL}/login`;
 };
 
-export const getUserDetails = async (
-  token: string
-): Promise<UserSpotifyProfile> => {
+export const getUserDetails = async (): Promise<UserSpotifyProfile> => {
   const response = await spotifyService.get(
-    `${envConfig.SPOTIFY_SERVICE_URL}/users/userDetails/?accessToken=${token}`
+    `${envConfig.SPOTIFY_SERVICE_URL}/users/userDetails`
   );
 
   return response.data;
 };
 
-export const createPlaylist = async (
-  accessToken: string,
-  playlistName: string,
-  userId: string
-) => {
+export const createPlaylist = async (playlistName: string, userId: string) => {
   const response = await spotifyService.post(
     `${envConfig.SPOTIFY_SERVICE_URL}/playlists/createPlaylist`,
     {
-      accessToken,
       playlistName,
       userId,
     }
@@ -34,7 +27,6 @@ export const createPlaylist = async (
 };
 
 export const addSongToPlaylist = async (
-  accessToken: string,
   playlistId: string,
   songName: string,
   artist: string
@@ -42,7 +34,6 @@ export const addSongToPlaylist = async (
   const response = await spotifyService.post(
     `${envConfig.SPOTIFY_SERVICE_URL}/playlists/addSong`,
     {
-      accessToken,
       playlistId,
       songName,
       artist,

@@ -8,7 +8,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { Box, CircularProgress, TextField, Typography } from "@mui/material";
 import { StyledLoadingBox, StyledMenuButton } from "../styledComponents";
 import { GeminiParams, getGeminiAnswer } from "../../services/geminiService";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
 function UserDetails() {
@@ -25,7 +25,6 @@ function UserDetails() {
       toast("Please provide playlist name");
     } else {
       const playlistDetails = await createPlaylist(
-        spotifyInfo.accessToken!,
         playlistName,
         spotifyInfo.user!.id
       );
@@ -45,7 +44,6 @@ function UserDetails() {
     } else {
       if (playlistId) {
         const songDetails = await addSongToPlaylist(
-          spotifyInfo.accessToken!,
           playlistId,
           songName,
           artistName
@@ -69,34 +67,83 @@ function UserDetails() {
     }
   };
 
-  if (!spotifyInfo.user) 
+  if (!spotifyInfo.user)
     return (
       <StyledLoadingBox>
-        <CircularProgress size="5em" color="secondary"/>
+        <CircularProgress size="5em" color="secondary" />
       </StyledLoadingBox>
     );
 
   return (
-    <Box className="MenuCard">       
-        <img width="300em" src={`/assets/logo.png`} loading="lazy" className="logoImg" />
+    <Box className="MenuCard">
+      <img
+        width="300em"
+        src={`/assets/logo.png`}
+        loading="lazy"
+        className="logoImg"
+      />
 
       {!playlistId && (
         <>
-          <Typography sx={{ color: '#715cf8', fontWeight: 'bold'}}> Logged in as {spotifyInfo.user.display_name} </Typography>
-          <TextField id="playlistName" label="Playlist name" onChange={(e) => setPlaylistName(e.target.value)}/>
-          <StyledMenuButton onClick={createPlaylistInSpotify}>Create Playlist</StyledMenuButton>
+          <Typography sx={{ color: "#715cf8", fontWeight: "bold" }}>
+            {" "}
+            Logged in as {spotifyInfo.user.display_name}{" "}
+          </Typography>
+          <TextField
+            id="playlistName"
+            label="Playlist name"
+            onChange={(e) => setPlaylistName(e.target.value)}
+          />
+          <StyledMenuButton onClick={createPlaylistInSpotify}>
+            Create Playlist
+          </StyledMenuButton>
 
-          <TextField id="mood" label="mood" onChange={(e) => setGeminiParams(prevState => ({ ...prevState, mood: e.target.value }))}          />
-          <TextField id="favoriteArtist" label="favorite artist" onChange={(e) => setGeminiParams(prevState => ({ ...prevState, favoriteArtist: e.target.value }))}          />
-          <StyledMenuButton onClick={handleGetSuggestion}>Get suggestion</StyledMenuButton>
-          {suggestion && <Typography sx={{ color: '#715cf8', fontWeight: 'bold'}}> {`The suggestion is ${suggestion}`}</Typography> }
-          </>
+          <TextField
+            id="mood"
+            label="mood"
+            onChange={(e) =>
+              setGeminiParams((prevState) => ({
+                ...prevState,
+                mood: e.target.value,
+              }))
+            }
+          />
+          <TextField
+            id="favoriteArtist"
+            label="favorite artist"
+            onChange={(e) =>
+              setGeminiParams((prevState) => ({
+                ...prevState,
+                favoriteArtist: e.target.value,
+              }))
+            }
+          />
+          <StyledMenuButton onClick={handleGetSuggestion}>
+            Get suggestion
+          </StyledMenuButton>
+          {suggestion && (
+            <Typography sx={{ color: "#715cf8", fontWeight: "bold" }}>
+              {" "}
+              {`The suggestion is ${suggestion}`}
+            </Typography>
+          )}
+        </>
       )}
       {playlistId && (
         <>
-          <TextField id="songInput" label="Song name" onChange={(e) => setSongName(e.target.value)}/>
-          <TextField id="artistInput" label="Artist name" onChange={(e) => setArtistName(e.target.value)}/>
-          <StyledMenuButton onClick={addSongToSpotifyPlaylist}>Add Song</StyledMenuButton>
+          <TextField
+            id="songInput"
+            label="Song name"
+            onChange={(e) => setSongName(e.target.value)}
+          />
+          <TextField
+            id="artistInput"
+            label="Artist name"
+            onChange={(e) => setArtistName(e.target.value)}
+          />
+          <StyledMenuButton onClick={addSongToSpotifyPlaylist}>
+            Add Song
+          </StyledMenuButton>
         </>
       )}
       <ToastContainer />

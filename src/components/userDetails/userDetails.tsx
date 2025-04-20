@@ -2,17 +2,23 @@ import "./UserDetails.css";
 import {
   addSongToPlaylist,
   createPlaylist,
+  getUserDetails,
 } from "../../services/spotifyService";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { Box, CircularProgress, TextField, Typography } from "@mui/material";
 import { StyledLoadingBox, StyledMenuButton } from "../styledComponents";
 import { GeminiParams, getGeminiAnswer } from "../../services/geminiService";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { setSpotifyUser } from "../../redux/spotifyUserSlice";
+import { useNavigate } from "react-router-dom";
 
 function UserDetails() {
   const spotifyInfo = useSelector((state: RootState) => state.spotifyUser);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [playlistId, setPlaylistId] = useState<string | null>(null);
   const [playlistName, setPlaylistName] = useState("");
   const [songName, setSongName] = useState("");
@@ -20,18 +26,23 @@ function UserDetails() {
   const [geminiParams, setGeminiParams] = useState<GeminiParams>({});
   const [suggestion, setSuggestion] = useState("");
 
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     try {
-  //       const userData = await getUserDetails();
-  //       setUser(userData);
-  //     } catch (error) {
-  //       console.error("Failed to fetch user details:", error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userData = await getUserDetails();
+        dispatch(setSpotifyUser({ user: userData }));
 
-  //   fetchUser();
-  // }, []);
+        if (!userData) {
+          navigate("/register/spotify");
+        }
+      } catch (error) {
+        console.error("Failed to fetch user details:", error);
+        navigate("/register/spotify"); // optionally handle error case
+      }
+    };
+
+    fetchUser();
+  }, [dispatch, navigate]);
 
   const createPlaylistInSpotify = async () => {
     if (!playlistName) {

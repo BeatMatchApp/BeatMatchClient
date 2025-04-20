@@ -1,8 +1,13 @@
 import { useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import "../../App.css";
-import { StyledMenuButton, StyledPageTitle } from "../../components/styledComponents";
-import { useNavigate } from 'react-router-dom';
+import {
+  StyledMenuButton,
+  StyledPageTitle,
+} from "../../components/styledComponents";
+import { useNavigate } from "react-router-dom";
+import { login } from "../../services/userService";
+import { toast } from "react-toastify";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -13,41 +18,50 @@ function LoginPage() {
   const validateEmail = (email: string) => {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     if (!emailRegex.test(email)) {
-      setEmailError('Invalid email format');
+      setEmailError("Invalid email format");
     } else {
       setEmailError("");
     }
   };
 
   const handleLogin = async () => {
-    // TODO: send to db and check
-   console.log(`email: "${email}". password: "${password}"`)
-   navigate('/details')
+    const loginResponse = await login({ email, password });
+    if (loginResponse.status !== 200) {
+      toast.error("Failed to login");
+    } else {
+      navigate("/details");
+    }
   };
 
   return (
-    <Box className="center" sx={{ flexDirection: 'column'}}>
+    <Box className="center" sx={{ flexDirection: "column" }}>
       <StyledPageTitle> Login </StyledPageTitle>
-      <Button sx={{ textTransform: 'none' }} onClick={() => navigate('/register')}>
+      <Button
+        sx={{ textTransform: "none" }}
+        onClick={() => navigate("/register")}>
         Dont have an account? Register now!
       </Button>
       <Box className="MenuCard">
-        <TextField  
-          id="email" 
+        <TextField
+          id="email"
           label="email"
-          error={!!emailError} 
+          error={!!emailError}
           helperText={emailError}
           onChange={(e) => {
             const email = e.target.value;
             setEmail(email);
             validateEmail(email);
-          }}/>
-        <TextField id="password" label="Password" onChange={(e) => setPassword(e.target.value)}/>
+          }}
+        />
+        <TextField
+          id="password"
+          label="Password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
         <StyledMenuButton onClick={handleLogin}>Login</StyledMenuButton>
-      </Box>  
+      </Box>
     </Box>
   );
 }
 
 export default LoginPage;
-

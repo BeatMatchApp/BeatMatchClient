@@ -4,3 +4,8 @@ export interface UserDetails {
   password: string;
   birthDate: Date;
 }
+
+export interface LoginUserDetails {
+  email: string;
+  password: string;
+}

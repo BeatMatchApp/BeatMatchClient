@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import {
@@ -6,17 +6,11 @@ import {
   StyledPageTitle,
 } from "../../components/styledComponents";
 import { DatePicker } from "@mui/x-date-pickers";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
-import { getUserDetails } from "../../services/spotifyService";
-import { setSpotifyUser } from "../../redux/spotifyUserSlice";
 import { register } from "../../services/userService";
 import { toast } from "react-toastify";
 
 const RegisterPage = () => {
-  const spotifyInfo = useSelector((state: RootState) => state.spotifyUser);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const [newUser, setNewUser] = useState({
     name: "",
@@ -33,24 +27,6 @@ const RegisterPage = () => {
     confirmPassword: "",
     birthDate: "",
   });
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const userData = await getUserDetails();
-        dispatch(setSpotifyUser({ user: userData }));
-
-        if (!userData) {
-          navigate("/register/spotify");
-        }
-      } catch (error) {
-        console.error("Failed to fetch user details:", error);
-        navigate("/register/spotify"); // optionally handle error case
-      }
-    };
-
-    fetchUser();
-  }, [dispatch, navigate]);
 
   const validateName = (name: string) => {
     if (!name) {
@@ -101,7 +77,6 @@ const RegisterPage = () => {
   const disableContinue = () => {
     if (Object.values(newUser).some((value) => value === "")) return true;
     if (Object.values(errors).some((erorr) => erorr !== "")) return true;
-    if (!spotifyInfo.user) return true;
     return false;
   };
 

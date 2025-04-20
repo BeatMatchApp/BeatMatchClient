@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { getUserDetails } from "../../services/spotifyService";
 import { setSpotifyUser } from "../../redux/spotifyUserSlice";
+import { register } from "../../services/userService";
+import { toast } from "react-toastify";
 
 const RegisterPage = () => {
   const spotifyInfo = useSelector((state: RootState) => state.spotifyUser);
@@ -103,10 +105,22 @@ const RegisterPage = () => {
     return false;
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (disableContinue()) return;
 
-    navigate("/details");
+    const registerResponse = await register({
+      name: newUser.name,
+      email: newUser.email,
+      password: newUser.password,
+      birthDate: newUser.birthDate!,
+    });
+
+    if (registerResponse.status === 201) {
+      navigate("/details");
+    } else {
+      toast.error("Failed to register user");
+      console.error("Registration error:", registerResponse);
+    }
   };
 
   return (
@@ -176,9 +190,7 @@ const RegisterPage = () => {
           }}
         />
       </Box>
-      <StyledMenuButton
-        disabled={disableContinue()}
-        onClick={() => navigate("/details")}>
+      <StyledMenuButton disabled={disableContinue()} onClick={handleContinue}>
         Continue
       </StyledMenuButton>
     </Box>

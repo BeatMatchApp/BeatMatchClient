@@ -8,6 +8,7 @@ import {
 import { DatePicker } from "@mui/x-date-pickers";
 import { register } from "../../services/userService";
 import { toast, ToastContainer } from "react-toastify";
+import { AxiosError } from "axios";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -92,8 +93,14 @@ const RegisterPage = () => {
       });
 
       navigate("/details");
-    } catch {
-      toast.error("Failed to register user");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error?.response?.data?.message.includes("User already exists.")) {
+          toast.error("User already exists. Please login.");
+        } else {
+          toast.error("Failed to register user");
+        }
+      }
     }
   };
 

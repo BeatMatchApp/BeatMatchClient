@@ -38,7 +38,7 @@ function LoginPage() {
       <StyledPageTitle> Login </StyledPageTitle>
       <Button
         sx={{ textTransform: "none" }}
-        onClick={() => navigate("/register")}>
+        onClick={() => navigate("/register/spotify")}>
         Dont have an account? Register now!
       </Button>
       <Box className="MenuCard">

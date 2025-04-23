@@ -1,6 +1,4 @@
 import "./UserDetails.css";
-
-import { UserSpotifyProfile } from "../../models/UserSpotifyProfile";
 import {
   addSongToPlaylist,
   createPlaylist,
@@ -9,11 +7,18 @@ import {
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { Box, CircularProgress, TextField, Typography } from "@mui/material";
-import { StyledMenuButton } from "../styledComponents";
+import { StyledLoadingBox, StyledMenuButton } from "../styledComponents";
 import { GeminiParams, getGeminiAnswer } from "../../services/geminiService";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { setSpotifyUser } from "../../redux/spotifyUserSlice";
+import { useNavigate } from "react-router-dom";
 
 function UserDetails() {
-  const [user, setUser] = useState<UserSpotifyProfile | null>(null);
+  const spotifyInfo = useSelector((state: RootState) => state.spotifyUser);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [playlistId, setPlaylistId] = useState<string | null>(null);
   const [playlistName, setPlaylistName] = useState("");
   const [songName, setSongName] = useState("");
@@ -25,20 +30,28 @@ function UserDetails() {
     const fetchUser = async () => {
       try {
         const userData = await getUserDetails();
-        setUser(userData);
+        dispatch(setSpotifyUser({ user: userData }));
+
+        if (!userData) {
+          navigate("/register/spotify");
+        }
       } catch (error) {
         console.error("Failed to fetch user details:", error);
+        navigate("/register/spotify"); // optionally handle error case
       }
     };
 
     fetchUser();
-  }, []);
+  }, [dispatch, navigate]);
 
   const createPlaylistInSpotify = async () => {
     if (!playlistName) {
       toast("Please provide playlist name");
     } else {
-      const playlistDetails = await createPlaylist(playlistName, user!.id);
+      const playlistDetails = await createPlaylist(
+        playlistName,
+        spotifyInfo.user!.id
+      );
 
       if (playlistDetails.id) {
         setPlaylistId(playlistDetails.id);
@@ -78,34 +91,83 @@ function UserDetails() {
     }
   };
 
-  if (!user) 
+  if (!spotifyInfo.user)
     return (
-    <Box sx={{ display: 'flex' }}>
-      <CircularProgress size="5em" color="secondary"/>
-    </Box>
+      <StyledLoadingBox>
+        <CircularProgress size="5em" color="secondary" />
+      </StyledLoadingBox>
     );
 
   return (
-    <Box className="MenuCard">       
-        <img width="300em" src={`/assets/logo.png`} loading="lazy" className="logoImg" />
+    <Box className="MenuCard">
+      <img
+        width="300em"
+        src={`/assets/logo.png`}
+        loading="lazy"
+        className="logoImg"
+      />
 
       {!playlistId && (
         <>
-          <Typography sx={{ color: '#715cf8', fontWeight: 'bold'}}> Logged in as {user.display_name} </Typography>
-          <TextField id="playlistName" label="Playlist name" onChange={(e) => setPlaylistName(e.target.value)}/>
-          <StyledMenuButton onClick={createPlaylistInSpotify}>Create Playlist</StyledMenuButton>
+          <Typography sx={{ color: "#715cf8", fontWeight: "bold" }}>
+            {" "}
+            Logged in as {spotifyInfo.user.display_name}{" "}
+          </Typography>
+          <TextField
+            id="playlistName"
+            label="Playlist name"
+            onChange={(e) => setPlaylistName(e.target.value)}
+          />
+          <StyledMenuButton onClick={createPlaylistInSpotify}>
+            Create Playlist
+          </StyledMenuButton>
 
-          <TextField id="mood" label="mood" onChange={(e) => setGeminiParams(prevState => ({ ...prevState, mood: e.target.value }))}          />
-          <TextField id="favoriteArtist" label="favorite artist" onChange={(e) => setGeminiParams(prevState => ({ ...prevState, favoriteArtist: e.target.value }))}          />
-          <StyledMenuButton onClick={handleGetSuggestion}>Get suggestion</StyledMenuButton>
-          {suggestion && <Typography sx={{ color: '#715cf8', fontWeight: 'bold'}}> {`The suggestion is ${suggestion}`}</Typography> }
-          </>
+          <TextField
+            id="mood"
+            label="mood"
+            onChange={(e) =>
+              setGeminiParams((prevState) => ({
+                ...prevState,
+                mood: e.target.value,
+              }))
+            }
+          />
+          <TextField
+            id="favoriteArtist"
+            label="favorite artist"
+            onChange={(e) =>
+              setGeminiParams((prevState) => ({
+                ...prevState,
+                favoriteArtist: e.target.value,
+              }))
+            }
+          />
+          <StyledMenuButton onClick={handleGetSuggestion}>
+            Get suggestion
+          </StyledMenuButton>
+          {suggestion && (
+            <Typography sx={{ color: "#715cf8", fontWeight: "bold" }}>
+              {" "}
+              {`The suggestion is ${suggestion}`}
+            </Typography>
+          )}
+        </>
       )}
       {playlistId && (
         <>
-          <TextField id="songInput" label="Song name" onChange={(e) => setSongName(e.target.value)}/>
-          <TextField id="artistInput" label="Artist name" onChange={(e) => setArtistName(e.target.value)}/>
-          <StyledMenuButton onClick={addSongToSpotifyPlaylist}>Add Song</StyledMenuButton>
+          <TextField
+            id="songInput"
+            label="Song name"
+            onChange={(e) => setSongName(e.target.value)}
+          />
+          <TextField
+            id="artistInput"
+            label="Artist name"
+            onChange={(e) => setArtistName(e.target.value)}
+          />
+          <StyledMenuButton onClick={addSongToSpotifyPlaylist}>
+            Add Song
+          </StyledMenuButton>
         </>
       )}
       <ToastContainer />

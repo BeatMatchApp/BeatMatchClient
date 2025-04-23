@@ -14,4 +14,5 @@ export const serverService = axios.create({
   headers: {
     "Content-type": "application/json",
   },
+  withCredentials: true,
 });

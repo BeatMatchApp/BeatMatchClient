@@ -2,9 +2,23 @@ import { Box } from "@mui/material";
 import "../../App.css";
 import { StyledMenuButton } from "../../components/styledComponents";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function HomePage() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const login = async () => {
+      const response = await serverService.post(
+        `${envConfig.BACKEND_SERVICE_URL}/user/login`,
+        { userDetails: loginUserDetails }
+      );
+
+      return response;
+    };
+
+    login();
+  }, []);
 
   return (
     <>

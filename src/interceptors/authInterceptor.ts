@@ -10,7 +10,10 @@ export const authInterceptor = (
       if (error.response?.status === 401) {
         console.warn("401 Unauthorized detected!");
         onUnauthorized();
+
+        return Promise.reject();
       }
+
       return Promise.reject(error);
     }
   );

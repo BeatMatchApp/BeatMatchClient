@@ -75,9 +75,9 @@ function UserDetails() {
         );
 
         if (songDetails.success) {
-          toast("Song added successfully");
+          toast.success("Song added successfully");
         } else {
-          toast("Failed to add song");
+          toast.error("Failed to add song");
         }
       }
     }
@@ -87,8 +87,11 @@ function UserDetails() {
     try {
       const response = await getGeminiAnswer(geminiParams);
       setSuggestion(response.suggestion);
-    } catch {
-      toast("Failed to fetch suggestion. Please try again.");
+    } catch (error) {
+      if (error) {
+        console.error("Failed to fetch suggestion:", error);
+        toast.error("Failed to fetch suggestion. Please try again.");
+      }
     }
   };
 

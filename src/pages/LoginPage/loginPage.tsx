@@ -57,6 +57,7 @@ function LoginPage() {
         <TextField
           id="password"
           label="Password"
+          type="password"
           onChange={(e) => setPassword(e.target.value)}
         />
         <StyledMenuButton onClick={handleLogin}>Login</StyledMenuButton>

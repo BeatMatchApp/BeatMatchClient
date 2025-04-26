@@ -5,7 +5,7 @@ import {
   getUserDetails,
 } from "../../services/spotifyService";
 import { useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { Box, CircularProgress, TextField, Typography } from "@mui/material";
 import { StyledLoadingBox, StyledMenuButton } from "../styledComponents";
 import { GeminiParams, getGeminiAnswer } from "../../services/geminiService";
@@ -171,7 +171,6 @@ function UserDetails() {
           </StyledMenuButton>
         </>
       )}
-      <ToastContainer />
     </Box>
   );
 }

@@ -7,7 +7,7 @@ import {
 } from "../../components/styledComponents";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../services/userService";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { NavigationRoutes } from "../../models/NavigationRoutes";
 
 function LoginPage() {
@@ -62,7 +62,6 @@ function LoginPage() {
         />
         <StyledMenuButton onClick={handleLogin}>Login</StyledMenuButton>
       </Box>
-      <ToastContainer />
     </Box>
   );
 }

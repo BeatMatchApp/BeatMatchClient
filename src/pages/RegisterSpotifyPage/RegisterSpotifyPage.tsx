@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { StyledPageTitle } from "../../components/styledComponents";
 import { redirectToSpotify } from "../../services/spotifyService";
 import SpotifyIcon from "../../../public/assets/spotifyIcon.png";
+import { NavigationRoutes } from "../../models/NavigationRoutes";
 
 const RegisterSpotifyPage = () => {
   const navigate = useNavigate();
@@ -14,7 +15,9 @@ const RegisterSpotifyPage = () => {
   return (
     <Box className="center" sx={{ flexDirection: "column" }}>
       <StyledPageTitle>Connect your spotify account!</StyledPageTitle>
-      <Button sx={{ textTransform: "none" }} onClick={() => navigate("/login")}>
+      <Button
+        sx={{ textTransform: "none" }}
+        onClick={() => navigate(NavigationRoutes.LOGIN)}>
         Already Registered? Login
       </Button>
       <Box className="MenuCard">

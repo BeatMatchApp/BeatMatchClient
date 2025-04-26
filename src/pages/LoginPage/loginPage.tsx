@@ -8,6 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { login } from "../../services/userService";
 import { toast, ToastContainer } from "react-toastify";
+import { NavigationRoutes } from "../../models/NavigationRoutes";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -27,7 +28,7 @@ function LoginPage() {
   const handleLogin = async () => {
     try {
       await login({ email, password });
-      navigate("/details");
+      navigate(NavigationRoutes.USER_ACTIONS_PAGE);
     } catch {
       toast.error("Failed to login");
     }
@@ -38,7 +39,7 @@ function LoginPage() {
       <StyledPageTitle> Login </StyledPageTitle>
       <Button
         sx={{ textTransform: "none" }}
-        onClick={() => navigate("/register/spotify")}>
+        onClick={() => navigate(NavigationRoutes.REGISTER_SPOTIFY)}>
         Dont have an account? Register now!
       </Button>
       <Box className="MenuCard">

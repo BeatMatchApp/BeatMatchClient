@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { setSpotifyUser } from "../../redux/spotifyUserSlice";
 import { useNavigate } from "react-router-dom";
+import { NavigationRoutes } from "../../models/NavigationRoutes";
 
 function UserDetails() {
   const spotifyInfo = useSelector((state: RootState) => state.spotifyUser);
@@ -33,11 +34,11 @@ function UserDetails() {
         dispatch(setSpotifyUser({ user: userData }));
 
         if (!userData) {
-          navigate("/register/spotify");
+          navigate(NavigationRoutes.REGISTER_SPOTIFY);
         }
       } catch (error) {
         console.error("Failed to fetch user details:", error);
-        navigate("/register/spotify"); // optionally handle error case
+        navigate(NavigationRoutes.REGISTER_SPOTIFY); // optionally handle error case
       }
     };
 

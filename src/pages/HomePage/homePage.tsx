@@ -3,18 +3,34 @@ import "../../App.css";
 import { StyledMenuButton } from "../../components/styledComponents";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { serverService } from "../../services/httpCommon";
+import { envConfig } from "../../config/config";
+import { AxiosError } from "axios";
+import { NavigationRoutes } from "../../models/NavigationRoutes";
 
 function HomePage() {
   const navigate = useNavigate();
 
   useEffect(() => {
     const login = async () => {
-      const response = await serverService.post(
-        `${envConfig.BACKEND_SERVICE_URL}/user/login`,
-        { userDetails: loginUserDetails }
-      );
+      try {
+        const response = await serverService.post(
+          `${envConfig.BACKEND_SERVICE_URL}/login`
+        );
 
-      return response;
+        navigate(NavigationRoutes.USER_ACTIONS_PAGE);
+        return response?.data?.user;
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 401) {
+            navigate(NavigationRoutes.LOGIN);
+          } else {
+            console.error("Error logging in:", error.message);
+          }
+        } else {
+          console.error("Error logging in:", error);
+        }
+      }
     };
 
     login();
@@ -29,10 +45,11 @@ function HomePage() {
           loading="lazy"
           className="logoImg"
         />
-        <StyledMenuButton onClick={() => navigate("/login")}>
+        <StyledMenuButton onClick={() => navigate(NavigationRoutes.LOGIN)}>
           Login
         </StyledMenuButton>
-        <StyledMenuButton onClick={() => navigate("/register/spotify")}>
+        <StyledMenuButton
+          onClick={() => navigate(NavigationRoutes.REGISTER_SPOTIFY)}>
           Register
         </StyledMenuButton>
       </Box>

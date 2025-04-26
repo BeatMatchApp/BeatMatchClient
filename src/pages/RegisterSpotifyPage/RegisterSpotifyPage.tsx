@@ -1,13 +1,9 @@
-import { Box, Tooltip, IconButton, Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Box, Tooltip, IconButton } from "@mui/material";
 import { StyledPageTitle } from "../../components/styledComponents";
 import { redirectToSpotify } from "../../services/spotifyService";
 import SpotifyIcon from "../../../public/assets/spotifyIcon.png";
-import { NavigationRoutes } from "../../models/NavigationRoutes";
 
 const RegisterSpotifyPage = () => {
-  const navigate = useNavigate();
-
   const fetchSpotifyUser = async () => {
     redirectToSpotify();
   };
@@ -15,11 +11,6 @@ const RegisterSpotifyPage = () => {
   return (
     <Box className="center" sx={{ flexDirection: "column" }}>
       <StyledPageTitle>Connect your spotify account!</StyledPageTitle>
-      <Button
-        sx={{ textTransform: "none" }}
-        onClick={() => navigate(NavigationRoutes.LOGIN)}>
-        Already Registered? Login
-      </Button>
       <Box className="MenuCard">
         <Tooltip title={"Connect to Spotify"}>
           <IconButton onClick={fetchSpotifyUser} sx={{ color: "#1DB954" }}>

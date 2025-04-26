@@ -39,7 +39,7 @@ function LoginPage() {
       <StyledPageTitle> Login </StyledPageTitle>
       <Button
         sx={{ textTransform: "none" }}
-        onClick={() => navigate(NavigationRoutes.REGISTER_SPOTIFY)}>
+        onClick={() => navigate(NavigationRoutes.REGISTER)}>
         Dont have an account? Register now!
       </Button>
       <Box className="MenuCard">

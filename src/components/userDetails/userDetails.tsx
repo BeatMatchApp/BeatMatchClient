@@ -37,8 +37,10 @@ function UserDetails() {
           navigate(NavigationRoutes.REGISTER_SPOTIFY);
         }
       } catch (error) {
-        console.error("Failed to fetch user details:", error);
-        navigate(NavigationRoutes.REGISTER_SPOTIFY); // optionally handle error case
+        if (error) {
+          console.error("Failed to fetch user details:", error);
+          navigate(NavigationRoutes.REGISTER_SPOTIFY);
+        }
       }
     };
 

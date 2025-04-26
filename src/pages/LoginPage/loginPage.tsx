@@ -29,7 +29,8 @@ function LoginPage() {
     try {
       await login({ email, password });
       navigate(NavigationRoutes.USER_ACTIONS_PAGE);
-    } catch {
+    } catch (error) {
+      console.error("Login failed:", error);
       toast.error("Failed to login");
     }
   };

@@ -37,10 +37,8 @@ function UserDetails() {
           navigate(NavigationRoutes.REGISTER_SPOTIFY);
         }
       } catch (error) {
-        if (error) {
-          console.error("Failed to fetch user details:", error);
-          navigate(NavigationRoutes.REGISTER_SPOTIFY);
-        }
+        console.error("Failed to fetch user details:", error);
+        navigate(NavigationRoutes.REGISTER_SPOTIFY);
       }
     };
 
@@ -88,12 +86,10 @@ function UserDetails() {
   const handleGetSuggestion = async () => {
     try {
       const response = await getGeminiAnswer(geminiParams);
-      setSuggestion(response.suggestion);
+      setSuggestion(response?.suggestion);
     } catch (error) {
-      if (error) {
-        console.error("Failed to fetch suggestion:", error);
-        toast.error("Failed to fetch suggestion. Please try again.");
-      }
+      console.error("Failed to fetch suggestion:", error);
+      toast.error("Failed to fetch suggestion. Please try again.");
     }
   };
 

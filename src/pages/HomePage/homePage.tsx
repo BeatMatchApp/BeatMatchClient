@@ -22,11 +22,7 @@ function HomePage() {
         return response?.data?.user;
       } catch (error) {
         if (error instanceof AxiosError) {
-          if (error.response?.status === 401) {
-            navigate(NavigationRoutes.REGISTER_SPOTIFY);
-          } else {
-            console.error("Error logging in:", error.message);
-          }
+          console.error("Error logging in:", error.message);
         } else {
           console.error("Error logging in:", error);
         }

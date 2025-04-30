@@ -10,7 +10,7 @@ export const authInterceptor = (
       if (error.response?.status === 401) {
         onUnauthorized();
 
-        return Promise.reject();
+        return Promise.resolve({ __unauthorized: true });
       }
 
       return Promise.reject(error);

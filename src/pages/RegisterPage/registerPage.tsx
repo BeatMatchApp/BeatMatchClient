@@ -7,8 +7,9 @@ import {
 } from "../../components/styledComponents";
 import { DatePicker } from "@mui/x-date-pickers";
 import { register } from "../../services/userService";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { AxiosError } from "axios";
+import { NavigationRoutes } from "../../models/NavigationRoutes";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -92,7 +93,7 @@ const RegisterPage = () => {
         birthDate: newUser.birthDate!,
       });
 
-      navigate("/details");
+      navigate(NavigationRoutes.USER_ACTIONS_PAGE);
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error?.response?.data?.message.includes("User already exists.")) {
@@ -107,7 +108,9 @@ const RegisterPage = () => {
   return (
     <Box className="center" sx={{ flexDirection: "column" }}>
       <StyledPageTitle>Create new account</StyledPageTitle>
-      <Button sx={{ textTransform: "none" }} onClick={() => navigate("/login")}>
+      <Button
+        sx={{ textTransform: "none" }}
+        onClick={() => navigate(NavigationRoutes.LOGIN)}>
         Already Registered? Login
       </Button>
       <Box className="MenuCard">
@@ -174,7 +177,6 @@ const RegisterPage = () => {
       <StyledMenuButton disabled={disableContinue()} onClick={handleContinue}>
         Continue
       </StyledMenuButton>
-      <ToastContainer />
     </Box>
   );
 };

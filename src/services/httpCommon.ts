@@ -1,8 +1,5 @@
 import axios from "axios";
-import { envConfig } from "../config/config";
-import { authInterceptor } from "../interceptors/authInterceptor";
-import { NavigationRoutes } from "../models/NavigationRoutes";
-import { toast } from "react-toastify";
+import { envConfig } from "../config/config";;
 
 export const spotifyService = axios.create({
   baseURL: envConfig.SPOTIFY_SERVICE_URL,

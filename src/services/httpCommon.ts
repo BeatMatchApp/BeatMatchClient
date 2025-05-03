@@ -19,6 +19,9 @@ export const serverService = axios.create({
 
 const refreshTokenService = axios.create({
   baseURL: envConfig.BACKEND_SERVICE_URL,
+  headers: {
+    "Content-type": "application/json",
+  },
   withCredentials: true,
 });
 

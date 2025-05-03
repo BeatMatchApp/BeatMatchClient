@@ -33,12 +33,12 @@ serverService.interceptors.response.use(
     if (
       error.response.status === 401 &&
       !originalRequest._retry &&
-      !originalRequest.url.includes("/auth/login")
+      !originalRequest.url.includes("/user/login")
     ) {
       originalRequest._retry = true;
 
       try {
-        await refreshTokenService.get("/auth/refresh");
+        await refreshTokenService.get("/user/refresh");
 
         return await axios(originalRequest);
       } catch (refreshError) {

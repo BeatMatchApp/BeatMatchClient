@@ -5,14 +5,15 @@ import {
   getUserDetails,
 } from "../../services/spotifyService";
 import { useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { Box, CircularProgress, TextField, Typography } from "@mui/material";
 import { StyledLoadingBox, StyledMenuButton } from "../styledComponents";
-import { GeminiParams, getGeminiAnswer } from "../../services/geminiService";
+import {PlaylistSuggestionParams, getAiPlaylistSuggestionAnswer} from "../../services/aiService.ts";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { setSpotifyUser } from "../../redux/spotifyUserSlice";
 import { useNavigate } from "react-router-dom";
+import { NavigationRoutes } from "../../models/NavigationRoutes";
 
 function UserDetails() {
   const spotifyInfo = useSelector((state: RootState) => state.spotifyUser);
@@ -23,7 +24,7 @@ function UserDetails() {
   const [playlistName, setPlaylistName] = useState("");
   const [songName, setSongName] = useState("");
   const [artistName, setArtistName] = useState("");
-  const [geminiParams, setGeminiParams] = useState<GeminiParams>({});
+  const [playlistSuggestionParams, setPlaylistSuggestionParams] = useState<PlaylistSuggestionParams>({});
   const [suggestion, setSuggestion] = useState("");
 
   useEffect(() => {
@@ -33,11 +34,11 @@ function UserDetails() {
         dispatch(setSpotifyUser({ user: userData }));
 
         if (!userData) {
-          navigate("/register/spotify");
+          navigate(NavigationRoutes.REGISTER_SPOTIFY);
         }
       } catch (error) {
         console.error("Failed to fetch user details:", error);
-        navigate("/register/spotify"); // optionally handle error case
+        navigate(NavigationRoutes.REGISTER_SPOTIFY);
       }
     };
 
@@ -74,9 +75,9 @@ function UserDetails() {
         );
 
         if (songDetails.success) {
-          toast("Song added successfully");
+          toast.success("Song added successfully");
         } else {
-          toast("Failed to add song");
+          toast.error("Failed to add song");
         }
       }
     }
@@ -84,10 +85,11 @@ function UserDetails() {
 
   const handleGetSuggestion = async () => {
     try {
-      const response = await getGeminiAnswer(geminiParams);
-      setSuggestion(response.suggestion);
-    } catch {
-      toast("Failed to fetch suggestion. Please try again.");
+      const response = await getAiPlaylistSuggestionAnswer(playlistSuggestionParams);
+      setSuggestion(response?.suggestion);
+    } catch (error) {
+      console.error("Failed to fetch suggestion:", error);
+      toast.error("Failed to fetch suggestion. Please try again.");
     }
   };
 
@@ -126,7 +128,7 @@ function UserDetails() {
             id="mood"
             label="mood"
             onChange={(e) =>
-              setGeminiParams((prevState) => ({
+              setPlaylistSuggestionParams((prevState) => ({
                 ...prevState,
                 mood: e.target.value,
               }))
@@ -136,7 +138,7 @@ function UserDetails() {
             id="favoriteArtist"
             label="favorite artist"
             onChange={(e) =>
-              setGeminiParams((prevState) => ({
+              setPlaylistSuggestionParams((prevState) => ({
                 ...prevState,
                 favoriteArtist: e.target.value,
               }))
@@ -170,7 +172,6 @@ function UserDetails() {
           </StyledMenuButton>
         </>
       )}
-      <ToastContainer />
     </Box>
   );
 }

@@ -12,7 +12,6 @@ export const register = async (userDetails: UserDetails) => {
 };
 
 export const login = async (loginUserDetails: LoginUserDetails) => {
-  
   const response = await serverService.post(
     `${envConfig.BACKEND_SERVICE_URL}/user/login`,
     { userDetails: loginUserDetails }

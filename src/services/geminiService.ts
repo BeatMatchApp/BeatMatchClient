@@ -7,7 +7,7 @@ export interface GeminiParams {
 
 export const getGeminiAnswer = async (geminiParams: GeminiParams) => {
   const response = await serverService.get(
-    `${envConfig.BACKEND_SERVICE_URL}/api/playlist/suggestion`,
+    `${envConfig.BACKEND_SERVICE_URL}/playlist/suggestion`,
     {
       params: { geminiParams },
     }

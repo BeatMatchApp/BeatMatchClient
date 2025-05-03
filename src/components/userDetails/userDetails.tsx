@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Box, CircularProgress, TextField, Typography } from "@mui/material";
 import { StyledLoadingBox, StyledMenuButton } from "../styledComponents";
-import { GeminiParams, getGeminiAnswer } from "../../services/geminiService";
+import {PlaylistSuggestionParams, getAiPlaylistSuggestionAnswer} from "../../services/aiService.ts";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { setSpotifyUser } from "../../redux/spotifyUserSlice";
@@ -24,7 +24,7 @@ function UserDetails() {
   const [playlistName, setPlaylistName] = useState("");
   const [songName, setSongName] = useState("");
   const [artistName, setArtistName] = useState("");
-  const [geminiParams, setGeminiParams] = useState<GeminiParams>({});
+  const [playlistSuggestionParams, setPlaylistSuggestionParams] = useState<PlaylistSuggestionParams>({});
   const [suggestion, setSuggestion] = useState("");
 
   useEffect(() => {
@@ -85,7 +85,7 @@ function UserDetails() {
 
   const handleGetSuggestion = async () => {
     try {
-      const response = await getGeminiAnswer(geminiParams);
+      const response = await getAiPlaylistSuggestionAnswer(playlistSuggestionParams);
       setSuggestion(response?.suggestion);
     } catch (error) {
       console.error("Failed to fetch suggestion:", error);
@@ -128,7 +128,7 @@ function UserDetails() {
             id="mood"
             label="mood"
             onChange={(e) =>
-              setGeminiParams((prevState) => ({
+              setPlaylistSuggestionParams((prevState) => ({
                 ...prevState,
                 mood: e.target.value,
               }))
@@ -138,7 +138,7 @@ function UserDetails() {
             id="favoriteArtist"
             label="favorite artist"
             onChange={(e) =>
-              setGeminiParams((prevState) => ({
+              setPlaylistSuggestionParams((prevState) => ({
                 ...prevState,
                 favoriteArtist: e.target.value,
               }))

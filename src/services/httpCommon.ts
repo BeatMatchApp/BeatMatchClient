@@ -21,14 +21,6 @@ export const serverService = axios.create({
   withCredentials: true,
 });
 
-export const refreshTokenService = axios.create({
-  baseURL: envConfig.BACKEND_SERVICE_URL,
-  headers: {
-    "Content-type": "application/json",
-  },
-  withCredentials: true,
-});
-
 tokenInterceptor(serverService, () => {  console.warn("401 Unauthorized detected!");
   toast.error("Session expired. Please log in again.");
 

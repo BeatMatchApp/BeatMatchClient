@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { refreshTokenService } from "../services/httpCommon";
+import { serverService } from "../services/httpCommon";
 
 export const tokenInterceptor = (
   axiosInstance: AxiosInstance,
@@ -18,7 +18,7 @@ export const tokenInterceptor = (
         originalRequest._retry = true;
   
         try {
-          await refreshTokenService.get("/user/refresh");
+          await serverService.get("/user/refresh");
   
           return await axios(originalRequest);
         } catch {

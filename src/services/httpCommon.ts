@@ -21,7 +21,7 @@ export const serverService = axios.create({
   withCredentials: true,
 });
 
-tokenInterceptor(serverService, () => {  console.warn("401 Unauthorized detected!");
+tokenInterceptor(serverService, () => {  console.warn("403 Unauthorized detected!");
   toast.error("Session expired. Please log in again.");
 
   setTimeout(() => {

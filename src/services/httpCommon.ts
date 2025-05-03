@@ -1,5 +1,9 @@
 import axios from "axios";
-import { envConfig } from "../config/config";;
+import { envConfig } from "../config/config";import { authInterceptor } from "../interceptors/authInterceptor";
+import { toast } from "react-toastify";
+import { NavigationRoutes } from "../models/NavigationRoutes";
+import { tokenInterceptor } from "../interceptors/tokenInterceptor";
+;
 
 export const spotifyService = axios.create({
   baseURL: envConfig.SPOTIFY_SERVICE_URL,
@@ -17,7 +21,7 @@ export const serverService = axios.create({
   withCredentials: true,
 });
 
-const refreshTokenService = axios.create({
+export const refreshTokenService = axios.create({
   baseURL: envConfig.BACKEND_SERVICE_URL,
   headers: {
     "Content-type": "application/json",
@@ -25,28 +29,18 @@ const refreshTokenService = axios.create({
   withCredentials: true,
 });
 
-serverService.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
+tokenInterceptor(serverService, () => {  console.warn("401 Unauthorized detected!");
+  toast.error("Session expired. Please log in again.");
 
-    if (
-      error.response.status === 401 &&
-      !originalRequest._retry &&
-      !originalRequest.url.includes("/user/login")
-    ) {
-      originalRequest._retry = true;
+  setTimeout(() => {
+    window.location.href = NavigationRoutes.LOGIN;
+  }, 2000);
+});
 
-      try {
-        await refreshTokenService.get("/user/refresh");
+authInterceptor(serverService, () => {  console.warn("401 Unauthorized detected!");
+  toast.error("Session expired. Please log in again.");
 
-        return await axios(originalRequest);
-      } catch (refreshError) {
-        window.location.href = "/login";
-        console.log("Error: ", refreshError);
-      }
-    }
-
-    return Promise.reject(error);
-  }
-);
+  setTimeout(() => {
+    window.location.href = NavigationRoutes.REGISTER_SPOTIFY;
+  }, 2000);
+});

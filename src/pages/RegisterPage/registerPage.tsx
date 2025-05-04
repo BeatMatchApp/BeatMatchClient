@@ -11,7 +11,11 @@ import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { NavigationRoutes } from "../../models/NavigationRoutes";
 
-const RegisterPage = () => {
+interface Props {
+  handleNextStep: () => void;
+}
+
+const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
   const navigate = useNavigate();
 
   const [newUser, setNewUser] = useState({
@@ -93,7 +97,7 @@ const RegisterPage = () => {
         birthDate: newUser.birthDate!,
       });
 
-      navigate(NavigationRoutes.USER_ACTIONS_PAGE);
+      handleNextStep();
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error?.response?.data?.message.includes("User already exists.")) {
@@ -110,7 +114,8 @@ const RegisterPage = () => {
       <StyledPageTitle>Create new account</StyledPageTitle>
       <Button
         sx={{ textTransform: "none" }}
-        onClick={() => navigate(NavigationRoutes.LOGIN)}>
+        onClick={() => navigate(NavigationRoutes.LOGIN)}
+      >
         Already Registered? Login
       </Button>
       <Box className="MenuCard">
@@ -175,7 +180,7 @@ const RegisterPage = () => {
         />
       </Box>
       <StyledMenuButton disabled={disableContinue()} onClick={handleContinue}>
-        Continue
+        Lets start!
       </StyledMenuButton>
     </Box>
   );

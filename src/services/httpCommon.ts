@@ -4,6 +4,8 @@ import { spotifyInterceptor } from "../interceptors/spotifyInterceptor";
 import { toast } from "react-toastify";
 import { NavigationRoutes } from "../models/NavigationRoutes";
 import { tokenInterceptor } from "../interceptors/tokenInterceptor";
+import { redirectToSpotify } from "./spotifyService";
+
 export const spotifyService = axios.create({
   baseURL: envConfig.SPOTIFY_SERVICE_URL,
   headers: {
@@ -29,7 +31,10 @@ tokenInterceptor(serverService, () => {
   }, 2000);
 });
 
-spotifyInterceptor(serverService, () => {
+spotifyInterceptor(spotifyService, () => {
   console.warn("spotify Unauthorized detected!");
-  // todo: handle spotify redirect
+
+  setTimeout(() => {
+    redirectToSpotify();
+  }, 2000);
 });

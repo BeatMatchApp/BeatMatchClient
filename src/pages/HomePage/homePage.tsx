@@ -44,8 +44,7 @@ function HomePage() {
         <StyledMenuButton onClick={() => navigate(NavigationRoutes.LOGIN)}>
           Login
         </StyledMenuButton>
-        <StyledMenuButton
-          onClick={() => navigate(NavigationRoutes.REGISTER_SPOTIFY)}>
+        <StyledMenuButton onClick={() => navigate(NavigationRoutes.REGISTER)}>
           Register
         </StyledMenuButton>
       </Box>

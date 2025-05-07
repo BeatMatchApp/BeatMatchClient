@@ -1,5 +1,4 @@
-import axios, { AxiosInstance } from "axios";
-import { serverService } from "../services/httpCommon";
+import { AxiosInstance } from "axios";
 
 export const tokenInterceptor = (
   axiosInstance: AxiosInstance,
@@ -11,23 +10,14 @@ export const tokenInterceptor = (
       const originalRequest = error.config;
 
       if (
-        error.response.status === 403 &&
-        !originalRequest._retry &&
+        error.response.status === 401 &&
         !originalRequest.url.includes("/user/login")
       ) {
-        originalRequest._retry = true;
-  
-        try {
-          await serverService.get("/user/refresh");
-  
-          return await axios(originalRequest);
-        } catch {
-          onUnauthorized();
+        onUnauthorized();
 
-          return Promise.resolve({ __unauthorized: true });
-        }
+        return Promise.resolve({ __unauthorized: true });
       }
-  
+
       return Promise.reject(error);
     }
   );

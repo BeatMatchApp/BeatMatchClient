@@ -2,57 +2,31 @@ import "./UserDetails.css";
 import {
   addSongToPlaylist,
   createPlaylist,
-  getUserDetails,
 } from "../../services/spotifyService";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
-import { Box, CircularProgress, TextField, Typography } from "@mui/material";
-import { StyledLoadingBox, StyledMenuButton } from "../styledComponents";
-import {PlaylistSuggestionParams, getAiPlaylistSuggestionAnswer} from "../../services/aiService.ts";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
-import { setSpotifyUser } from "../../redux/spotifyUserSlice";
-import { useNavigate } from "react-router-dom";
-import { NavigationRoutes } from "../../models/NavigationRoutes";
+import { Box, TextField, Typography } from "@mui/material";
+import { StyledMenuButton } from "../styledComponents";
+import {
+  PlaylistSuggestionParams,
+  getAiPlaylistSuggestionAnswer,
+} from "../../services/aiService.ts";
 
 function UserDetails() {
-  const spotifyInfo = useSelector((state: RootState) => state.spotifyUser);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   const [playlistId, setPlaylistId] = useState<string | null>(null);
   const [playlistName, setPlaylistName] = useState("");
   const [songName, setSongName] = useState("");
   const [artistName, setArtistName] = useState("");
-  const [playlistSuggestionParams, setPlaylistSuggestionParams] = useState<PlaylistSuggestionParams>({});
+  const [playlistSuggestionParams, setPlaylistSuggestionParams] =
+    useState<PlaylistSuggestionParams>({});
   const [suggestion, setSuggestion] = useState("");
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const userData = await getUserDetails();
-        dispatch(setSpotifyUser({ user: userData }));
-
-        if (!userData) {
-          navigate(NavigationRoutes.REGISTER_SPOTIFY);
-        }
-      } catch (error) {
-        console.error("Failed to fetch user details:", error);
-        navigate(NavigationRoutes.REGISTER_SPOTIFY);
-      }
-    };
-
-    fetchUser();
-  }, [dispatch, navigate]);
 
   const createPlaylistInSpotify = async () => {
     if (!playlistName) {
       toast("Please provide playlist name");
     } else {
-      const playlistDetails = await createPlaylist(
-        playlistName,
-        spotifyInfo.user!.id
-      );
+      // todo: fix in server to work without id
+      const playlistDetails = await createPlaylist(playlistName);
 
       if (playlistDetails.id) {
         setPlaylistId(playlistDetails.id);
@@ -85,20 +59,15 @@ function UserDetails() {
 
   const handleGetSuggestion = async () => {
     try {
-      const response = await getAiPlaylistSuggestionAnswer(playlistSuggestionParams);
+      const response = await getAiPlaylistSuggestionAnswer(
+        playlistSuggestionParams
+      );
       setSuggestion(response?.suggestion);
     } catch (error) {
       console.error("Failed to fetch suggestion:", error);
       toast.error("Failed to fetch suggestion. Please try again.");
     }
   };
-
-  if (!spotifyInfo.user)
-    return (
-      <StyledLoadingBox>
-        <CircularProgress size="5em" color="secondary" />
-      </StyledLoadingBox>
-    );
 
   return (
     <Box className="MenuCard">
@@ -111,10 +80,6 @@ function UserDetails() {
 
       {!playlistId && (
         <>
-          <Typography sx={{ color: "#715cf8", fontWeight: "bold" }}>
-            {" "}
-            Logged in as {spotifyInfo.user.display_name}{" "}
-          </Typography>
           <TextField
             id="playlistName"
             label="Playlist name"

@@ -27,7 +27,7 @@ tokenInterceptor(serverService, () => {
   toast.error("Session expired. Please log in again.");
 
   setTimeout(() => {
-    window.location.href = NavigationRoutes.LOGIN;
+    window.location.href = NavigationRoutes.REGISTER_SPOTIFY;
   }, 2000);
 });
 

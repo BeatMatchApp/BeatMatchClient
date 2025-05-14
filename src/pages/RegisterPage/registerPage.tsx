@@ -93,7 +93,7 @@ const RegisterPage = () => {
         birthDate: newUser.birthDate!,
       });
 
-      navigate(NavigationRoutes.USER_ACTIONS_PAGE);
+      navigate(NavigationRoutes.MAIN_PAGE);
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error?.response?.data?.message.includes("User already exists.")) {

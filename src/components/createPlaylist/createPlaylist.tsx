@@ -9,6 +9,7 @@ import {
   ContinueButton,
   Title,
 } from "./styled";
+import { EVENT_CATEGORIES, MOOD_CATEGORIES } from "./consts";
 
 export const CreatePlaylist = () => {
   const [playlistName, setPlaylistName] = useState("");
@@ -61,14 +62,14 @@ export const CreatePlaylist = () => {
 
         <ScrollableSelector
           title="Special event?"
-          items={["Party", "Cooking", "Work out", "Study", "Picnic", "Meeting"]}
+          items={EVENT_CATEGORIES}
           selected={event}
           onSelect={setEvent}
         />
 
         <ScrollableSelector
           title="Specific mood?"
-          items={["Happy", "Hype", "Sad", "Calm", "Romantic", "Motivated"]}
+          items={MOOD_CATEGORIES}
           selected={mood}
           onSelect={setMood}
         />

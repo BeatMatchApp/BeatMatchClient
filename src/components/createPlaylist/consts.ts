@@ -1,0 +1,32 @@
+export const EVENT_CATEGORIES = [
+  "Party",
+  "Cooking",
+  "Work out",
+  "Study",
+  "Picnic",
+  "Meeting",
+  "Relax",
+  "Travel",
+  "Game",
+  "Dance",
+  "Chill",
+  "Drive",
+  "Sleep",
+  "Other",
+];
+
+export const MOOD_CATEGORIES = [
+  "Happy",
+  "Hype",
+  "Sad",
+  "Calm",
+  "Romantic",
+  "Motivated",
+  "Angry",
+  "Nostalgic",
+  "Energetic",
+  "Relaxed",
+  "Chill",
+  "Focused",
+  "Other",
+];

@@ -1,9 +1,10 @@
 import axios from "axios";
-import { envConfig } from "../config/config";import { authInterceptor } from "../interceptors/authInterceptor";
+import { envConfig } from "../config/config";
+import { spotifyInterceptor } from "../interceptors/spotifyInterceptor";
 import { toast } from "react-toastify";
 import { NavigationRoutes } from "../models/NavigationRoutes";
 import { tokenInterceptor } from "../interceptors/tokenInterceptor";
-;
+import { redirectToSpotify } from "./spotifyService";
 
 export const spotifyService = axios.create({
   baseURL: envConfig.SPOTIFY_SERVICE_URL,
@@ -21,18 +22,19 @@ export const serverService = axios.create({
   withCredentials: true,
 });
 
-tokenInterceptor(serverService, () => {  console.warn("403 Unauthorized detected!");
-  toast.error("Session expired. Please log in again.");
-
-  setTimeout(() => {
-    window.location.href = NavigationRoutes.LOGIN;
-  }, 2000);
-});
-
-authInterceptor(serverService, () => {  console.warn("401 Unauthorized detected!");
+tokenInterceptor(serverService, () => {
+  console.warn("401 Unauthorized detected!");
   toast.error("Session expired. Please log in again.");
 
   setTimeout(() => {
     window.location.href = NavigationRoutes.REGISTER_SPOTIFY;
+  }, 2000);
+});
+
+spotifyInterceptor(spotifyService, () => {
+  console.warn("spotify Unauthorized detected!");
+
+  setTimeout(() => {
+    redirectToSpotify();
   }, 2000);
 });

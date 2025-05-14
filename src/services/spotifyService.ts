@@ -14,12 +14,11 @@ export const getUserDetails = async (): Promise<UserSpotifyProfile> => {
   return response.data;
 };
 
-export const createPlaylist = async (playlistName: string, userId: string) => {
+export const createPlaylist = async (playlistName: string) => {
   const response = await spotifyService.post(
     `${envConfig.SPOTIFY_SERVICE_URL}/playlists/createPlaylist`,
     {
       playlistName,
-      userId,
     }
   );
 

@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage/homePage";
 import LoginPage from "./pages/LoginPage/loginPage";
 import RegisterPage from "./pages/RegisterPage/registerPage";
-import UserDetails from "./components/userDetails/userDetails";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { Provider } from "react-redux";
@@ -10,6 +9,7 @@ import { store } from "./redux/store";
 import RegisterSpotifyPage from "./pages/RegisterSpotifyPage/RegisterSpotifyPage";
 import { NavigationRoutes } from "./models/NavigationRoutes";
 import { ToastContainer } from "react-toastify";
+import { MainPage } from "./pages/MainPage/mainPage";
 
 function App() {
   return (
@@ -29,8 +29,8 @@ function App() {
                 element={<RegisterSpotifyPage />}
               />
               <Route
-                path={NavigationRoutes.USER_ACTIONS_PAGE}
-                element={<UserDetails />}
+                path={NavigationRoutes.MAIN_PAGE + "/*"}
+                element={<MainPage />}
               />
             </Routes>
             <ToastContainer />

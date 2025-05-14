@@ -4,43 +4,44 @@ import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   margin: 32px 0;
+  width: 100%;
 `;
 
 const Title = styled(Typography)`
-  margin-bottom: 8px;
+  margin-bottom: 12px !important;
   font-weight: bold;
 `;
 
 const ScrollArea = styled.div`
-  position: relative;
-  margin: 0 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const ScrollContent = styled.div`
   display: flex;
-  overflow-x: auto;
+  overflow-x: hidden;
   scroll-behavior: smooth;
   gap: 8px;
-  padding: 0 8px;
 `;
 
 const ScrollButton = styled(IconButton)<{ side: "left" | "right" }>`
-  position: absolute;
-  top: 50%;
-  ${(props) => (props.side === "left" ? "left: -30px;" : "right: -30px;")}
-  transform: translateY(-50%);
-  z-index: 2;
+  ${(props) =>
+    props.side === "left"
+      ? "margin-right: 12px !important;"
+      : "margin-left: 12px !important;"}
 `;
 
+//todo: change purple to theme color
 const SelectableItem = styled.div<{ selected: boolean }>`
   padding: 8px 16px;
   border-radius: 16px;
   white-space: nowrap;
   background: ${(props) =>
-    props.selected
-      ? "linear-gradient(to right, #f200c2, #6c00ff)"
-      : "linear-gradient(to right, #f5f5f5, #ddd)"};
+    props.selected ? "purple" : "linear-gradient(to right, #f5f5f5, #ddd)"};
   color: ${(props) => (props.selected ? "white" : "#333")};
   font-weight: 500;
   cursor: pointer;

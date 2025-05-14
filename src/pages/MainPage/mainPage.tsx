@@ -23,7 +23,6 @@ const NavBar = styled(AppBar)`
   justify-content: center;
   align-items: center;
   box-shadow: none;
-  z-index: 2;
 `;
 
 const NavToggleGroup = styled.div`
@@ -58,7 +57,6 @@ const ContentContainer = styled(Container).attrs(() => ({
   padding-top: ${NAVBAR_HEIGHT}px;
   height: 100vh;
   overflow-y: auto;
-  position: relative;
   z-index: 1;
 `;
 

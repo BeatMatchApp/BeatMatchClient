@@ -8,6 +8,7 @@ import {
   SelectableItem,
   Title,
 } from "./styled";
+import { ArrowDirections } from "./scrollableSelector.model";
 
 export const ScrollableSelector = ({
   title,
@@ -22,9 +23,9 @@ export const ScrollableSelector = ({
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
-  const scroll = (dir: "left" | "right") => {
+  const scroll = (direction: ArrowDirections) => {
     ref.current?.scrollBy({
-      left: dir === "left" ? -150 : 150,
+      left: direction === ArrowDirections.LEFT ? -150 : 150,
       behavior: "smooth",
     });
   };
@@ -33,7 +34,9 @@ export const ScrollableSelector = ({
     <Wrapper>
       <Title variant="h6">{title}</Title>
       <ScrollArea>
-        <ScrollButton onClick={() => scroll("left")} side="left">
+        <ScrollButton
+          onClick={() => scroll(ArrowDirections.LEFT)}
+          side={ArrowDirections.LEFT}>
           <ChevronLeft />
         </ScrollButton>
 
@@ -48,7 +51,9 @@ export const ScrollableSelector = ({
           ))}
         </ScrollContent>
 
-        <ScrollButton onClick={() => scroll("right")} side="right">
+        <ScrollButton
+          onClick={() => scroll(ArrowDirections.RIGHT)}
+          side={ArrowDirections.RIGHT}>
           <ChevronRight />
         </ScrollButton>
       </ScrollArea>

@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { ScrollableSelector } from "../scrollableSelector/scrollableSelector";
 import {
   Wrapper,
@@ -21,14 +21,23 @@ export const CreatePlaylist = () => {
     return isValid;
   };
 
-  const handlePlaylistNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+  const handlePlaylistNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
     setPlaylistName(value);
     setError(
       validatePlaylistName(value)
         ? null
         : "Enter a valid playlist name (1–100 chars)."
     );
+  };
+
+  const handleContinue = () => {
+    if (validatePlaylistName(playlistName)) {
+      // todo: Handle the continue action here
+      console.log("Continue with:", { playlistName, event, mood });
+    } else {
+      setError("Enter a valid playlist name (1–100 chars).");
+    }
   };
 
   return (
@@ -68,7 +77,8 @@ export const CreatePlaylist = () => {
           variant="contained"
           size="large"
           fullWidth
-          disabled={!!error || playlistName.trim() === ""}>
+          disabled={!!error || playlistName.trim() === ""}
+          onClick={handleContinue}>
           Continue
         </ContinueButton>
       </ContentContainer>

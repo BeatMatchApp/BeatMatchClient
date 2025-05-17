@@ -10,6 +10,7 @@ import TopGenres from '../../components/topGenres/topGenres';
 import { StyledFormBox } from '../../components/styledComponents';
 import './ProfileForm.css';
 import TopSong from '../../components/topSong/topSong';
+import { FormSteps } from '../../models/enums/FormSteps';
 
 const ProfileForm: React.FC = () => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const ProfileForm: React.FC = () => {
   const [selectedSong, setSelectedSong] = useState<string>('');
 
   const isFinishedForm = useMemo(() => {
-    return activeStep === stepComponents.length - 1;
+    return activeStep === Object.keys(FormSteps).length - 1;
   }, [activeStep]);
 
   const updateArtists = (artists: string[]): void => {
@@ -59,7 +60,7 @@ const ProfileForm: React.FC = () => {
   const handleNext = (): void => {
     if (isFinishedForm) {
       navigate(NavigationRoutes.USER_ACTIONS_PAGE);
-    } else if (activeStep < stepComponents.length - 1) {
+    } else if (activeStep < Object.keys(FormSteps).length - 1) {
       setActiveStep((prev: number) => prev + 1);
     }
   };
@@ -72,19 +73,19 @@ const ProfileForm: React.FC = () => {
 
   const stepComponents = [
     {
-      stepName: 'User Details',
+      stepName: FormSteps.USER_DETAILS,
       component: <RegisterPage handleNextStep={handleNext} />,
     },
     {
-      stepName: 'Artists',
+      stepName: FormSteps.ARTISTS,
       component: <TopArtists handleNextStep={updateArtists} />,
     },
     {
-      stepName: 'Genres',
+      stepName: FormSteps.GENRES,
       component: <TopGenres handleNextStep={updateGenres} />,
     },
     {
-      stepName: 'Song',
+      stepName: FormSteps.SONG,
       component: <TopSong handleNextStep={updateSong} />,
     },
   ];

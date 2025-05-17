@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Chip, TextField, Typography, Button } from "@mui/material";
-import "./PreferencesPicker.css";
-import { primaryColor } from "../../styles/consts";
+import React, { useEffect, useMemo, useState } from 'react';
+import { Chip, TextField, Typography, Button } from '@mui/material';
+import { primaryColor } from '../../styles/consts';
+import { useDebounce } from 'use-debounce';
+import './PreferencesPicker.css';
 
 interface Props {
   preferencesName: string;
@@ -20,19 +21,17 @@ const PreferencesPicker: React.FC<Props> = ({
   onMaxSelected,
   onSearch,
 }) => {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
 
   const isMaxSelected = useMemo(
     () => selectedPreferences.length === 3,
     [selectedPreferences]
   );
 
+  const [debouncedValue] = useDebounce(inputValue, 300);
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      onSearch(inputValue);
-    }, 200);
-    return () => clearTimeout(timeout);
-  }, [inputValue, onSearch]);
+    if (debouncedValue) onSearch(debouncedValue);
+  }, [debouncedValue]);
 
   const handleToggleSelect = (selectedItem: string): void => {
     if (selectedPreferences.includes(selectedItem)) {
@@ -57,7 +56,7 @@ const PreferencesPicker: React.FC<Props> = ({
           onChange={(e) => setInputValue(e.target.value)}
           fullWidth
           className="search"
-          sx={{ marginBottom: "16px" }}
+          sx={{ marginBottom: '16px' }}
         />
         <div className="items-list">
           {options.map((option) => {
@@ -67,8 +66,8 @@ const PreferencesPicker: React.FC<Props> = ({
                 key={option}
                 label={option}
                 onClick={() => handleToggleSelect(option)}
-                color={isSelected ? "primary" : "default"}
-                variant={isSelected ? "filled" : "outlined"}
+                color={isSelected ? 'primary' : 'default'}
+                variant={isSelected ? 'filled' : 'outlined'}
                 className="chip"
               />
             );
@@ -78,7 +77,7 @@ const PreferencesPicker: React.FC<Props> = ({
       <div className="bottom-form">
         <div className="selected-preview">
           {selectedPreferences.length > 0 ? (
-            <span>{selectedPreferences.join(", ")}</span>
+            <span>{selectedPreferences.join(', ')}</span>
           ) : (
             <span className="selected-placeholder">
               No {preferencesName} selected

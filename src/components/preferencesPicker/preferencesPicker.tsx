@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Chip, TextField, Typography, Button } from "@mui/material";
 import "./PreferencesPicker.css";
+import { primaryColor } from "../../styles/consts";
 
 interface Props {
   preferencesName: string;
@@ -29,55 +30,59 @@ const PreferencesPicker: React.FC<Props> = ({
   useEffect(() => {
     const timeout = setTimeout(() => {
       onSearch(inputValue);
-    }, 300);
+    }, 200);
     return () => clearTimeout(timeout);
   }, [inputValue, onSearch]);
 
-  const handleToggleSelect = (item: string) => {
-    if (selectedPreferences.includes(item)) {
-      onChange(selectedPreferences.filter((i) => i !== item));
+  const handleToggleSelect = (selectedItem: string): void => {
+    if (selectedPreferences.includes(selectedItem)) {
+      onChange(
+        selectedPreferences.filter((item: string) => item !== selectedItem)
+      );
     } else if (selectedPreferences.length < 3) {
-      onChange([...selectedPreferences, item]);
+      onChange([...selectedPreferences, selectedItem]);
     }
   };
 
   return (
-    <div className="picker-container">
-      <Typography variant="h6" gutterBottom>
-        Pick Your Top {preferencesName}
-      </Typography>
-
-      <TextField
-        label={`Search ${preferencesName}...`}
-        variant="outlined"
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        fullWidth
-        sx={{ marginBottom: "16px" }}
-      />
-
-      <div className="chip-list">
-        {options.map((option) => {
-          const isSelected = selectedPreferences.includes(option);
-          return (
-            <Chip
-              key={option}
-              label={option}
-              onClick={() => handleToggleSelect(option)}
-              color={isSelected ? "primary" : "default"}
-              variant={isSelected ? "filled" : "outlined"}
-              className="chip"
-            />
-          );
-        })}
+    <>
+      <div className="picker-container">
+        <Typography color={primaryColor} variant="h6" gutterBottom>
+          Pick Your Favorite {preferencesName}!
+        </Typography>
+        <TextField
+          label={`Search ${preferencesName}...`}
+          variant="outlined"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          fullWidth
+          className="search"
+          sx={{ marginBottom: "16px" }}
+        />
+        <div className="items-list">
+          {options.map((option) => {
+            const isSelected = selectedPreferences.includes(option);
+            return (
+              <Chip
+                key={option}
+                label={option}
+                onClick={() => handleToggleSelect(option)}
+                color={isSelected ? "primary" : "default"}
+                variant={isSelected ? "filled" : "outlined"}
+                className="chip"
+              />
+            );
+          })}
+        </div>
       </div>
-
-      <div className="bottom-controls">
+      <div className="bottom-form">
         <div className="selected-preview">
           {selectedPreferences.length > 0 ? (
             <span>{selectedPreferences.join(", ")}</span>
           ) : (
-            <span className="placeholder">No artists selected</span>
+            <span className="selected-placeholder">
+              No {preferencesName} selected
+            </span>
           )}
         </div>
         <Button
@@ -86,10 +91,10 @@ const PreferencesPicker: React.FC<Props> = ({
           onClick={onMaxSelected}
           className="next-button"
         >
-          I'm good
+          keep going!
         </Button>
       </div>
-    </div>
+    </>
   );
 };
 

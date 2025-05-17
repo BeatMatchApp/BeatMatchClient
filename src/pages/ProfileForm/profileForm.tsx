@@ -1,21 +1,15 @@
-import React, { ChangeEvent, useMemo, useState } from "react";
-import {
-  Stepper,
-  Step,
-  StepLabel,
-  Button,
-  Box,
-  TextField,
-} from "@mui/material";
-import TopArtists from "../../components/topArtists/topArtists";
-import { updatePreferences } from "../../services/userPreferencesService";
-import { toast } from "react-toastify";
-import RegisterPage from "../RegisterPage/registerPage";
-import { useNavigate } from "react-router-dom";
-import { NavigationRoutes } from "../../models/NavigationRoutes";
-import TopGenres from "../../components/topGenres/topGenres";
-
-const steps = ["User Details", "Artists", "Genres", "Favorite Song"];
+import React, { useMemo, useState } from 'react';
+import { Stepper, Step, StepLabel, Button, Box } from '@mui/material';
+import TopArtists from '../../components/topArtists/topArtists';
+import { updatePreferences } from '../../services/userPreferencesService';
+import { toast } from 'react-toastify';
+import RegisterPage from '../RegisterPage/registerPage';
+import { useNavigate } from 'react-router-dom';
+import { NavigationRoutes } from '../../models/NavigationRoutes';
+import TopGenres from '../../components/topGenres/topGenres';
+import { StyledFormBox } from '../../components/styledComponents';
+import './ProfileForm.css';
+import TopSong from '../../components/topSong/topSong';
 
 const ProfileForm: React.FC = () => {
   const navigate = useNavigate();
@@ -24,10 +18,10 @@ const ProfileForm: React.FC = () => {
 
   const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-  const [selectedSong, setSelectedSong] = useState<string>("");
+  const [selectedSong, setSelectedSong] = useState<string>('');
 
   const isFinishedForm = useMemo(() => {
-    return activeStep === steps.length - 1;
+    return activeStep === stepComponents.length - 1;
   }, [activeStep]);
 
   const updateArtists = (artists: string[]): void => {
@@ -42,10 +36,8 @@ const ProfileForm: React.FC = () => {
     handleNext();
   };
 
-  const updateSong = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ): void => {
-    setSelectedSong(e.target.value);
+  const updateSong = (song: string): void => {
+    setSelectedSong(song);
   };
 
   const savePreferences = async (): Promise<void> => {
@@ -53,90 +45,77 @@ const ProfileForm: React.FC = () => {
       await updatePreferences({
         artists: selectedArtists,
         genres: selectedGenres,
-        vibe: "calm",
         song: selectedSong,
       });
 
+      toast.success('your preferences are saved. enjoy your Beat match ;)');
+
       navigate(NavigationRoutes.USER_ACTIONS_PAGE);
     } catch (err) {
-      console.log(err);
-      toast.error("preferences failed to be saved :( fill them in later on!");
+      toast.error('preferences failed to be saved :( fill them in later on!');
     }
   };
 
-  const handleNext = () => {
+  const handleNext = (): void => {
     if (isFinishedForm) {
       navigate(NavigationRoutes.USER_ACTIONS_PAGE);
-    } else if (activeStep < steps.length - 1) {
-      setActiveStep((prev) => prev + 1);
+    } else if (activeStep < stepComponents.length - 1) {
+      setActiveStep((prev: number) => prev + 1);
     }
   };
 
-  const handleBack = () => {
+  const handleBack = (): void => {
     if (activeStep > 0) {
-      setActiveStep((prev) => prev - 1);
+      setActiveStep((prev: number) => prev - 1);
     }
   };
 
   const stepComponents = [
     {
-      stepName: "User Details",
+      stepName: 'User Details',
       component: <RegisterPage handleNextStep={handleNext} />,
     },
     {
-      stepName: "Artists",
+      stepName: 'Artists',
       component: <TopArtists handleNextStep={updateArtists} />,
     },
     {
-      stepName: "Genres",
+      stepName: 'Genres',
       component: <TopGenres handleNextStep={updateGenres} />,
     },
     {
-      stepName: "Favorite Song",
-      component: (
-        <TextField
-          id="song"
-          value={selectedSong}
-          onChange={updateSong}
-          fullWidth
-        />
-      ),
+      stepName: 'Song',
+      component: <TopSong handleNextStep={updateSong} />,
     },
   ];
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        maxWidth: 600,
-        mx: "auto",
-        mt: 4,
-        p: 3,
-        boxShadow: 3,
-        borderRadius: 2,
-      }}
-    >
-      <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: 4 }}>
-        {stepComponents.map((step, index) => (
-          <Step key={index}>
-            <StepLabel>{step.stepName}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
+    <div className="form-container">
+      <StyledFormBox>
+        <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: 4 }}>
+          {stepComponents.map((step, index) => (
+            <Step key={index}>
+              <StepLabel>{step.stepName}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
 
-      {stepComponents[activeStep].component}
+        {stepComponents[activeStep].component}
 
-      <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
-        <Button disabled={activeStep === 0} onClick={handleBack}>
-          Back
-        </Button>
-        {isFinishedForm && (
-          <Button variant="contained" onClick={savePreferences}>
-            Save my choices!
-          </Button>
-        )}
-      </Box>
-    </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          {activeStep > 1 && (
+            <Button disabled={activeStep === 0} onClick={handleBack}>
+              Back
+            </Button>
+          )}
+          {isFinishedForm && (
+            <Button variant="contained" onClick={savePreferences}>
+              Save my choices!
+            </Button>
+          )}
+        </Box>
+      </StyledFormBox>
+    </div>
   );
 };
 

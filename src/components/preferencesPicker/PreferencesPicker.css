@@ -1,11 +1,8 @@
-.picker-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: 100%;
+.search {
+  margin-bottom: 16px;
 }
 
-.chip-list {
+.items-list {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -15,11 +12,11 @@
   cursor: pointer;
 }
 
-.bottom-controls {
+.bottom-form {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 24px;
+  margin-top: 30px;
 }
 
 .selected-preview {
@@ -31,7 +28,7 @@
   text-overflow: ellipsis;
 }
 
-.placeholder {
+.selected-placeholder {
   color: #aaa;
   font-style: italic;
 }

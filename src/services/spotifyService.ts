@@ -1,6 +1,6 @@
-import { envConfig } from "../config/config";
-import { UserSpotifyProfile } from "../models/UserSpotifyProfile";
-import { spotifyService } from "./httpCommon";
+import { envConfig } from '../config/config';
+import { UserSpotifyProfile } from '../models/UserSpotifyProfile';
+import { spotifyService } from './httpCommon';
 
 export const redirectToSpotify = () => {
   window.location.href = `${import.meta.env.VITE_SPOTIFY_SERVICE_URL}/login`;
@@ -59,6 +59,17 @@ export const getGenres = async (genreName: string) => {
     `${envConfig.SPOTIFY_SERVICE_URL}/general/getGenres`,
     {
       query: genreName,
+    }
+  );
+
+  return response.data;
+};
+
+export const getSongs = async (songName: string) => {
+  const response = await spotifyService.post(
+    `${envConfig.SPOTIFY_SERVICE_URL}/general/getSongs`,
+    {
+      query: songName,
     }
   );
 

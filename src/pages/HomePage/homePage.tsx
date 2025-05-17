@@ -18,8 +18,9 @@ function HomePage() {
           `${envConfig.BACKEND_SERVICE_URL}/login`
         );
 
-        navigate(NavigationRoutes.USER_ACTIONS_PAGE);
-        return response?.data?.user;
+        if (response?.data?.user) {
+          navigate(NavigationRoutes.USER_ACTIONS_PAGE);
+        }
       } catch (error) {
         if (error instanceof AxiosError) {
           console.error("Error logging in:", error.message);
@@ -44,8 +45,7 @@ function HomePage() {
         <StyledMenuButton onClick={() => navigate(NavigationRoutes.LOGIN)}>
           Login
         </StyledMenuButton>
-        <StyledMenuButton
-          onClick={() => navigate(NavigationRoutes.REGISTER_SPOTIFY)}>
+        <StyledMenuButton onClick={() => navigate(NavigationRoutes.REGISTER)}>
           Register
         </StyledMenuButton>
       </Box>

@@ -7,7 +7,7 @@ export interface PlaylistSuggestionParams {
 
 export const getAiPlaylistSuggestionAnswer = async (params: PlaylistSuggestionParams) => {
     const response = await serverService.get(
-        `${envConfig.BACKEND_SERVICE_URL}/api/playlist/suggestion`,
+        `${envConfig.BACKEND_SERVICE_URL}/playlist/suggestion`,
         {
             params: { ...params },
         }

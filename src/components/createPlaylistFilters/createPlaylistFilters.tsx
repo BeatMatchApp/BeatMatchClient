@@ -1,17 +1,14 @@
-import { Typography } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import { ScrollableSelector } from "../scrollableSelector/scrollableSelector";
-import {
-  Wrapper,
-  ContentContainer,
-  FieldWrapper,
-  StyledTextField,
-  ContinueButton,
-  Title,
-} from "./styled";
 import { getEvents, getMoods } from "../../services/metsService";
+import { StyledContentContainer, StyledPageTitle } from "../styledComponents";
 
-export const CreatePlaylist = () => {
+interface CreatePlaylistFiltersProps {
+  onValidChange: (isValid: boolean) => void;
+}
+
+export const CreatePlaylistFilters: React.FC<CreatePlaylistFiltersProps> = ({ onValidChange }) =>  {
   const [playlistName, setPlaylistName] = useState("");
   const [event, setEvent] = useState<string | null>(null);
   const [mood, setMood] = useState<string | null>(null);
@@ -42,6 +39,10 @@ export const CreatePlaylist = () => {
     fetchMoods();
   }, []);
 
+  useEffect(() => {
+    onValidChange(validatePlaylistName(playlistName) && !error);
+  }, [playlistName, error, onValidChange]);
+
   fetchEvents();
 
   const validatePlaylistName = (name: string): boolean => {
@@ -59,25 +60,16 @@ export const CreatePlaylist = () => {
     );
   };
 
-  const handleContinue = () => {
-    if (validatePlaylistName(playlistName)) {
-      // todo: Handle the continue action here
-      console.log("Continue with:", { playlistName, event, mood });
-    } else {
-      setError("Enter a valid playlist name (1–100 chars).");
-    }
-  };
-
   return (
-    <Wrapper>
-      <Title>Lets get started!</Title>
+    <Box className="center" sx={{width: '60%', margin: 'auto'}}>
+      <StyledPageTitle>Lets get started!</StyledPageTitle>
 
-      <ContentContainer>
-        <FieldWrapper>
+      <StyledContentContainer>
+        {/* <FieldWrapper> */}
           <Typography variant="h6" gutterBottom>
             Playlist name
           </Typography>
-          <StyledTextField
+          <TextField
             value={playlistName}
             onChange={handlePlaylistNameChange}
             placeholder="Enter playlist name"
@@ -85,7 +77,7 @@ export const CreatePlaylist = () => {
             helperText={error}
             fullWidth
           />
-        </FieldWrapper>
+        {/* </FieldWrapper> */}
 
         <ScrollableSelector
           title="Special event?"
@@ -100,16 +92,7 @@ export const CreatePlaylist = () => {
           selected={mood}
           onSelect={setMood}
         />
-
-        <ContinueButton
-          variant="contained"
-          size="large"
-          fullWidth
-          disabled={!!error || playlistName.trim() === ""}
-          onClick={handleContinue}>
-          Continue
-        </ContinueButton>
-      </ContentContainer>
-    </Wrapper>
+      </StyledContentContainer>
+    </Box>
   );
 };

@@ -32,3 +32,14 @@ export const StyledPageSubtitle = styled((props: TypographyProps) => (
   color: '#5a36a1',
   textAlign: 'center',
 });
+
+export const StyledContentContainer = styled(Box)({
+  display: 'flex', 
+  flexDirection: 'column',
+  justifyContent: 'space-around',
+  textAlign: 'center',
+  width: '100%',
+  maxwidth: '450px',
+  padding: '1.5vh',
+  boxSizing: 'border-box',
+});

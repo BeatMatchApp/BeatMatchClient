@@ -1,6 +1,5 @@
 import { Typography } from "@mui/material";
 import { useNavigate, useLocation, Routes, Route } from "react-router-dom";
-import { CreatePlaylist } from "../../components/createPlaylist/createPlaylist";
 import {
   MainWrapper,
   NavBar,
@@ -10,6 +9,7 @@ import {
 } from "./styled";
 import { MenuNavigationRoutes } from "./mainPage.model";
 import { NavigationRoutes } from "../../models/NavigationRoutes";
+import CreatePlaylistPage from "../createPlaylistPage/createPlaylistPage";
 
 // todo: replace with actual component
 function DisplayPlaylistsPage() {
@@ -55,8 +55,8 @@ export const MainPage = () => {
 
       <ContentContainer>
         <Routes>
-          <Route path="/" element={<CreatePlaylist />} />
-          <Route path="/create" element={<CreatePlaylist />} />
+          <Route path="/" element={<CreatePlaylistPage />} />
+          <Route path="/create" element={<CreatePlaylistPage />} />
           <Route path="/library" element={<DisplayPlaylistsPage />} />
         </Routes>
       </ContentContainer>

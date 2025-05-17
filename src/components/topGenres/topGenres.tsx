@@ -1,29 +1,31 @@
-import React, { useState } from "react";
-import PreferencesPicker from "../preferencesPicker/preferencesPicker";
-import { envConfig } from "../../config/config";
-import { spotifyService } from "../../services/httpCommon";
+import React, { useState } from 'react';
+import PreferencesPicker from '../preferencesPicker/preferencesPicker';
+import { getGenres } from '../../services/spotifyService';
+
+const DEFAULT_GENRES: string[] = [
+  'pop',
+  'rock',
+  'jazz',
+  'k-pop',
+  'alternative',
+];
 
 interface Props {
   handleNextStep: (selectedsGenres: string[]) => void;
 }
 
 const TopGenres: React.FC<Props> = ({ handleNextStep }) => {
-  const [genreOptions, setGenreOptions] = useState<string[]>([]);
+  const [genreOptions, setGenreOptions] = useState<string[]>(DEFAULT_GENRES);
 
-  const handleGenreSearch = async (query: string) => {
+  const handleGenreSearch = async (query: string): Promise<void> => {
     if (!query) return;
 
     try {
-      const response = await spotifyService.post(
-        `${envConfig.SPOTIFY_SERVICE_URL}/general/getArtists`,
-        {
-          query: query,
-        }
-      );
+      const genres: string[] = await getGenres(query);
 
-      setGenreOptions(response.data);
+      setGenreOptions(genres);
     } catch (error) {
-      console.error("Error fetching artists:", error);
+      console.error('Error fetching genres:', error);
     }
   };
 
@@ -38,16 +40,14 @@ const TopGenres: React.FC<Props> = ({ handleNextStep }) => {
   };
 
   return (
-    <>
-      <PreferencesPicker
-        preferencesName="Genres"
-        selectedPreferences={selectedGenres}
-        options={genreOptions}
-        onChange={updateGenresList}
-        onMaxSelected={onNextStep}
-        onSearch={handleGenreSearch}
-      />
-    </>
+    <PreferencesPicker
+      preferencesName="Genres"
+      selectedPreferences={selectedGenres}
+      options={genreOptions}
+      onChange={updateGenresList}
+      onMaxSelected={onNextStep}
+      onSearch={handleGenreSearch}
+    />
   );
 };
 

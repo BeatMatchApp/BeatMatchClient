@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import PreferencesPicker from "../preferencesPicker/preferencesPicker";
-import { envConfig } from "../../config/config";
-import { spotifyService } from "../../services/httpCommon";
+import React, { useState } from 'react';
+import PreferencesPicker from '../preferencesPicker/preferencesPicker';
+import { getArtists } from '../../services/spotifyService';
 
 interface Props {
   handleNextStep: (selectedArtists: string[]) => void;
@@ -10,20 +9,15 @@ interface Props {
 const TopArtists: React.FC<Props> = ({ handleNextStep }) => {
   const [artistOptions, setArtistOptions] = useState<string[]>([]);
 
-  const handleArtistSearch = async (query: string) => {
+  const handleArtistSearch = async (query: string): Promise<void> => {
     if (!query) return;
 
     try {
-      const response = await spotifyService.post(
-        `${envConfig.SPOTIFY_SERVICE_URL}/general/getArtists`,
-        {
-          query: query,
-        }
-      );
+      const artists: string[] = await getArtists(query);
 
-      setArtistOptions(response.data);
+      setArtistOptions(artists);
     } catch (error) {
-      console.error("Error fetching artists:", error);
+      console.error('Error fetching artists:', error);
     }
   };
 
@@ -38,16 +32,14 @@ const TopArtists: React.FC<Props> = ({ handleNextStep }) => {
   };
 
   return (
-    <>
-      <PreferencesPicker
-        preferencesName="Artists"
-        selectedPreferences={selectedArtists}
-        options={artistOptions}
-        onChange={updateAtristsList}
-        onMaxSelected={onNextStep}
-        onSearch={handleArtistSearch}
-      />
-    </>
+    <PreferencesPicker
+      preferencesName="Artists"
+      selectedPreferences={selectedArtists}
+      options={artistOptions}
+      onChange={updateAtristsList}
+      onMaxSelected={onNextStep}
+      onSearch={handleArtistSearch}
+    />
   );
 };
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PreferencesPicker from '../preferencesPicker/preferencesPicker';
 import { getGenres } from '../../services/spotifyService';
+import { FormSteps } from '../../models/enums/FormSteps';
 
 const DEFAULT_GENRES: string[] = [
   'pop',
@@ -16,6 +17,7 @@ interface Props {
 
 const TopGenres: React.FC<Props> = ({ handleNextStep }) => {
   const [genreOptions, setGenreOptions] = useState<string[]>(DEFAULT_GENRES);
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
 
   const handleGenreSearch = async (query: string): Promise<void> => {
     if (!query) return;
@@ -29,23 +31,17 @@ const TopGenres: React.FC<Props> = ({ handleNextStep }) => {
     }
   };
 
-  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-
   const updateGenresList = (genres: string[]): void => {
     setSelectedGenres(genres);
   };
 
-  const onNextStep = (): void => {
-    handleNextStep(selectedGenres);
-  };
-
   return (
     <PreferencesPicker
-      preferencesName="Genres"
+      preferencesName={FormSteps.GENRES}
       selectedPreferences={selectedGenres}
       options={genreOptions}
       onChange={updateGenresList}
-      onMaxSelected={onNextStep}
+      onMaxSelected={handleNextStep}
       onSearch={handleGenreSearch}
     />
   );

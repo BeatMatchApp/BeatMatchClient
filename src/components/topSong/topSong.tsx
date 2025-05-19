@@ -1,22 +1,19 @@
-import React, { useState, ChangeEvent, useEffect } from 'react';
-import { Autocomplete, TextField } from '@mui/material';
+import React, { useState, ChangeEvent, SyntheticEvent } from 'react';
+import { Autocomplete, TextField, Typography } from '@mui/material';
 import { getSongs } from '../../services/spotifyService';
+import { primaryColor } from '../../styles/consts';
 
 interface Props {
   handleNextStep: (selectedSong: string) => void;
 }
 
 const TopSong: React.FC<Props> = ({ handleNextStep }) => {
-  const [_inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<string[]>([]);
-  const [selectedSong, setSelectedSong] = useState<string | null>('');
 
   const handleInputChange = async (
     _event: ChangeEvent<{}>,
     value: string
   ): Promise<void> => {
-    setInputValue(value);
-
     if (!value) {
       setOptions([]);
       return;
@@ -30,28 +27,32 @@ const TopSong: React.FC<Props> = ({ handleNextStep }) => {
       console.error('Error fetching songs:', error);
     }
   };
-
-  useEffect(() => {
-    if (selectedSong) {
-      handleNextStep(selectedSong);
+  const onSelectionChange = (
+    _event: SyntheticEvent<Element, Event>,
+    value: string | null
+  ): void => {
+    if (value) {
+      handleNextStep(value);
     }
-  }, [selectedSong]);
+  };
 
   return (
-    <>
+    <div className="picker-container">
+      <Typography color={primaryColor} variant="h6" gutterBottom>
+        Pick Your Favorite Song!
+      </Typography>
       <Autocomplete
-        className="picker-container"
         fullWidth
         options={options}
         getOptionLabel={(option) => option}
         filterOptions={(x) => x} // disable mui additional filtering
         onInputChange={handleInputChange}
-        onChange={(_, newValue) => setSelectedSong(newValue)}
+        onChange={onSelectionChange}
         renderInput={(params) => (
           <TextField {...params} label="Search a Song" variant="outlined" />
         )}
       />
-    </>
+    </div>
   );
 };
 

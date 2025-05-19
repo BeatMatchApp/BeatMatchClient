@@ -42,33 +42,33 @@ export const addSongToPlaylist = async (
   return response.data;
 };
 
-export const getArtists = async (artistName: string) => {
+export const getArtists = async (artistQuery: string) => {
   const response = await spotifyService.post(
     `${envConfig.SPOTIFY_SERVICE_URL}/general/getArtists`,
     {
-      query: artistName,
+      query: artistQuery,
     }
   );
 
   return response.data;
 };
 
-export const getGenres = async (genreName: string) => {
+export const getGenres = async (genreQuery: string) => {
   const response = await spotifyService.post(
     `${envConfig.SPOTIFY_SERVICE_URL}/general/getGenres`,
     {
-      query: genreName,
+      query: genreQuery,
     }
   );
 
   return response.data;
 };
 
-export const getSongs = async (songName: string) => {
+export const getSongs = async (songQuery: string) => {
   const response = await spotifyService.post(
     `${envConfig.SPOTIFY_SERVICE_URL}/general/getSongs`,
     {
-      query: songName,
+      query: songQuery,
     }
   );
 

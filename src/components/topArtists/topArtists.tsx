@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PreferencesPicker from '../preferencesPicker/preferencesPicker';
 import { getArtists } from '../../services/spotifyService';
+import { FormSteps } from '../../models/enums/FormSteps';
 
 interface Props {
   handleNextStep: (selectedArtists: string[]) => void;
@@ -8,6 +9,7 @@ interface Props {
 
 const TopArtists: React.FC<Props> = ({ handleNextStep }) => {
   const [artistOptions, setArtistOptions] = useState<string[]>([]);
+  const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
 
   const handleArtistSearch = async (query: string): Promise<void> => {
     if (!query) return;
@@ -21,8 +23,6 @@ const TopArtists: React.FC<Props> = ({ handleNextStep }) => {
     }
   };
 
-  const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
-
   const updateAtristsList = (artists: string[]): void => {
     setSelectedArtists(artists);
   };
@@ -33,11 +33,11 @@ const TopArtists: React.FC<Props> = ({ handleNextStep }) => {
 
   return (
     <PreferencesPicker
-      preferencesName="Artists"
+      preferencesName={FormSteps.ARTISTS}
       selectedPreferences={selectedArtists}
       options={artistOptions}
       onChange={updateAtristsList}
-      onMaxSelected={onNextStep}
+      onMaxSelected={handleNextStep}
       onSearch={handleArtistSearch}
     />
   );

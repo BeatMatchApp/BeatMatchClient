@@ -4,12 +4,14 @@ import { primaryColor } from '../../styles/consts';
 import { useDebounce } from 'use-debounce';
 import './PreferencesPicker.css';
 
+const MAX_PREFERENCES_AMOUNT = 3;
+
 interface Props {
   preferencesName: string;
   selectedPreferences: string[];
   options: string[];
   onChange: (newPreferences: string[]) => void;
-  onMaxSelected: () => void;
+  onMaxSelected: (selectedPreferences: string[]) => void;
   onSearch: (query: string) => void;
 }
 
@@ -24,7 +26,7 @@ const PreferencesPicker: React.FC<Props> = ({
   const [inputValue, setInputValue] = useState('');
 
   const isMaxSelected = useMemo(
-    () => selectedPreferences.length === 3,
+    () => selectedPreferences.length === MAX_PREFERENCES_AMOUNT,
     [selectedPreferences]
   );
 
@@ -38,9 +40,13 @@ const PreferencesPicker: React.FC<Props> = ({
       onChange(
         selectedPreferences.filter((item: string) => item !== selectedItem)
       );
-    } else if (selectedPreferences.length < 3) {
+    } else if (!isMaxSelected) {
       onChange([...selectedPreferences, selectedItem]);
     }
+  };
+
+  const handleMaxSelection = (): void => {
+    onMaxSelected(selectedPreferences);
   };
 
   return (
@@ -61,6 +67,7 @@ const PreferencesPicker: React.FC<Props> = ({
         <div className="items-list">
           {options.map((option) => {
             const isSelected = selectedPreferences.includes(option);
+
             return (
               <Chip
                 key={option}
@@ -87,7 +94,7 @@ const PreferencesPicker: React.FC<Props> = ({
         <Button
           variant="contained"
           disabled={!isMaxSelected}
-          onClick={onMaxSelected}
+          onClick={handleMaxSelection}
           className="next-button"
         >
           keep going!

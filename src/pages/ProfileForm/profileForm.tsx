@@ -31,8 +31,8 @@ const ProfileForm: React.FC = () => {
     handleNext();
   };
 
-  const updateGenres = (artists: string[]): void => {
-    setSelectedGenres(artists);
+  const updateGenres = (genres: string[]): void => {
+    setSelectedGenres(genres);
 
     handleNext();
   };
@@ -53,6 +53,7 @@ const ProfileForm: React.FC = () => {
 
       navigate(NavigationRoutes.USER_ACTIONS_PAGE);
     } catch (err) {
+      console.error('failed to save preferences. error:', err);
       toast.error('preferences failed to be saved :( fill them in later on!');
     }
   };
@@ -61,13 +62,13 @@ const ProfileForm: React.FC = () => {
     if (isFinishedForm) {
       navigate(NavigationRoutes.USER_ACTIONS_PAGE);
     } else if (activeStep < Object.keys(FormSteps).length - 1) {
-      setActiveStep((prev: number) => prev + 1);
+      setActiveStep((prev) => prev + 1);
     }
   };
 
-  const handleBack = (): void => {
+  const handlePrevious = (): void => {
     if (activeStep > 0) {
-      setActiveStep((prev: number) => prev - 1);
+      setActiveStep((prev) => prev - 1);
     }
   };
 
@@ -104,11 +105,7 @@ const ProfileForm: React.FC = () => {
         {stepComponents[activeStep].component}
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          {activeStep > 1 && (
-            <Button disabled={activeStep === 0} onClick={handleBack}>
-              Back
-            </Button>
-          )}
+          {activeStep > 1 && <Button onClick={handlePrevious}>Back</Button>}
           {isFinishedForm && (
             <Button variant="contained" onClick={savePreferences}>
               Save my choices!

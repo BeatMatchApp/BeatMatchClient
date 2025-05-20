@@ -11,6 +11,7 @@ import { StyledFormBox } from '../../components/styledComponents';
 import './ProfileForm.css';
 import TopSong from '../../components/topSong/topSong';
 import { FormSteps } from '../../models/enums/FormSteps';
+import { MAX_PREFERENCES_AMOUNT } from '../../shared/consts';
 
 const ProfileForm: React.FC = () => {
   const navigate = useNavigate();
@@ -24,6 +25,11 @@ const ProfileForm: React.FC = () => {
   const isFinishedForm = useMemo(() => {
     return activeStep === Object.keys(FormSteps).length - 1;
   }, [activeStep]);
+
+  const isPreferencesFilled: boolean =
+    Boolean(selectedSong) &&
+    selectedArtists.length === MAX_PREFERENCES_AMOUNT &&
+    selectedGenres.length === MAX_PREFERENCES_AMOUNT;
 
   const updateArtists = (artists: string[]): void => {
     setSelectedArtists(artists);
@@ -43,15 +49,17 @@ const ProfileForm: React.FC = () => {
 
   const savePreferences = async (): Promise<void> => {
     try {
-      await updatePreferences({
-        artists: selectedArtists,
-        genres: selectedGenres,
-        song: selectedSong,
-      });
+      if (isPreferencesFilled) {
+        await updatePreferences({
+          artists: selectedArtists,
+          genres: selectedGenres,
+          song: selectedSong,
+        });
 
-      toast.success('your preferences are saved. enjoy your Beat match ;)');
+        toast.success('your preferences are saved. enjoy your Beat match ;)');
 
-      navigate(NavigationRoutes.USER_ACTIONS_PAGE);
+        navigate(NavigationRoutes.USER_ACTIONS_PAGE);
+      }
     } catch (err) {
       console.error('failed to save preferences. error:', err);
       toast.error('preferences failed to be saved :( fill them in later on!');
@@ -61,7 +69,7 @@ const ProfileForm: React.FC = () => {
   const handleNext = (): void => {
     if (isFinishedForm) {
       navigate(NavigationRoutes.USER_ACTIONS_PAGE);
-    } else if (activeStep < Object.keys(FormSteps).length - 1) {
+    } else {
       setActiveStep((prev) => prev + 1);
     }
   };
@@ -107,7 +115,11 @@ const ProfileForm: React.FC = () => {
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           {activeStep > 1 && <Button onClick={handlePrevious}>Back</Button>}
           {isFinishedForm && (
-            <Button variant="contained" onClick={savePreferences}>
+            <Button
+              disabled={!isPreferencesFilled}
+              variant="contained"
+              onClick={savePreferences}
+            >
               Save my choices!
             </Button>
           )}

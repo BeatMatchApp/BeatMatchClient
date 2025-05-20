@@ -3,8 +3,7 @@ import { Chip, TextField, Typography, Button } from '@mui/material';
 import { primaryColor } from '../../styles/consts';
 import { useDebounce } from 'use-debounce';
 import './PreferencesPicker.css';
-
-const MAX_PREFERENCES_AMOUNT = 3;
+import { MAX_PREFERENCES_AMOUNT } from '../../shared/consts';
 
 interface Props {
   preferencesName: string;

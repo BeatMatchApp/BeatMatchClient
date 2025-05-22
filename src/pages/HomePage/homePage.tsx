@@ -1,12 +1,12 @@
-import { Box } from "@mui/material";
-import "../../App.css";
-import { StyledMenuButton } from "../../components/styledComponents";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { serverService } from "../../services/httpCommon";
-import { envConfig } from "../../config/config";
-import { AxiosError } from "axios";
-import { NavigationRoutes } from "../../models/NavigationRoutes";
+import { Box } from '@mui/material';
+import '../../App.css';
+import { StyledMenuButton } from '../../components/styledComponents';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { serverService } from '../../services/httpCommon';
+import { envConfig } from '../../config/config';
+import { AxiosError } from 'axios';
+import { NavigationRoutes } from '../../models/NavigationRoutes';
 
 function HomePage() {
   const navigate = useNavigate();
@@ -19,13 +19,13 @@ function HomePage() {
         );
 
         if (response?.data?.user) {
-          navigate(NavigationRoutes.USER_ACTIONS_PAGE);
+          navigate(NavigationRoutes.EDIT_PROFILE);
         }
       } catch (error) {
         if (error instanceof AxiosError) {
-          console.error("Error logging in:", error.message);
+          console.error('Error logging in:', error.message);
         } else {
-          console.error("Error logging in:", error);
+          console.error('Error logging in:', error);
         }
       }
     };

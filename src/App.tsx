@@ -1,17 +1,18 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage/homePage";
-import LoginPage from "./pages/LoginPage/loginPage";
-import UserDetails from "./components/userDetails/userDetails";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { Provider } from "react-redux";
-import { store } from "./redux/store";
-import RegisterSpotifyPage from "./pages/RegisterSpotifyPage/RegisterSpotifyPage";
-import { NavigationRoutes } from "./models/NavigationRoutes";
-import { ToastContainer } from "react-toastify";
-import ProfileForm from "./pages/ProfileForm/profileForm";
-import { ThemeProvider } from "@mui/material";
-import theme from "./styles/consts";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage/homePage';
+import LoginPage from './pages/LoginPage/loginPage';
+import UserDetails from './components/userDetails/userDetails';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
+import RegisterSpotifyPage from './pages/RegisterSpotifyPage/RegisterSpotifyPage';
+import { NavigationRoutes } from './models/NavigationRoutes';
+import { ToastContainer } from 'react-toastify';
+import ProfileForm from './pages/ProfileForm/profileForm';
+import { ThemeProvider } from '@mui/material';
+import theme from './styles/consts';
+import EditProfileForm from './pages/EditProfile/editProfile';
 
 function App() {
   return (
@@ -34,6 +35,10 @@ function App() {
                 <Route
                   path={NavigationRoutes.PROFILE_FORM}
                   element={<ProfileForm />}
+                />
+                <Route
+                  path={NavigationRoutes.EDIT_PROFILE}
+                  element={<EditProfileForm />}
                 />
               </Routes>
               <ToastContainer />

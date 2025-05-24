@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { Box, Step, StepLabel, Stepper, Typography } from '@mui/material';
+import { Box, Step, StepLabel, Stepper } from '@mui/material';
 import { CreatePlaylistFilters } from '../../components/createPlaylistFilters/createPlaylistFilters';
 import { StyledMenuButton } from '../../components/styledComponents';
 import { CreatePlaylistResults } from '../../components/createPlaylistResults/createPlaylistResults';
+import { CreatePlaylistFinish } from '../../components/createPlaylistFinish/createPlaylistFinish';
 
-const steps = ['Lets get started!', 'Lets custom it!', 'Finish'];
+const steps = [
+  {stepText: 'Lets get started!', stepButtonText: 'Start Creating my playlist'},
+  {stepText: 'Lets custom it!', stepButtonText: 'my playlist is perfect!'},
+  {stepText: 'Finish', stepButtonText: 'Create another playlist?'},
+  ];
 
 const StepContent = ({
   step,
@@ -17,9 +22,9 @@ const StepContent = ({
     case 0:
       return <CreatePlaylistFilters onValidChange={onValidChange} />;
     case 1:
-      return <CreatePlaylistResults onValidChange={onValidChange}/>;
+      return <CreatePlaylistResults/>;
     case 2:
-      return <Typography>Final step! You're on the last page.</Typography>;
+      return <CreatePlaylistFinish url='myUrl'/>;
     default:
       return null;
   }
@@ -33,16 +38,17 @@ const CreatePlaylistPage: React.FC = () => {
     if (!isStepValid) return;
     if (activeStep < steps.length - 1) {
       setActiveStep((prev) => prev + 1);
-      setIsStepValid(false);
+    } else {
+      setActiveStep(0);
     }
   };
 
   return (
-    <Box sx={{ marginTop: '3vh'}}>
+    <Box sx={{ marginTop: '3vh', marginBottom: '3vh'}}>
       <Stepper activeStep={activeStep} alternativeLabel>
-        {steps.map((label) => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
+        {steps.map((step) => (
+          <Step key={step.stepText}>
+            <StepLabel>{step.stepText}</StepLabel>
           </Step>
         ))}
       </Stepper>
@@ -55,9 +61,9 @@ const CreatePlaylistPage: React.FC = () => {
         <StyledMenuButton
           variant="contained"
           onClick={handleNext}
-          disabled={activeStep === steps.length - 1 || !isStepValid}
+          disabled={!isStepValid}
         >
-          Next
+          {steps[activeStep].stepButtonText}
         </StyledMenuButton>
       </Box>
     </Box>

@@ -61,7 +61,7 @@ export const CreatePlaylistFilters: React.FC<CreatePlaylistFiltersProps> = ({ on
   };
 
   return (
-    <Box className="center" sx={{width: '60%', margin: 'auto'}}>
+    <Box className="center" sx={{width: '80%', margin: 'auto'}}>
       <StyledPageTitle>Lets get started!</StyledPageTitle>
 
       <StyledContentContainer>

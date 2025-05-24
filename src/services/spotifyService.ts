@@ -1,6 +1,6 @@
-import { envConfig } from "../config/config";
-import { UserSpotifyProfile } from "../models/UserSpotifyProfile";
-import { spotifyService } from "./httpCommon";
+import { envConfig } from '../config/config';
+import { UserSpotifyProfile } from '../models/UserSpotifyProfile';
+import { spotifyService } from './httpCommon';
 
 export const redirectToSpotify = () => {
   window.location.href = `${import.meta.env.VITE_SPOTIFY_SERVICE_URL}/login`;
@@ -36,6 +36,39 @@ export const addSongToPlaylist = async (
       playlistId,
       songName,
       artist,
+    }
+  );
+
+  return response.data;
+};
+
+export const getArtists = async (artistQuery: string) => {
+  const response = await spotifyService.post(
+    `${envConfig.SPOTIFY_SERVICE_URL}/general/getArtists`,
+    {
+      query: artistQuery,
+    }
+  );
+
+  return response.data;
+};
+
+export const getGenres = async (genreQuery: string) => {
+  const response = await spotifyService.post(
+    `${envConfig.SPOTIFY_SERVICE_URL}/general/getGenres`,
+    {
+      query: genreQuery,
+    }
+  );
+
+  return response.data;
+};
+
+export const getSongs = async (songQuery: string) => {
+  const response = await spotifyService.post(
+    `${envConfig.SPOTIFY_SERVICE_URL}/general/getSongs`,
+    {
+      query: songQuery,
     }
   );
 

@@ -1,0 +1,38 @@
+.search {
+  margin-bottom: 16px;
+}
+
+.items-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  cursor: pointer;
+}
+
+.bottom-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.selected-preview {
+  flex: 1;
+  font-size: 0.9rem;
+  color: #555;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.selected-placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+.next-button {
+  margin-left: auto;
+}

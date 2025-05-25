@@ -1,16 +1,13 @@
 import { Typography } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import { ScrollableSelector } from "../scrollableSelector/scrollableSelector";
-import {
-  Wrapper,
-  ContentContainer,
-  FieldWrapper,
-  StyledTextField,
-  ContinueButton,
-  Title,
-} from "./styled";
 import { getEvents, getMoods } from "../../services/metaService";
 import "./createPlaylist.css";
+import {
+  StyledMenuButton,
+  StyledPageTitle,
+  StyledTextField,
+} from "../styledComponents";
 
 export const CreatePlaylist = () => {
   const [playlistName, setPlaylistName] = useState("");
@@ -71,7 +68,7 @@ export const CreatePlaylist = () => {
 
   return (
     <div className="wrapper">
-      <Title>Lets get started!</Title>
+      <StyledPageTitle>Lets get started!</StyledPageTitle>
 
       <div className="content-container">
         <div className="field-wrapper">
@@ -102,14 +99,14 @@ export const CreatePlaylist = () => {
           onSelect={setMood}
         />
 
-        <ContinueButton
+        <StyledMenuButton
           variant="contained"
           size="large"
           fullWidth
           disabled={!!error || playlistName.trim() === ""}
           onClick={handleContinue}>
           Continue
-        </ContinueButton>
+        </StyledMenuButton>
       </div>
     </div>
   );

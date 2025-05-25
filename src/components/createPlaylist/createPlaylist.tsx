@@ -9,7 +9,8 @@ import {
   ContinueButton,
   Title,
 } from "./styled";
-import { getEvents, getMoods } from "../../services/metsService";
+import { getEvents, getMoods } from "../../services/metaService";
+import "./createPlaylist.css";
 
 export const CreatePlaylist = () => {
   const [playlistName, setPlaylistName] = useState("");
@@ -69,11 +70,11 @@ export const CreatePlaylist = () => {
   };
 
   return (
-    <Wrapper>
+    <div className="wrapper">
       <Title>Lets get started!</Title>
 
-      <ContentContainer>
-        <FieldWrapper>
+      <div className="content-container">
+        <div className="field-wrapper">
           <Typography variant="h6" gutterBottom>
             Playlist name
           </Typography>
@@ -85,7 +86,7 @@ export const CreatePlaylist = () => {
             helperText={error}
             fullWidth
           />
-        </FieldWrapper>
+        </div>
 
         <ScrollableSelector
           title="Special event?"
@@ -109,7 +110,7 @@ export const CreatePlaylist = () => {
           onClick={handleContinue}>
           Continue
         </ContinueButton>
-      </ContentContainer>
-    </Wrapper>
+      </div>
+    </div>
   );
 };

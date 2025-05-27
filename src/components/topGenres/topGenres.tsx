@@ -48,7 +48,7 @@ const TopGenres: React.FC<Props> = ({ handleNextStep, genres }) => {
       onChange={updateGenresList}
       onMaxSelected={handleNextStep}
       onSearch={handleGenreSearch}
-      editMode={!genres}
+      editMode={!!genres}
     />
   );
 };

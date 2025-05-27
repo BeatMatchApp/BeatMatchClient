@@ -96,7 +96,7 @@ const PreferencesPicker: React.FC<Props> = ({
         <div className="selected-preview">
           {selectedPreferences.length > 0 ? (
             selectedPreferences.map((item) => (
-              <div className="chip" key={item}>
+              <div className="selected-chip" key={item}>
                 <span className="chip-label">{item}</span>
                 <button
                   className="chip-remove"

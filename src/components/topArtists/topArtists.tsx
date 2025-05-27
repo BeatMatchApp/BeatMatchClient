@@ -10,9 +10,7 @@ interface Props {
 
 const TopArtists: React.FC<Props> = ({ handleNextStep, artists }) => {
   const [artistOptions, setArtistOptions] = useState<string[]>([]);
-  const [selectedArtists, setSelectedArtists] = useState<string[]>(
-    artists ?? []
-  );
+  const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
 
   useEffect(() => {
     setSelectedArtists(artists ?? []);

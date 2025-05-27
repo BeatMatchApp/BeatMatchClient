@@ -124,12 +124,12 @@ const EditProfileForm = () => {
           }}
         />
 
-        <TopGenres handleNextStep={setSelectedGenres} />
+        <TopGenres handleNextStep={setSelectedGenres} genres={selectedGenres} />
         <TopArtists
           handleNextStep={setSelectedArtists}
           artists={selectedArtists}
         />
-        <TopSong handleNextStep={setSelectedSong} />
+        <TopSong handleNextStep={setSelectedSong} song={selectedSong} />
 
         <Button variant="contained" onClick={handleSave}>
           Save Changes

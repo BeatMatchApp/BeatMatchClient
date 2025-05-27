@@ -12,13 +12,19 @@ const DEFAULT_GENRES: string[] = [
 ];
 
 interface Props {
-  handleNextStep: (selectedsGenres: string[]) => void;
+  selectedGenres: string[];
+  setSelectedGenres: (selectedsGenres: string[]) => void;
+  handleNextStep?: () => void;
   genres?: string[];
 }
 
-const TopGenres: React.FC<Props> = ({ handleNextStep, genres }) => {
+const TopGenres: React.FC<Props> = ({
+  selectedGenres,
+  setSelectedGenres,
+  genres,
+  handleNextStep = () => {},
+}) => {
   const [genreOptions, setGenreOptions] = useState<string[]>(DEFAULT_GENRES);
-  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
 
   useEffect(() => {
     setSelectedGenres(genres ?? []);

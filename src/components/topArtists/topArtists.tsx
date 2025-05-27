@@ -4,13 +4,19 @@ import { getArtists } from '../../services/spotifyService';
 import { FormSteps } from '../../models/enums/FormSteps';
 
 interface Props {
-  handleNextStep: (selectedArtists: string[]) => void;
+  selectedArtists: string[];
+  setSelectedArtists: (selectedArtists: string[]) => void;
+  handleNextStep?: (selectedArtists: string[]) => void;
   artists?: string[];
 }
 
-const TopArtists: React.FC<Props> = ({ handleNextStep, artists }) => {
+const TopArtists: React.FC<Props> = ({
+  artists,
+  selectedArtists,
+  setSelectedArtists,
+  handleNextStep = () => {},
+}) => {
   const [artistOptions, setArtistOptions] = useState<string[]>([]);
-  const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
 
   useEffect(() => {
     setSelectedArtists(artists ?? []);

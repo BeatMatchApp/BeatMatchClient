@@ -21,8 +21,7 @@ import {
   validateName,
 } from '../../shared/field-validations';
 import { DatePicker } from '@mui/x-date-pickers';
-import { UserPreferences } from '../../models/interfaces/UserPreferences';
-import { getUserDetails } from '../../services/userService';
+import { getUserDetails, updateUserDetails } from '../../services/userService';
 
 interface Errors {
   name: string;
@@ -42,7 +41,6 @@ const EditProfileForm = () => {
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
   const [selectedSong, setSelectedSong] = useState<string>('');
-  const [userPrefrences, setUserPrefrences] = useState<UserPreferences>();
 
   const [errors, setErrors] = useState<Errors>({
     name: '',
@@ -60,12 +58,11 @@ const EditProfileForm = () => {
 
     const fetchUserDetails = async () => {
       const userDetailsRes = await getUserDetails();
-      const birthDate = new Date(userDetailsRes.birthDate) ?? null;
 
       setUserDetails({
         name: userDetailsRes.name,
         email: userDetailsRes.email,
-        birthDate: birthDate,
+        birthDate: new Date(userDetailsRes.birthDate),
       });
     };
 
@@ -75,7 +72,8 @@ const EditProfileForm = () => {
 
   const handleSave = async () => {
     try {
-      //   await updateUserDetails(userDetails);
+      await updateUserDetails(userDetails);
+
       await updatePreferences({
         artists: selectedArtists,
         genres: selectedGenres,
@@ -141,9 +139,14 @@ const EditProfileForm = () => {
           slotProps={{ inputLabel: { shrink: !!userDetails.email } }}
         />
 
-        <TopGenres handleNextStep={setSelectedGenres} genres={selectedGenres} />
+        <TopGenres
+          setSelectedGenres={setSelectedGenres}
+          selectedGenres={selectedGenres}
+          genres={selectedGenres}
+        />
         <TopArtists
-          handleNextStep={setSelectedArtists}
+          selectedArtists={selectedArtists}
+          setSelectedArtists={setSelectedArtists}
           artists={selectedArtists}
         />
         <TopSong handleNextStep={setSelectedSong} song={selectedSong} />

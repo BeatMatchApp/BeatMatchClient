@@ -22,6 +22,7 @@ import {
 } from '../../shared/field-validations';
 import { DatePicker } from '@mui/x-date-pickers';
 import { UserPreferences } from '../../models/interfaces/UserPreferences';
+import { getUserDetails } from '../../services/userService';
 
 interface Errors {
   name: string;
@@ -57,6 +58,18 @@ const EditProfileForm = () => {
       setSelectedSong(userPrefrencesRes?.song || '');
     };
 
+    const fetchUserDetails = async () => {
+      const userDetailsRes = await getUserDetails();
+      const birthDate = new Date(userDetailsRes.birthDate) ?? null;
+
+      setUserDetails({
+        name: userDetailsRes.name,
+        email: userDetailsRes.email,
+        birthDate: birthDate,
+      });
+    };
+
+    fetchUserDetails();
     fetchUserPreferences();
   }, []);
 
@@ -85,6 +98,7 @@ const EditProfileForm = () => {
         <TextField
           id="name"
           label="Name"
+          value={userDetails.name}
           error={!!errors.name}
           helperText={errors.name}
           onChange={(e) => {
@@ -92,6 +106,7 @@ const EditProfileForm = () => {
             setUserDetails({ ...userDetails, name: e.target.value });
             validateName<Errors>(name, setErrors);
           }}
+          slotProps={{ inputLabel: { shrink: !!userDetails.name } }}
         />
 
         <DatePicker
@@ -115,6 +130,7 @@ const EditProfileForm = () => {
         <TextField
           id="email"
           label="Email"
+          value={userDetails.email}
           error={!!errors.email}
           helperText={errors.email}
           onChange={(e) => {
@@ -122,6 +138,7 @@ const EditProfileForm = () => {
             setUserDetails((prevState) => ({ ...prevState, email }));
             validateEmail<Errors>(email, setErrors);
           }}
+          slotProps={{ inputLabel: { shrink: !!userDetails.email } }}
         />
 
         <TopGenres handleNextStep={setSelectedGenres} genres={selectedGenres} />

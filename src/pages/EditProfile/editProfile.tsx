@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, TextField, Button, Typography } from '@mui/material';
 import TopGenres from '../../components/topGenres/topGenres';
 import TopArtists from '../../components/topArtists/topArtists';
 import TopSong from '../../components/topSong/topSong';
-import { updatePreferences } from '../../services/userPreferencesService';
+import {
+  getPreferences,
+  updatePreferences,
+} from '../../services/userPreferencesService';
 import { toast } from 'react-toastify';
 import { NavigationRoutes } from '../../models/NavigationRoutes';
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +21,7 @@ import {
   validateName,
 } from '../../shared/field-validations';
 import { DatePicker } from '@mui/x-date-pickers';
+import { UserPreferences } from '../../models/interfaces/UserPreferences';
 
 interface Errors {
   name: string;
@@ -37,12 +41,24 @@ const EditProfileForm = () => {
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
   const [selectedSong, setSelectedSong] = useState<string>('');
+  const [userPrefrences, setUserPrefrences] = useState<UserPreferences>();
 
   const [errors, setErrors] = useState<Errors>({
     name: '',
     email: '',
     birthDate: '',
   });
+
+  useEffect(() => {
+    const fetchUserPreferences = async () => {
+      const userPrefrencesRes = await getPreferences();
+      setSelectedGenres(userPrefrencesRes?.genres || []);
+      setSelectedArtists(userPrefrencesRes?.artists || []);
+      setSelectedSong(userPrefrencesRes?.song || '');
+    };
+
+    fetchUserPreferences();
+  }, []);
 
   const handleSave = async () => {
     try {
@@ -109,7 +125,10 @@ const EditProfileForm = () => {
         />
 
         <TopGenres handleNextStep={setSelectedGenres} />
-        <TopArtists handleNextStep={setSelectedArtists} />
+        <TopArtists
+          handleNextStep={setSelectedArtists}
+          artists={selectedArtists}
+        />
         <TopSong handleNextStep={setSelectedSong} />
 
         <Button variant="contained" onClick={handleSave}>

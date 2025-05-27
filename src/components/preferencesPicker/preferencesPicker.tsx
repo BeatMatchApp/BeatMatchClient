@@ -4,6 +4,7 @@ import { primaryColor } from '../../styles/consts';
 import { useDebounce } from 'use-debounce';
 import './PreferencesPicker.css';
 import { MAX_PREFERENCES_AMOUNT } from '../../shared/consts';
+import { toast } from 'react-toastify';
 
 interface Props {
   preferencesName: string;
@@ -12,6 +13,7 @@ interface Props {
   onChange: (newPreferences: string[]) => void;
   onMaxSelected: (selectedPreferences: string[]) => void;
   onSearch: (query: string) => void;
+  editMode?: boolean;
 }
 
 const PreferencesPicker: React.FC<Props> = ({
@@ -21,6 +23,7 @@ const PreferencesPicker: React.FC<Props> = ({
   onChange,
   onMaxSelected,
   onSearch,
+  editMode = false,
 }) => {
   const [inputValue, setInputValue] = useState('');
 
@@ -34,13 +37,22 @@ const PreferencesPicker: React.FC<Props> = ({
     if (debouncedValue) onSearch(debouncedValue);
   }, [debouncedValue]);
 
+  const handleRemove = (selectedItem: string): void => {
+    onChange(
+      selectedPreferences.filter((item: string) => item !== selectedItem)
+    );
+  };
+
   const handleToggleSelect = (selectedItem: string): void => {
     if (selectedPreferences.includes(selectedItem)) {
-      onChange(
-        selectedPreferences.filter((item: string) => item !== selectedItem)
-      );
+      handleRemove(selectedItem);
     } else if (!isMaxSelected) {
       onChange([...selectedPreferences, selectedItem]);
+    } else if (isMaxSelected) {
+      toast.info(
+        `You can only select ${MAX_PREFERENCES_AMOUNT} ${preferencesName}.
+          Please remove one before adding another.`
+      );
     }
   };
 
@@ -83,21 +95,33 @@ const PreferencesPicker: React.FC<Props> = ({
       <div className="bottom-form">
         <div className="selected-preview">
           {selectedPreferences.length > 0 ? (
-            <span>{selectedPreferences.join(', ')}</span>
+            selectedPreferences.map((item) => (
+              <div className="chip" key={item}>
+                <span className="chip-label">{item}</span>
+                <button
+                  className="chip-remove"
+                  onClick={() => handleRemove(item)}
+                >
+                  ×
+                </button>
+              </div>
+            ))
           ) : (
             <span className="selected-placeholder">
               No {preferencesName} selected
             </span>
           )}
         </div>
-        <Button
-          variant="contained"
-          disabled={!isMaxSelected}
-          onClick={handleMaxSelection}
-          className="next-button"
-        >
-          keep going!
-        </Button>
+        {!editMode && (
+          <Button
+            variant="contained"
+            disabled={!isMaxSelected}
+            onClick={handleMaxSelection}
+            className="next-button"
+          >
+            keep going!
+          </Button>
+        )}
       </div>
     </>
   );

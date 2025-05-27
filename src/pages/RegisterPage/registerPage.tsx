@@ -10,9 +10,22 @@ import { register } from '../../services/userService';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 import { NavigationRoutes } from '../../models/NavigationRoutes';
+import {
+  validateBirthDate,
+  validateEmail,
+  validateName,
+} from '../../shared/field-validations';
 
 interface Props {
   handleNextStep: () => void;
+}
+
+interface Errors {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  birthDate: string;
 }
 
 const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
@@ -26,39 +39,13 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
     birthDate: null as Date | null,
   });
 
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<Errors>({
     name: '',
     email: '',
     password: '',
     confirmPassword: '',
     birthDate: '',
   });
-
-  const validateName = (name: string) => {
-    if (!name) {
-      setErrors((prev) => ({ ...prev, name: 'Name is required' }));
-    } else {
-      setErrors((prev) => ({ ...prev, name: '' }));
-    }
-  };
-
-  const validateBirthDate = (birthDate: Date | null) => {
-    const today = new Date();
-
-    if (!birthDate) {
-      setErrors((prev) => ({
-        ...prev,
-        birthDate: 'Your birthday date is required',
-      }));
-    } else if (birthDate >= today) {
-      setErrors((prev) => ({
-        ...prev,
-        birthDate: 'Your birthday date cannot be in the future',
-      }));
-    } else {
-      setErrors((prev) => ({ ...prev, birthDate: '' }));
-    }
-  };
 
   const validatePassword = (confirmPassword: string) => {
     if (confirmPassword !== newUser.password) {
@@ -68,15 +55,6 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
       }));
     } else {
       setErrors((prev) => ({ ...prev, confirmPassword: '' }));
-    }
-  };
-
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-    if (!emailRegex.test(email)) {
-      setErrors((prev) => ({ ...prev, email: 'Invalid email format' }));
-    } else {
-      setErrors((prev) => ({ ...prev, email: '' }));
     }
   };
 
@@ -130,7 +108,7 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
           onChange={(e) => {
             const name = e.target.value;
             setNewUser((prevState) => ({ ...prevState, name }));
-            validateName(name);
+            validateName(name, setErrors);
           }}
         />
         <DatePicker
@@ -138,7 +116,7 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
           value={newUser.birthDate}
           onChange={(newDate) => {
             setNewUser((prevState) => ({ ...prevState, birthDate: newDate }));
-            validateBirthDate(newDate);
+            validateBirthDate<Errors>(newDate, setErrors);
           }}
           slotProps={{
             textField: {
@@ -155,7 +133,7 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
           onChange={(e) => {
             const email = e.target.value;
             setNewUser((prevState) => ({ ...prevState, email }));
-            validateEmail(email);
+            validateEmail<Errors>(email, setErrors);
           }}
         />
         <TextField

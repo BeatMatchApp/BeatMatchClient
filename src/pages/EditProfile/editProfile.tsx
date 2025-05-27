@@ -8,18 +8,41 @@ import { toast } from 'react-toastify';
 import { NavigationRoutes } from '../../models/NavigationRoutes';
 import { useNavigate } from 'react-router-dom';
 import './editProfile.css';
+import {
+  StyledFormBox,
+  StyledPageTitle,
+} from '../../components/styledComponents';
+import {
+  validateBirthDate,
+  validateEmail,
+  validateName,
+} from '../../shared/field-validations';
+import { DatePicker } from '@mui/x-date-pickers';
 
-const EditProfileForm: React.FC = () => {
+interface Errors {
+  name: string;
+  email: string;
+  birthDate: string;
+}
+
+const EditProfileForm = () => {
   const navigate = useNavigate();
 
   const [userDetails, setUserDetails] = useState({
     name: '',
     email: '',
+    birthDate: null as Date | null,
   });
 
   const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
   const [selectedSong, setSelectedSong] = useState<string>('');
+
+  const [errors, setErrors] = useState<Errors>({
+    name: '',
+    email: '',
+    birthDate: '',
+  });
 
   const handleSave = async () => {
     try {
@@ -39,24 +62,50 @@ const EditProfileForm: React.FC = () => {
   };
 
   return (
-    <div className="center">
-      <div className="form-container">
-        <Typography variant="h4">Edit Your Profile</Typography>
+    <div className="edit-profile-form-container">
+      <div className="content-container">
+        <StyledPageTitle>Edit Your Profile</StyledPageTitle>
 
         <TextField
+          id="name"
           label="Name"
-          value={userDetails.name}
-          onChange={(e) =>
-            setUserDetails({ ...userDetails, name: e.target.value })
-          }
+          error={!!errors.name}
+          helperText={errors.name}
+          onChange={(e) => {
+            const name = e.target.value;
+            setUserDetails({ ...userDetails, name: e.target.value });
+            validateName<Errors>(name, setErrors);
+          }}
+        />
+
+        <DatePicker
+          label="Date of birth"
+          value={userDetails.birthDate}
+          onChange={(newDate) => {
+            setUserDetails((prevState) => ({
+              ...prevState,
+              birthDate: newDate,
+            }));
+            validateBirthDate<Errors>(newDate, setErrors);
+          }}
+          slotProps={{
+            textField: {
+              error: !!errors.birthDate,
+              helperText: errors.birthDate,
+            },
+          }}
         />
 
         <TextField
+          id="email"
           label="Email"
-          value={userDetails.email}
-          onChange={(e) =>
-            setUserDetails({ ...userDetails, email: e.target.value })
-          }
+          error={!!errors.email}
+          helperText={errors.email}
+          onChange={(e) => {
+            const email = e.target.value;
+            setUserDetails((prevState) => ({ ...prevState, email }));
+            validateEmail<Errors>(email, setErrors);
+          }}
         />
 
         <TopGenres handleNextStep={setSelectedGenres} />

@@ -3,14 +3,6 @@ import styled from "styled-components";
 
 const NAVBAR_HEIGHT = 64;
 
-export const MainWrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
-  background: #f9f9f9;
-  overflow: hidden;
-  position: relative;
-`;
-
 export const NavBar = styled(AppBar)`
   background-color: white;
   height: ${NAVBAR_HEIGHT}px;
@@ -18,14 +10,6 @@ export const NavBar = styled(AppBar)`
   justify-content: center;
   align-items: center;
   box-shadow: none;
-`;
-
-export const NavToggleGroup = styled.div`
-  display: flex;
-  gap: 16px;
-  background-color: #f0f0f0;
-  border-radius: 30px;
-  padding: 4px;
 `;
 
 // todo: change purple to theme color
@@ -52,5 +36,5 @@ export const ContentContainer = styled(Container).attrs(() => ({
   padding-top: ${NAVBAR_HEIGHT}px;
   height: 100vh;
   overflow-y: auto;
-  z-index: 1;
+  display: fixed;
 `;

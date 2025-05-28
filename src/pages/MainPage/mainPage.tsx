@@ -8,8 +8,9 @@ import {
   NavToggleButton,
   ContentContainer,
 } from "./styled";
-import { MenuNavigationRoutes } from "./mainPage.model";
+import { MenuNavigationRoutes } from "../../models/MenuNavigationRoutes";
 import { NavigationRoutes } from "../../models/NavigationRoutes";
+import "./mainPage.css";
 
 // todo: replace with actual component
 function DisplayPlaylistsPage() {
@@ -36,9 +37,9 @@ export const MainPage = () => {
   };
 
   return (
-    <MainWrapper>
+    <div className="main-wrapper">
       <NavBar position="fixed">
-        <NavToggleGroup>
+        <div className="nav-toggle-group">
           <NavToggleButton
             selected={isCreate}
             onClick={() => handleToggle(MenuNavigationRoutes.CREATE)}>
@@ -50,16 +51,22 @@ export const MainPage = () => {
             onClick={() => handleToggle(MenuNavigationRoutes.LIBRARY)}>
             Library
           </NavToggleButton>
-        </NavToggleGroup>
+        </div>
       </NavBar>
 
       <ContentContainer>
         <Routes>
           <Route path="/" element={<CreatePlaylist />} />
-          <Route path="/create" element={<CreatePlaylist />} />
-          <Route path="/library" element={<DisplayPlaylistsPage />} />
+          <Route
+            path={MenuNavigationRoutes.CREATE}
+            element={<CreatePlaylist />}
+          />
+          <Route
+            path={MenuNavigationRoutes.LIBRARY}
+            element={<DisplayPlaylistsPage />}
+          />
         </Routes>
       </ContentContainer>
-    </MainWrapper>
+    </div>
   );
 };

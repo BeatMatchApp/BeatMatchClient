@@ -40,8 +40,6 @@ export const CreatePlaylist = () => {
     fetchMoods();
   }, []);
 
-  fetchEvents();
-
   const validatePlaylistName = (name: string): boolean => {
     const isValid = name.trim().length > 0 && name.length <= 100;
     return isValid;
@@ -49,6 +47,7 @@ export const CreatePlaylist = () => {
 
   const handlePlaylistNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
+
     setPlaylistName(value);
     setError(
       validatePlaylistName(value)
@@ -65,6 +64,8 @@ export const CreatePlaylist = () => {
       setError("Enter a valid playlist name (1–100 chars).");
     }
   };
+
+  const isContinueDisabled = !!error || playlistName.trim() === "";
 
   return (
     <div className="wrapper">
@@ -103,7 +104,7 @@ export const CreatePlaylist = () => {
           variant="contained"
           size="large"
           fullWidth
-          disabled={!!error || playlistName.trim() === ""}
+          disabled={isContinueDisabled}
           onClick={handleContinue}>
           Continue
         </StyledMenuButton>

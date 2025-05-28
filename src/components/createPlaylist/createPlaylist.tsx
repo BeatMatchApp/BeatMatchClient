@@ -1,16 +1,16 @@
-import { Typography } from "@mui/material";
-import { ChangeEvent, useEffect, useState } from "react";
-import { ScrollableSelector } from "../scrollableSelector/scrollableSelector";
-import { getEvents, getMoods } from "../../services/metaService";
-import "./createPlaylist.css";
+import { Typography } from '@mui/material';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { ScrollableSelector } from '../scrollableSelector/scrollableSelector';
+import { getEvents, getMoods } from '../../services/metaService';
+import './createPlaylist.css';
 import {
   StyledMenuButton,
   StyledPageTitle,
   StyledTextField,
-} from "../styledComponents";
+} from '../styledComponents';
 
 export const CreatePlaylist = () => {
-  const [playlistName, setPlaylistName] = useState("");
+  const [playlistName, setPlaylistName] = useState('');
   const [event, setEvent] = useState<string | null>(null);
   const [mood, setMood] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +22,7 @@ export const CreatePlaylist = () => {
       const response = await getEvents();
       setEvents(response);
     } catch (error) {
-      console.error("Error fetching events:", error);
+      console.error('Error fetching events:', error);
     }
   };
 
@@ -31,7 +31,7 @@ export const CreatePlaylist = () => {
       const response = await getMoods();
       setMoods(response);
     } catch (error) {
-      console.error("Error fetching moods:", error);
+      console.error('Error fetching moods:', error);
     }
   };
 
@@ -52,20 +52,20 @@ export const CreatePlaylist = () => {
     setError(
       validatePlaylistName(value)
         ? null
-        : "Enter a valid playlist name (1–100 chars)."
+        : 'Enter a valid playlist name (1–100 chars).'
     );
   };
 
   const handleContinue = () => {
     if (validatePlaylistName(playlistName)) {
       // todo: Handle the continue action here
-      console.log("Continue with:", { playlistName, event, mood });
+      console.log('Continue with:', { playlistName, event, mood });
     } else {
-      setError("Enter a valid playlist name (1–100 chars).");
+      setError('Enter a valid playlist name (1–100 chars).');
     }
   };
 
-  const isContinueDisabled = !!error || playlistName.trim() === "";
+  const isContinueDisabled = !!error || playlistName.trim() === '';
 
   return (
     <div className="wrapper">
@@ -105,7 +105,8 @@ export const CreatePlaylist = () => {
           size="large"
           fullWidth
           disabled={isContinueDisabled}
-          onClick={handleContinue}>
+          onClick={handleContinue}
+        >
           Continue
         </StyledMenuButton>
       </div>

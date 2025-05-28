@@ -58,7 +58,7 @@ const ProfileForm: React.FC = () => {
 
         toast.success('your preferences are saved. enjoy your Beat match ;)');
 
-        navigate(NavigationRoutes.USER_ACTIONS_PAGE);
+        navigate(NavigationRoutes.MAIN_PAGE);
       }
     } catch (err) {
       console.error('failed to save preferences. error:', err);
@@ -68,7 +68,7 @@ const ProfileForm: React.FC = () => {
 
   const handleNext = (): void => {
     if (isFinishedForm) {
-      navigate(NavigationRoutes.USER_ACTIONS_PAGE);
+      navigate(NavigationRoutes.MAIN_PAGE);
     } else {
       setActiveStep((prev) => prev + 1);
     }

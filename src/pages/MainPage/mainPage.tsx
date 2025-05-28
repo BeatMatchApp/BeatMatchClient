@@ -1,16 +1,10 @@
-import { Typography } from "@mui/material";
-import { useNavigate, useLocation, Routes, Route } from "react-router-dom";
-import { CreatePlaylist } from "../../components/createPlaylist/createPlaylist";
-import {
-  MainWrapper,
-  NavBar,
-  NavToggleGroup,
-  NavToggleButton,
-  ContentContainer,
-} from "./styled";
-import { MenuNavigationRoutes } from "../../models/MenuNavigationRoutes";
-import { NavigationRoutes } from "../../models/NavigationRoutes";
-import "./mainPage.css";
+import { Typography } from '@mui/material';
+import { useNavigate, useLocation, Routes, Route } from 'react-router-dom';
+import { CreatePlaylist } from '../../components/createPlaylist/createPlaylist';
+import { NavBar, NavToggleButton, ContentContainer } from './styled';
+import { MenuNavigationRoutes } from '../../models/MenuNavigationRoutes';
+import { NavigationRoutes } from '../../models/NavigationRoutes';
+import './mainPage.css';
 
 // todo: replace with actual component
 function DisplayPlaylistsPage() {
@@ -42,13 +36,15 @@ export const MainPage = () => {
         <div className="nav-toggle-group">
           <NavToggleButton
             selected={isCreate}
-            onClick={() => handleToggle(MenuNavigationRoutes.CREATE)}>
+            onClick={() => handleToggle(MenuNavigationRoutes.CREATE)}
+          >
             Create
           </NavToggleButton>
 
           <NavToggleButton
             selected={!isCreate}
-            onClick={() => handleToggle(MenuNavigationRoutes.LIBRARY)}>
+            onClick={() => handleToggle(MenuNavigationRoutes.LIBRARY)}
+          >
             Library
           </NavToggleButton>
         </div>

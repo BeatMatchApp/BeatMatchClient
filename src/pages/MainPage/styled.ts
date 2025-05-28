@@ -1,5 +1,6 @@
-import { AppBar, Container } from "@mui/material";
-import styled from "styled-components";
+import { AppBar, Container } from '@mui/material';
+import styled from 'styled-components';
+import { primaryColor } from '../../styles/consts';
 
 const NAVBAR_HEIGHT = 64;
 
@@ -12,7 +13,6 @@ export const NavBar = styled(AppBar)`
   box-shadow: none;
 `;
 
-// todo: change purple to theme color
 export const NavToggleButton = styled.button<{ selected: boolean }>`
   all: unset;
   padding: 6px 20px;
@@ -20,9 +20,9 @@ export const NavToggleButton = styled.button<{ selected: boolean }>`
   font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
-  background-color: ${({ selected, theme }) =>
-    selected ? "purple" : "transparent"};
-  color: ${({ selected, theme }) => (selected ? "#fff" : "purple")};
+  background-color: ${({ selected }) =>
+    selected ? primaryColor : 'transparent'};
+  color: ${({ selected }) => (selected ? '#fff' : primaryColor)};
   transition: all 0.2s ease-in-out;
   border-color: #ffffff;
 `;

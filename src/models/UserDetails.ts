@@ -13,5 +13,5 @@ export interface LoginUserDetails {
 export interface UserDetailsInput {
   name: string;
   email: string;
-  birthDate: Date;
+  birthDate: string;
 }

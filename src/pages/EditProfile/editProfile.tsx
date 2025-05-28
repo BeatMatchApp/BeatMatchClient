@@ -72,7 +72,12 @@ const EditProfileForm = () => {
 
   const handleSave = async () => {
     try {
-      await updateUserDetails(userDetails);
+      const formattedDate = userDetails.birthDate!.toLocaleDateString('en-CA');
+
+      await updateUserDetails({
+        ...userDetails,
+        birthDate: formattedDate,
+      });
 
       await updatePreferences({
         artists: selectedArtists,

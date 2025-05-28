@@ -1,1 +1,2 @@
 export const SPOTIFY_UNAUTHORIZED = 498;
+export const MAX_PREFERENCES_AMOUNT = 3;

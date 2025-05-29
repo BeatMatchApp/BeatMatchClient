@@ -1,7 +1,8 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly SPOTIFY_SERVICE_URL: string;
+  readonly VITE_SPOTIFY_SERVICE_URL: string;
+  readonly VITE_BACKEND_SERVICE_URL: string;
 }
 
 interface ImportMeta {

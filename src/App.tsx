@@ -9,10 +9,11 @@ import { store } from './redux/store';
 import RegisterSpotifyPage from './pages/RegisterSpotifyPage/RegisterSpotifyPage';
 import { NavigationRoutes } from './models/NavigationRoutes';
 import { ToastContainer } from 'react-toastify';
+import EditProfileForm from './pages/EditProfile/editProfile';
+import { MainPage } from './pages/MainPage/mainPage';
 import ProfileForm from './pages/ProfileForm/profileForm';
 import { ThemeProvider } from '@mui/material';
 import theme from './styles/consts';
-import EditProfileForm from './pages/EditProfile/editProfile';
 
 function App() {
   return (
@@ -29,16 +30,16 @@ function App() {
                   element={<RegisterSpotifyPage />}
                 />
                 <Route
-                  path={NavigationRoutes.USER_ACTIONS_PAGE}
-                  element={<UserDetails />}
-                />
-                <Route
                   path={NavigationRoutes.PROFILE_FORM}
                   element={<ProfileForm />}
                 />
                 <Route
                   path={NavigationRoutes.EDIT_PROFILE}
                   element={<EditProfileForm />}
+                />
+                <Route
+                  path={NavigationRoutes.MAIN_PAGE + '/*'}
+                  element={<MainPage />}
                 />
               </Routes>
               <ToastContainer />

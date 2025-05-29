@@ -19,7 +19,7 @@ function HomePage() {
         );
 
         if (response?.data?.user) {
-          navigate(NavigationRoutes.EDIT_PROFILE);
+          navigate(NavigationRoutes.MAIN_PAGE);
         }
       } catch (error) {
         if (error instanceof AxiosError) {

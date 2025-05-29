@@ -28,7 +28,7 @@ function LoginPage() {
   const handleLogin = async () => {
     try {
       await login({ email, password });
-      navigate(NavigationRoutes.EDIT_PROFILE);
+      navigate(NavigationRoutes.MAIN_PAGE);
     } catch (error) {
       console.error('Login failed:', error);
       toast.error('Failed to login');

@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   styled,
+  TextField,
   Typography,
   TypographyProps,
 } from '@mui/material';
@@ -49,4 +50,16 @@ export const StyledFormBox = styled(Box)({
   border: `${primaryColor} solid 3px`,
   borderRadius: '2em',
   padding: '30px',
+});
+
+export const StyledTextField = styled(TextField)({
+  background: 'white',
+  '& .MuiOutlinedInput-root': {
+    borderRadius: '12px',
+    background: '#fafafa',
+  },
+
+  '& .MuiOutlinedInput-notchedOutline': {
+    borderRadius: '12px',
+  },
 });

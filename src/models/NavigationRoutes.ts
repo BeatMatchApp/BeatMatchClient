@@ -4,5 +4,5 @@ export enum NavigationRoutes {
   REGISTER = "/register",
   PROFILE_FORM = "/profileForm",
   REGISTER_SPOTIFY = "/register/spotify",
-  USER_ACTIONS_PAGE = "/user-actions",
+  MAIN_PAGE = "/main",
 }

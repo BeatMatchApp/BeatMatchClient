@@ -5,12 +5,15 @@ import { primaryColor } from '../../styles/consts';
 const NAVBAR_HEIGHT = 64;
 
 export const NavBar = styled(AppBar)`
-  background-color: white;
   height: ${NAVBAR_HEIGHT}px;
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+  direction: rtl;
   box-shadow: none;
+  position: relative;
+  z-index: auto !important;
 `;
 
 export const NavToggleButton = styled.button<{ selected: boolean }>`
@@ -31,10 +34,8 @@ export const ContentContainer = styled(Container).attrs(() => ({
   disableGutters: true,
   maxWidth: false,
 }))`
-  padding: 0;
-  margin: 0;
-  padding-top: ${NAVBAR_HEIGHT}px;
-  height: 100vh;
+  height: 100%;
   overflow-y: auto;
-  display: fixed;
+  margin-top: ${NAVBAR_HEIGHT}px;
+  padding-bottom: 10px;
 `;

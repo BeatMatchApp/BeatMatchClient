@@ -34,10 +34,6 @@ function App() {
                   element={<ProfileForm />}
                 />
                 <Route
-                  path={NavigationRoutes.EDIT_PROFILE}
-                  element={<EditProfileForm />}
-                />
-                <Route
                   path={NavigationRoutes.MAIN_PAGE + '/*'}
                   element={<MainPage />}
                 />

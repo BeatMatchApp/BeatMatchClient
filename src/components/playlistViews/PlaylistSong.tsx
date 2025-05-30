@@ -13,7 +13,7 @@ interface PlaylistSongProps {
     id: number;
     song: string;
     trackNumber: number;
-    onDislikeChange: (isDislike: boolean, id: number) => void;
+    onDislikeChange: (id: number) => void;
 }
 
 export const PlaylistSong: React.FC<PlaylistSongProps> = ({ id, song, trackNumber, onDislikeChange }) => {
@@ -22,7 +22,7 @@ export const PlaylistSong: React.FC<PlaylistSongProps> = ({ id, song, trackNumbe
     const handleDislikeClick = () => {
         setIsDisliked(prev => {
             const newValue = !prev;
-            onDislikeChange(newValue, id);
+            onDislikeChange(id);
             return newValue;
         });
     };

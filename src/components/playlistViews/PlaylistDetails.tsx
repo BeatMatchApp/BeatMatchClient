@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import { Box, Typography, IconButton, Paper, styled, TextField } from '@mui/material';
+import React, {useState} from 'react';
+import { Box, Typography, IconButton, Paper, styled } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { Playlist} from "../../models/Playlist.ts";
-import { StyledPageSubtitle, StyledMenuButton } from "../styledComponents";
+import {StyledPageSubtitle, StyledMenuButton, StyledTextField} from "../styledComponents";
 import PlaylistSong from './PlaylistSong';
 
 // ################ STYLED COMPONENTS ################
@@ -20,21 +20,6 @@ const RequestPaper = styled(Paper)({
     padding: 24,
     borderRadius: 8,
     backgroundColor: '#f8f8ff'
-});
-
-const StyledTextField = styled(TextField)({
-    width: '100%',
-    '& .MuiOutlinedInput-root': {
-        '&.Mui-focused fieldset': {
-            borderColor: '#715cf8',
-        },
-        '&:hover fieldset': {
-            borderColor: '#5a36a1',
-        },
-    },
-    '& .MuiInputLabel-root.Mui-focused': {
-        color: '#715cf8',
-    },
 });
 
 // ################ COMPONENT ################
@@ -53,18 +38,14 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlist, onBack, onEdi
     const creationDate = new Date(playlist.creationTime).toLocaleDateString();
     const lastUpdated = new Date(playlist.lastUpdatedTime).toLocaleDateString();
 
-    const onDislikeChange = (isDislike: boolean, id: number) => {
+    const onDislikeChange = (id: number) => {
         setDislikedSongs(prev => {
-            let updated: number[];
-
-            if (isDislike) {
-                updated = prev.includes(id) ? prev : [...prev, id];
-            } else {
-                updated = prev.filter(songId => songId !== id);
-            }
+            const exists = prev.includes(id);
+            const updated = exists
+                ? prev.filter(songId => songId !== id)
+                : [...prev, id];
 
             setIsRefreshDisabled(updated.length === 0 && !requestText.trim());
-
             return updated;
         });
     };
@@ -79,10 +60,6 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlist, onBack, onEdi
         console.log('Disliked songs:', dislikedSongs);
         console.log('Request text:', requestText);
     };
-
-    useEffect(() => {
-        console.log("Playlist updated:", playlist);
-    }, []);
 
     return (
         <Box sx={{ width: '100%' }}>

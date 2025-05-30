@@ -37,7 +37,7 @@ function App() {
                   element={<MainPage />}
                 />
               </Routes>
-              <ToastContainer />
+              <ToastContainer position="bottom-center" />
             </>
           </Router>
         </Provider>

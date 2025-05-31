@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { StyledContentContainer, StyledMenuButton, StyledPageTitle } from "../styledComponents";
 import { SongResult } from "./songResult";
 import Textarea from '@mui/joy/Textarea';
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 const songs = [
   { id: 1, title: "Song A", artist: "Artist A" },
@@ -17,49 +17,49 @@ const songs = [
   { id: 10, title: "Song K", artist: "Artist K" },
 ];
 
-export const CreatePlaylistResults: React.FC = () =>  {
+export const CreatePlaylistResults: React.FC = () => {
   const [requestText, setRequetText] = useState('');
-  const [isRefreshDisabled, setIsRefreshDisabled] = useState(true);
-  const [dislikedSongs, setDislikedSongs] = useState<number[]>([]);
+  const [dislikedSongs, setDislikedSongs] = useState<Set<number>>(new Set());
+  const isRefreshDisabled = useMemo(() => dislikedSongs.size === 0, [dislikedSongs]);
 
-  const onDislikeChange = (isDislike: boolean, id: number) => {
+  const onDislikeChange = (songId: number) => {
     setDislikedSongs(prev => {
-      let updated: number[];
-  
-      if (isDislike) {
-        updated = prev.includes(id) ? prev : [...prev, id];
+      const updatedSongs = new Set(prev);
+      if (updatedSongs.has(songId)) {
+        updatedSongs.delete(songId);
       } else {
-        updated = prev.filter(songId => songId !== id);
+        updatedSongs.add(songId);
       }
-  
-      setIsRefreshDisabled(updated.length === 0);
-  
-      return updated;
+      return updatedSongs;
     });
   };
 
   const changePlaylist = () => {
-    console.log(dislikedSongs)
-    console.log(requestText)
+    console.log([...dislikedSongs]);
+    console.log(requestText);
   };
 
   return (
     <Box className="center">
       <StyledPageTitle>Almost done! Make some changes</StyledPageTitle>
-      <StyledMenuButton disabled={isRefreshDisabled} sx={{padding: '10px', marginTop: '5px'}} onClick={changePlaylist}> 
-        Refersh! 
+      <StyledMenuButton disabled={isRefreshDisabled} sx={{ padding: '10px', marginTop: '5px' }} onClick={changePlaylist}> 
+        Refresh! 
       </StyledMenuButton>
       <StyledContentContainer>
-      <Box className="center">
-        <Box sx={{ width: '80%'}}>
-          {songs.map((song) => (
-            <Box sx={{ margin: '5px'}}>
-              <SongResult id={song.id} title={song.title} artist={song.artist} onDislikeChange={onDislikeChange}/>
-            </Box>
-          ))}
-          <Textarea sx={{ marginTop: '20px' }} minRows={2} placeholder="Any requests?" onChange={e => setRequetText(e.target.value)}/>
+        <Box className="center">
+          <Box sx={{ width: '80%' }}>
+            {songs.map((song) => (
+              <Box sx={{ margin: '5px' }} key={song.id}>
+                <SongResult
+                  trackDetails={{ songName: song.title, artist: song.artist }} 
+                  isDisliked={dislikedSongs.has(song.id)}
+                  onDislikeChange={() => onDislikeChange(song.id)}
+                />
+              </Box>
+            ))}
+            <Textarea sx={{ marginTop: '20px' }} minRows={2} placeholder="Any requests?" onChange={e => setRequetText(e.target.value)} />
+          </Box>
         </Box>
-      </Box>
       </StyledContentContainer>
     </Box>
   );

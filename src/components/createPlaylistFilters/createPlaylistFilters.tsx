@@ -4,11 +4,11 @@ import { ScrollableSelector } from "../scrollableSelector/scrollableSelector";
 import { getEvents, getMoods } from "../../services/metsService";
 import { StyledContentContainer, StyledPageTitle } from "../styledComponents";
 
-interface CreatePlaylistFiltersProps {
+interface Props {
   onValidChange: (isValid: boolean) => void;
 }
 
-export const CreatePlaylistFilters: React.FC<CreatePlaylistFiltersProps> = ({ onValidChange }) =>  {
+export const CreatePlaylistFilters: React.FC<Props> = ({ onValidChange }) =>  {
   const [playlistName, setPlaylistName] = useState("");
   const [event, setEvent] = useState<string | null>(null);
   const [mood, setMood] = useState<string | null>(null);
@@ -65,7 +65,6 @@ export const CreatePlaylistFilters: React.FC<CreatePlaylistFiltersProps> = ({ on
       <StyledPageTitle>Lets get started!</StyledPageTitle>
 
       <StyledContentContainer>
-        {/* <FieldWrapper> */}
           <Typography variant="h6" gutterBottom>
             Playlist name
           </Typography>
@@ -77,7 +76,6 @@ export const CreatePlaylistFilters: React.FC<CreatePlaylistFiltersProps> = ({ on
             helperText={error}
             fullWidth
           />
-        {/* </FieldWrapper> */}
 
         <ScrollableSelector
           title="Special event?"

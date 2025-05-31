@@ -1,31 +1,21 @@
-import { useState } from "react";
 import { StyledIconButton, StyledSongBox } from "../styledComponents";
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { Box, Typography } from "@mui/material";
+import { TrackDetails } from "../../models/AiResponse";
 
-interface SongResultProps {
-  id: number;
-  title: string;
-  artist: string;
-  onDislikeChange: (isDislike: boolean, id: number) => void;
+interface Props {
+  trackDetails: TrackDetails;
+  isDisliked: boolean;
+  onDislikeChange: () => void;
 }
 
-export const SongResult: React.FC<SongResultProps> = ({ id, title, artist, onDislikeChange }) => {
-  const [isDisliked, setIsDisliked] = useState(false);
-
-  const handleDislikeClick = () => {
-    setIsDisliked(prev => {
-      const newValue = !prev;
-      onDislikeChange(newValue, id);
-      return newValue;
-    });
-  };
+export const SongResult: React.FC<Props> = ({ trackDetails, isDisliked, onDislikeChange }) => {
 
   return (
     <Box sx={{ backgroundColor: '#9C27B0' }}>
       <StyledSongBox>
-        <Typography>{`${artist} - ${title}`}</Typography>
-        <StyledIconButton size="small" onClick={handleDislikeClick}>
+        <Typography>{`${trackDetails.artist} - ${trackDetails.songName}`}</Typography>
+        <StyledIconButton size="small" onClick={onDislikeChange}>
           <ThumbDownIcon fontSize="small" sx={{ color: isDisliked ? '#590505' : 'white' }} />
         </StyledIconButton>
       </StyledSongBox>

@@ -10,7 +10,7 @@ export interface LoginUserDetails {
   password: string;
 }
 
-export interface UserDetailsInput {
+export interface UpdateUserInput {
   name: string;
   email: string;
   birthDate: string;

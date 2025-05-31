@@ -2,7 +2,7 @@ import { envConfig } from '../config/config';
 import {
   LoginUserDetails,
   UserDetails,
-  UserDetailsInput,
+  UpdateUserInput,
 } from '../models/UserDetails';
 import { serverService } from './httpCommon';
 
@@ -32,7 +32,7 @@ export const getUserDetails = async (): Promise<UserDetails> => {
   return response.data;
 };
 
-export const updateUserDetails = async (userDetails: UserDetailsInput) => {
+export const updateUserDetails = async (userDetails: UpdateUserInput) => {
   const response = await serverService.post(
     `${envConfig.BACKEND_SERVICE_URL}/user/update`,
     { userDetails }

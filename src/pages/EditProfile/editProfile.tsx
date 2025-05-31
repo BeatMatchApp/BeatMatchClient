@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Box, TextField, Button, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { TextField, Button } from '@mui/material';
 import TopGenres from '../../components/topGenres/topGenres';
 import TopArtists from '../../components/topArtists/topArtists';
 import TopSong from '../../components/topSong/topSong';
@@ -12,7 +12,7 @@ import { NavigationRoutes } from '../../models/NavigationRoutes';
 import { useNavigate } from 'react-router-dom';
 import './editProfile.css';
 import {
-  StyledFormBox,
+  StyledMenuButton,
   StyledPageTitle,
 } from '../../components/styledComponents';
 import {
@@ -70,23 +70,31 @@ const EditProfileForm = () => {
     fetchUserPreferences();
   }, []);
 
+  const disableSave = () => {
+    return Object.values(errors).some((error) => error !== '');
+  };
+
   const handleSave = async () => {
     try {
-      const formattedDate = userDetails.birthDate!.toLocaleDateString('en-CA');
+      if (userDetails.birthDate) {
+        const formattedDate = userDetails.birthDate.toLocaleDateString('en-CA');
 
-      await updateUserDetails({
-        ...userDetails,
-        birthDate: formattedDate,
-      });
+        await updateUserDetails({
+          ...userDetails,
+          birthDate: formattedDate,
+        });
 
-      await updatePreferences({
-        artists: selectedArtists,
-        genres: selectedGenres,
-        song: selectedSong,
-      });
+        await updatePreferences({
+          artists: selectedArtists,
+          genres: selectedGenres,
+          song: selectedSong,
+        });
 
-      toast.success('Your profile was updated successfully!');
-      navigate(NavigationRoutes.USER_ACTIONS_PAGE);
+        toast.success('Your profile was updated successfully!');
+        navigate(NavigationRoutes.MAIN_PAGE);
+      } else {
+        toast.info("Birth date can't be empty.");
+      }
     } catch (error) {
       console.error('Failed to update profile:', error);
       toast.error('Something went wrong. Please try again.');
@@ -156,9 +164,13 @@ const EditProfileForm = () => {
         />
         <TopSong handleNextStep={setSelectedSong} song={selectedSong} />
 
-        <Button variant="contained" onClick={handleSave}>
+        <StyledMenuButton
+          disabled={disableSave()}
+          variant="contained"
+          onClick={handleSave}
+        >
           Save Changes
-        </Button>
+        </StyledMenuButton>
       </div>
     </div>
   );

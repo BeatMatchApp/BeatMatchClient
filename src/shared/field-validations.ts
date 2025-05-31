@@ -6,7 +6,7 @@ export const validateName = <T>(
   name: string,
   setErrors: SetErrorsFunction<T>
 ) => {
-  if (!name) {
+  if (!name || name.trim() === '') {
     setErrors((prev) => ({ ...prev, name: 'Name is required' }));
   } else {
     setErrors((prev) => ({ ...prev, name: '' }));
@@ -39,6 +39,7 @@ export const validateEmail = <T>(
   setErrors: SetErrorsFunction<T>
 ) => {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
   if (!emailRegex.test(email)) {
     setErrors((prev) => ({ ...prev, email: 'Invalid email format' }));
   } else {

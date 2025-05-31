@@ -118,6 +118,7 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
         />
         <DatePicker
           label="Date of birth"
+          format="dd/MM/yyyy"
           value={newUser.birthDate}
           onChange={(newDate) => {
             setNewUser((prevState) => ({ ...prevState, birthDate: newDate }));

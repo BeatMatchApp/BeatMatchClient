@@ -121,6 +121,7 @@ const EditProfileForm = () => {
 
         <DatePicker
           label="Date of birth"
+          format="dd/MM/yyyy"
           value={userDetails.birthDate}
           onChange={(newDate) => {
             setUserDetails((prevState) => ({

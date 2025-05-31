@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../../services/userService";
 import { toast } from "react-toastify";
 import { NavigationRoutes } from "../../models/NavigationRoutes";
+import { StyledCardBox, StyledPageCard } from "../styledPages";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -36,7 +37,8 @@ function LoginPage() {
   };
 
   return (
-    <Box className="center" sx={{ flexDirection: "column" }}>
+    <Box className="center fullHeight">
+    <StyledPageCard className="check">
       <StyledPageTitle> Login </StyledPageTitle>
       <Button
         sx={{ textTransform: "none" }}
@@ -44,7 +46,7 @@ function LoginPage() {
       >
         Dont have an account? Register now!
       </Button>
-      <Box className="MenuCard">
+      <StyledCardBox>
         <TextField
           id="email"
           label="email"
@@ -63,7 +65,8 @@ function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <StyledMenuButton onClick={handleLogin}>Login</StyledMenuButton>
-      </Box>
+      </StyledCardBox>
+    </StyledPageCard>
     </Box>
   );
 }

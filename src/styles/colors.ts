@@ -1,0 +1,9 @@
+export const lightColor: string = "#9dcfd8";
+export const mediumColor: string = "#557dcd";
+export const darkColor: string = "#2d4b87";
+export const textMainColor: string = "#20174f";
+export const textSecondaryColor: string = "#3da9bb";
+export const textLightColor: string = "#b1f2fd";
+export const disabledColor: string = "#ccc";
+export const lightPurpleColor: string = "#94aee9";
+export const pinkColor: string = "#eb6895";

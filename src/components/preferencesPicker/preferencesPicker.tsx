@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Chip, TextField, Typography, Button } from '@mui/material';
-import { primaryColor } from '../../styles/consts';
+import { TextField, Typography } from '@mui/material';
 import { useDebounce } from 'use-debounce';
 import './PreferencesPicker.css';
 import { MAX_PREFERENCES_AMOUNT } from '../../shared/consts';
+import Preference from './Preference';
+import { StyledChip, StyledMenuButton } from '../styledComponents';
 
 interface Props {
   preferencesName: string;
@@ -50,8 +51,7 @@ const PreferencesPicker: React.FC<Props> = ({
 
   return (
     <>
-      <div className="picker-container">
-        <Typography color={primaryColor} variant="h6" gutterBottom>
+        <Typography sx={{ color: (theme) => theme.palette.customColors.textMain }}>
           Pick Your Favorite {preferencesName}!
         </Typography>
         <TextField
@@ -68,36 +68,37 @@ const PreferencesPicker: React.FC<Props> = ({
             const isSelected = selectedPreferences.includes(option);
 
             return (
-              <Chip
-                key={option}
-                label={option}
-                onClick={() => handleToggleSelect(option)}
-                color={isSelected ? 'primary' : 'default'}
-                variant={isSelected ? 'filled' : 'outlined'}
-                className="chip"
-              />
+              <StyledChip
+              key={option}
+              label={option}
+              onClick={() => handleToggleSelect(option)}
+              variant={isSelected ? 'filled' : 'outlined'}
+              className="chip"
+              isSelected={isSelected}
+            />            
             );
           })}
         </div>
-      </div>
       <div className="bottom-form">
         <div className="selected-preview">
           {selectedPreferences.length > 0 ? (
-            <span>{selectedPreferences.join(', ')}</span>
+            selectedPreferences.map(preference => (
+              <Preference key={preference} preference={preference} />
+            ))
           ) : (
             <span className="selected-placeholder">
               No {preferencesName} selected
             </span>
           )}
         </div>
-        <Button
+        <StyledMenuButton
           variant="contained"
           disabled={!isMaxSelected}
           onClick={handleMaxSelection}
-          className="next-button"
+          sx={{ marginTop: '3vh'}}
         >
           keep going!
-        </Button>
+        </StyledMenuButton>
       </div>
     </>
   );

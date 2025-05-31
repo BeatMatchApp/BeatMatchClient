@@ -1,6 +1,5 @@
 import { AppBar, Container } from '@mui/material';
 import styled from 'styled-components';
-import { primaryColor } from '../../styles/consts';
 
 const NAVBAR_HEIGHT = 64;
 
@@ -21,10 +20,10 @@ export const NavToggleButton = styled.button<{ selected: boolean }>`
   font-weight: 500;
   cursor: pointer;
   background-color: ${({ selected }) =>
-    selected ? primaryColor : 'transparent'};
-  color: ${({ selected }) => (selected ? '#fff' : primaryColor)};
+    selected ? '#42cea1' : 'transparent'};
+  color: ${({ selected }) =>
+    selected ? '#fff' : '#42cea1'};
   transition: all 0.2s ease-in-out;
-  border-color: #ffffff;
 `;
 
 export const ContentContainer = styled(Container).attrs(() => ({

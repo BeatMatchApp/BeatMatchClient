@@ -37,7 +37,7 @@ const TopArtists: React.FC<Props> = ({ handleNextStep }) => {
       selectedPreferences={selectedArtists}
       options={artistOptions}
       onChange={updateAtristsList}
-      onMaxSelected={handleNextStep}
+      onMaxSelected={onNextStep}
       onSearch={handleArtistSearch}
     />
   );

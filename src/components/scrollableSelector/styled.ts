@@ -1,6 +1,5 @@
-import { Typography, IconButton } from '@mui/material';
+import { Typography, IconButton, Box } from '@mui/material';
 import styled from 'styled-components';
-import { primaryColor } from '../../styles/consts';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -34,17 +33,17 @@ export const ScrollButton = styled(IconButton)<{ side: 'left' | 'right' }>`
       : 'margin-left: 12px !important;'}
 `;
 
-export const SelectableItem = styled.div<{ selected: boolean }>`
-  padding: 8px 16px;
-  border-radius: 16px;
-  white-space: nowrap;
-  background: ${(props) =>
-    props.selected ? primaryColor : 'linear-gradient(to right, #f5f5f5, #ddd)'};
-  color: ${(props) => (props.selected ? 'white' : '#333')};
-  font-weight: 500;
-  cursor: pointer;
-  user-select: none;
-  box-shadow: ${(props) =>
-    props.selected ? '0 0 6px rgba(0,0,0,0.2)' : 'none'};
-  transition: background 0.2s ease;
-`;
+export const SelectableItem = styled(Box)<{ selected: boolean }>(({ selected }) => ({
+  padding: '8px 16px',
+  borderRadius: 16,
+  whiteSpace: 'nowrap',
+  background: selected
+    ? '#42cea1'
+    : 'linear-gradient(to right, #f5f5f5, #ddd)',
+  color: selected ? 'white' : '#333',
+  fontWeight: 500,
+  cursor: 'pointer',
+  userSelect: 'none',
+  boxShadow: selected ? '0 0 6px rgba(0,0,0,0.2)' : 'none',
+  transition: 'background 0.2s ease',
+}));

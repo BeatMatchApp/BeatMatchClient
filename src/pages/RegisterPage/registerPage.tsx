@@ -98,7 +98,7 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
       });
 
       toast.success(
-        'Congratulations! we are exited to find out all about your music taste :)'
+        'Congratulations! we are excited to find out all about your music taste :)'
       );
       handleNextStep();
     } catch (error) {
@@ -121,7 +121,7 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
       >
         Already Registered? Login
       </Button>
-      <Box className="MenuCard MenuCard-form">
+      <Box className="MenuCard">
         <TextField
           id="name"
           label="Name"
@@ -182,7 +182,7 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
           }}
         />
       </Box>
-      <StyledMenuButton disabled={disableContinue()} onClick={handleContinue}>
+      <StyledMenuButton sx={{ marginTop: '3vh' }} disabled={disableContinue()} onClick={handleContinue}>
         Lets start!
       </StyledMenuButton>
     </Box>

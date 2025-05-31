@@ -1,8 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
 body {
-  background-color: white;
-  color: black;
+  margin: 0;
+  padding: 0;
+  background-image: url('../public/assets/background.jpg');
+  background-size: cover;     
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 100vh;              
+  width: 100vw;
   font-family: 'Poppins', sans-serif;
 }
 
@@ -41,14 +48,13 @@ body {
 }
 
 .MenuCard {
-  padding: 2em;
+  padding: 1vh;
   display: flex;
   flex-direction: column;
-  gap: 1em;
+  gap: 2vh;
   justify-content: center;
   align-items: center;
   margin: auto;
-  width: 30%;
 }
 
 .read-the-docs {
@@ -70,8 +76,20 @@ body {
   align-items: center;
 }
 
+.fullHeight {
+ height: 100vh;
+}
+
+.fullWidth {
+  height: 100vw;
+ }
+
 .MuiTypography-root {
   font-family: 'Poppins', sans-serif !important;
+}
+
+.MuiStepIcon-text{
+  fill: white !important;
 }
 
 .MuiTextField-root {

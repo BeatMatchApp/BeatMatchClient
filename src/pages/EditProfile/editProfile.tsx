@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { TextField, Button } from '@mui/material';
+import { TextField } from '@mui/material';
 import TopGenres from '../../components/topGenres/topGenres';
 import TopArtists from '../../components/topArtists/topArtists';
 import TopSong from '../../components/topSong/topSong';
@@ -19,9 +19,10 @@ import {
   validateBirthDate,
   validateEmail,
   validateName,
-} from '../../shared/field-validations';
+} from '../../shared/fieldValidations';
 import { DatePicker } from '@mui/x-date-pickers';
 import { getUserDetails, updateUserDetails } from '../../services/userService';
+import { formatDate } from '../../shared/dateFormatter';
 
 interface Errors {
   name: string;
@@ -77,11 +78,9 @@ const EditProfileForm = () => {
   const handleSave = async () => {
     try {
       if (userDetails.birthDate) {
-        const formattedDate = userDetails.birthDate.toLocaleDateString('en-CA');
-
         await updateUserDetails({
           ...userDetails,
-          birthDate: formattedDate,
+          birthDate: formatDate(userDetails.birthDate),
         });
 
         await updatePreferences({

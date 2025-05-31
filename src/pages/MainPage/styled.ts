@@ -36,6 +36,5 @@ export const ContentContainer = styled(Container).attrs(() => ({
 }))`
   height: 100%;
   overflow-y: auto;
-  margin-top: ${NAVBAR_HEIGHT}px;
   padding-bottom: 10px;
 `;

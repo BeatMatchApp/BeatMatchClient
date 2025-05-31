@@ -14,7 +14,8 @@ import {
   validateBirthDate,
   validateEmail,
   validateName,
-} from '../../shared/field-validations';
+} from '../../shared/fieldValidations';
+import { formatDate } from '../../shared/dateFormatter';
 
 interface Props {
   handleNextStep: () => void;
@@ -68,17 +69,21 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
     if (disableContinue()) return;
 
     try {
-      await register({
-        name: newUser.name,
-        email: newUser.email,
-        password: newUser.password,
-        birthDate: newUser.birthDate!,
-      });
+      if (newUser.birthDate) {
+        await register({
+          name: newUser.name,
+          email: newUser.email,
+          password: newUser.password,
+          birthDate: formatDate(newUser.birthDate),
+        });
 
-      toast.success(
-        'Congratulations! we are exited to find out all about your music taste :)'
-      );
-      handleNextStep();
+        toast.success(
+          'Congratulations! we are exited to find out all about your music taste :)'
+        );
+        handleNextStep();
+      } else {
+        toast.info("Birth date can't be empty.");
+      }
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error?.response?.data?.message.includes('User already exists.')) {

@@ -5,10 +5,9 @@ import {
   ScrollArea,
   ScrollButton,
   ScrollContent,
-  SelectableItem,
-  Title,
 } from "./styled";
 import { ArrowDirections } from "./scrollableSelector.model";
+import { StyledPageSubtitle, StyledSelectableItem } from "../styledComponents";
 
 export const ScrollableSelector = ({
   title,
@@ -32,7 +31,7 @@ export const ScrollableSelector = ({
 
   return (
     <Wrapper>
-      <Title variant="h6">{title}</Title>
+      <StyledPageSubtitle variant="h6">{title}</StyledPageSubtitle>
       <ScrollArea>
         <ScrollButton
           onClick={() => scroll(ArrowDirections.LEFT)}
@@ -42,12 +41,12 @@ export const ScrollableSelector = ({
 
         <ScrollContent ref={ref}>
           {items.map((item) => (
-            <SelectableItem
+            <StyledSelectableItem
               key={item}
               onClick={() => onSelect(item)}
               selected={selected === item}>
               {item}
-            </SelectableItem>
+            </StyledSelectableItem>
           ))}
         </ScrollContent>
 

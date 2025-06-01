@@ -1,10 +1,10 @@
-import { Typography } from '@mui/material';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { ScrollableSelector } from '../scrollableSelector/scrollableSelector';
 import { getEvents, getMoods } from '../../services/metaService';
 import './createPlaylist.css';
 import {
   StyledMenuButton,
+  StyledPageSubtitle,
   StyledPageTitle,
   StyledTextField,
 } from '../styledComponents';
@@ -73,9 +73,9 @@ export const CreatePlaylist = () => {
 
       <div className="content-container">
         <div className="field-wrapper">
-          <Typography variant="h6" gutterBottom>
+          <StyledPageSubtitle variant="h6" gutterBottom>
             Playlist name
-          </Typography>
+          </StyledPageSubtitle>
           <StyledTextField
             value={playlistName}
             onChange={handlePlaylistNameChange}

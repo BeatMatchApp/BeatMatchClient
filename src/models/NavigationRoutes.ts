@@ -1,4 +1,5 @@
 export enum NavigationRoutes {
+  EMPTY= '/',
   LOGIN = "/login",
   REGISTER = "/register",
   PROFILE_FORM = "/profileForm",

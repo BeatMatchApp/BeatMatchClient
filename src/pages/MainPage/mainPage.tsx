@@ -1,10 +1,16 @@
 import { Typography } from '@mui/material';
 import { useNavigate, useLocation, Routes, Route } from 'react-router-dom';
 import { CreatePlaylist } from '../../components/createPlaylist/createPlaylist';
-import { NavBar, NavToggleButton, ContentContainer } from './styled';
+import { NavBar, ContentContainer } from './styled';
 import { MenuNavigationRoutes } from '../../models/MenuNavigationRoutes';
 import { NavigationRoutes } from '../../models/NavigationRoutes';
 import './mainPage.css';
+import { StyledNavToggleButton } from '../../components/styledComponents';
+import { useEffect, useState } from 'react';
+import { serverService } from '../../services/httpCommon';
+import { envConfig } from '../../config/config';
+import { AxiosError } from 'axios';
+import Loader from '../../components/Loader/Loader';
 
 // todo: replace with actual component
 function DisplayPlaylistsPage() {
@@ -17,9 +23,39 @@ function DisplayPlaylistsPage() {
   );
 }
 
+
 export const MainPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [isLoading, setIsLoading] = useState(true);
+
+useEffect(() => {
+  console.log("useEffect triggered");
+  
+  const login = async () => {
+    try {
+      const response = await serverService.post(
+        `${envConfig.BACKEND_SERVICE_URL}/login`
+      );
+      console.log("Login response:", response);  // Check what response you're getting
+
+      if (response?.data?.user) {
+        navigate(NavigationRoutes.MAIN_PAGE);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.error("Error logging in:", error.message);
+      } else {
+        console.error("Error logging in:", error);
+      }
+      setIsLoading(false);
+    }
+  };
+
+  login();
+}, []);  // Empty dependency array, should only run once
+
 
   const currentPath = location.pathname;
   const isCreate =
@@ -30,23 +66,27 @@ export const MainPage = () => {
     navigate(`${NavigationRoutes.MAIN_PAGE}${target}`);
   };
 
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
     <div className="main-wrapper">
-      <NavBar position="fixed">
+      <NavBar sx={{ backgroundColor: 'transparent' }} position="fixed">
         <div className="nav-toggle-group">
-          <NavToggleButton
+          <StyledNavToggleButton
             selected={isCreate}
             onClick={() => handleToggle(MenuNavigationRoutes.CREATE)}
           >
             Create
-          </NavToggleButton>
+          </StyledNavToggleButton>
 
-          <NavToggleButton
+          <StyledNavToggleButton
             selected={!isCreate}
             onClick={() => handleToggle(MenuNavigationRoutes.LIBRARY)}
           >
             Library
-          </NavToggleButton>
+          </StyledNavToggleButton>
         </div>
       </NavBar>
 

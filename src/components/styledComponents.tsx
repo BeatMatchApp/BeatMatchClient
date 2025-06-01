@@ -44,7 +44,7 @@ export const StyledPageTitle = styled((props: TypographyProps) => (
 export const StyledPageSubtitle = styled((props: TypographyProps) => (
   <Typography variant="h6" {...props} />
 ))(({ theme }) => ({
-  color: theme.palette.customColors.textMain,
+  color: theme.palette.customColors.textSecondary,
   textAlign: 'center',
 }));
 
@@ -101,3 +101,46 @@ export const StyledChip = styled(Chip, {
   },
 }));
 
+export const StyledNavToggleButton = styled(Button, {
+  shouldForwardProp: (prop) => prop !== 'selected',
+})<{ selected: boolean }>(({ theme, selected }) => ({
+  all: 'unset',
+  padding: '6px 20px',
+  borderRadius: '30px',
+  fontSize: '0.85rem',
+  fontWeight: 500,
+  cursor: 'pointer',
+  backgroundColor: selected ? theme.palette.customColors.medium : 'transparent',
+  color: selected ? '#fff' : theme.palette.customColors.medium,
+  transition: 'all 0.2s ease-in-out',
+  display: 'inline-block',
+    '&:focus': {
+    outlineColor: '#6a90dd'
+  },
+}));
+
+export const StyledNavToggleGroup = styled('div')({
+  position: 'relative',
+  backgroundColor: 'transparent',
+  userSelect: 'none',
+  display: 'flex',
+  gap: '16px',
+  borderRadius: '30px',
+  padding: '4px',
+  border: '1px solid #ccc'
+});
+
+export const StyledSelectableItem = styled(Box)<{ selected: boolean }>(({ selected, theme }) => ({
+  padding: '8px 16px',
+  borderRadius: 16,
+  whiteSpace: 'nowrap',
+  background: selected
+    ? theme.palette.customColors.pink
+    : 'linear-gradient(to right, #f5f5f5, #ddd)',
+  color: selected ? 'white' : '#333',
+  fontWeight: 500,
+  cursor: 'pointer',
+  userSelect: 'none',
+  boxShadow: selected ? '0 0 6px rgba(0,0,0,0.2)' : 'none',
+  transition: 'background 0.2s ease',
+}));

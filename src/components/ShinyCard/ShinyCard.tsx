@@ -27,7 +27,7 @@ const ShinyCard: React.FC<ShinyCardProps> = ({ children, colors }) => {
           right: 0,
           bottom: 0,
           borderRadius: '16px',
-          padding: '3px',
+          padding: '4px',
           background: `linear-gradient(
             130deg,
             #ffffff,

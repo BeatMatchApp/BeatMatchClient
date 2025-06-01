@@ -20,6 +20,7 @@ function App() {
           <Router>
             <>
               <Routes>
+                <Route path={NavigationRoutes.EMPTY} element={<MainPage />} />
                 <Route path={NavigationRoutes.LOGIN} element={<LoginPage />} />
                 <Route
                   path={NavigationRoutes.REGISTER_SPOTIFY}

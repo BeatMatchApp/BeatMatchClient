@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { TextField, Typography } from '@mui/material';
+import { Divider, TextField, Typography } from '@mui/material';
 import { useDebounce } from 'use-debounce';
 import './PreferencesPicker.css';
 import { MAX_PREFERENCES_AMOUNT } from '../../shared/consts';
@@ -61,7 +61,7 @@ const PreferencesPicker: React.FC<Props> = ({
           onChange={(e) => setInputValue(e.target.value)}
           fullWidth
           className="search"
-          sx={{ marginBottom: '16px' }}
+          sx={{ marginBottom: '2vh', marginTop: '2vh' }}
         />
         <div className="items-list">
           {options.map((option) => {
@@ -79,6 +79,7 @@ const PreferencesPicker: React.FC<Props> = ({
             );
           })}
         </div>
+      <Divider sx={{ padding: '1vh'}}/>
       <div className="bottom-form">
         <div className="selected-preview">
           {selectedPreferences.length > 0 ? (

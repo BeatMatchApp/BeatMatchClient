@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage/homePage';
 import LoginPage from './pages/LoginPage/loginPage';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -21,7 +20,6 @@ function App() {
           <Router>
             <>
               <Routes>
-                <Route path={NavigationRoutes.HOME} element={<HomePage />} />
                 <Route path={NavigationRoutes.LOGIN} element={<LoginPage />} />
                 <Route
                   path={NavigationRoutes.REGISTER_SPOTIFY}

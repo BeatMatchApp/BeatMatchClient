@@ -5,7 +5,7 @@ import { NavBar, ContentContainer } from './styled';
 import { MenuNavigationRoutes } from '../../models/MenuNavigationRoutes';
 import { NavigationRoutes } from '../../models/NavigationRoutes';
 import './mainPage.css';
-import { StyledNavToggleButton } from '../../components/styledComponents';
+import { StyledNavToggleButton, StyledNavToggleGroup } from '../../components/styledComponents';
 import { useEffect, useState } from 'react';
 import { serverService } from '../../services/httpCommon';
 import { envConfig } from '../../config/config';
@@ -73,7 +73,7 @@ useEffect(() => {
   return (
     <div className="main-wrapper">
       <NavBar sx={{ backgroundColor: 'transparent' }} position="fixed">
-        <div className="nav-toggle-group">
+        <StyledNavToggleGroup>
           <StyledNavToggleButton
             selected={isCreate}
             onClick={() => handleToggle(MenuNavigationRoutes.CREATE)}
@@ -87,7 +87,7 @@ useEffect(() => {
           >
             Library
           </StyledNavToggleButton>
-        </div>
+        </StyledNavToggleGroup>
       </NavBar>
 
       <ContentContainer>

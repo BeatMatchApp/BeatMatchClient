@@ -8,7 +8,7 @@ import { serverService } from './httpCommon';
 
 export const register = async (userDetails: UserDetails) => {
   const response = await serverService.post(
-    `${envConfig.BACKEND_SERVICE_URL}/user/register`,
+    `${envConfig.BACKEND_SERVICE_URL}/auth/register`,
     { userDetails }
   );
 
@@ -17,7 +17,7 @@ export const register = async (userDetails: UserDetails) => {
 
 export const login = async (loginUserDetails: LoginUserDetails) => {
   const response = await serverService.post(
-    `${envConfig.BACKEND_SERVICE_URL}/user/login`,
+    `${envConfig.BACKEND_SERVICE_URL}/auth/login`,
     { userDetails: loginUserDetails }
   );
 

@@ -6,7 +6,7 @@ export default ({ mode }: { mode: string }) => {
 
   return defineConfig({
     ...(process.env.VITE_ENV !== 'dev' && {
-      base: 'https://beatmatch.cs.colman.ac.il/public/client',
+      base: 'https://beatmatch.cs.colman.ac.il:4000/public/client',
     }),
     plugins: [react()],
     define: {

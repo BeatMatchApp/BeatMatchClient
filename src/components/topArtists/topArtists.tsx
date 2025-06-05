@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PreferencesPicker from '../preferencesPicker/preferencesPicker';
 import { getArtists } from '../../services/spotifyService';
 import { FormSteps } from '../../models/enums/FormSteps';
 
 interface Props {
-  handleNextStep: (selectedArtists: string[]) => void;
+  selectedArtists: string[];
+  setSelectedArtists: (selectedArtists: string[]) => void;
+  handleNextStep?: (selectedArtists: string[]) => void;
+  artists?: string[];
 }
 
-const TopArtists: React.FC<Props> = ({ handleNextStep }) => {
+const TopArtists: React.FC<Props> = ({
+  artists,
+  selectedArtists,
+  setSelectedArtists,
+  handleNextStep = () => {},
+}) => {
   const [artistOptions, setArtistOptions] = useState<string[]>([]);
-  const [selectedArtists, setSelectedArtists] = useState<string[]>([]);
+
+  useEffect(() => {
+    setSelectedArtists(artists ?? []);
+  }, [artists]);
 
   const handleArtistSearch = async (query: string): Promise<void> => {
     if (!query) return;
@@ -27,10 +38,6 @@ const TopArtists: React.FC<Props> = ({ handleNextStep }) => {
     setSelectedArtists(artists);
   };
 
-  const onNextStep = (): void => {
-    handleNextStep(selectedArtists);
-  };
-
   return (
     <PreferencesPicker
       preferencesName={FormSteps.ARTISTS}
@@ -39,6 +46,7 @@ const TopArtists: React.FC<Props> = ({ handleNextStep }) => {
       onChange={updateAtristsList}
       onMaxSelected={handleNextStep}
       onSearch={handleArtistSearch}
+      editMode={!!artists}
     />
   );
 };

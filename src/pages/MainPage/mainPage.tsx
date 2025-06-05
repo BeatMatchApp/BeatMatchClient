@@ -5,6 +5,8 @@ import { NavBar, NavToggleButton, ContentContainer } from './styled';
 import { MenuNavigationRoutes } from '../../models/MenuNavigationRoutes';
 import { NavigationRoutes } from '../../models/NavigationRoutes';
 import './mainPage.css';
+import { AccountCircle } from '@mui/icons-material';
+import EditProfileForm from '../EditProfile/editProfile';
 
 // todo: replace with actual component
 function DisplayPlaylistsPage() {
@@ -22,9 +24,12 @@ export const MainPage = () => {
   const location = useLocation();
 
   const currentPath = location.pathname;
+
   const isCreate =
     currentPath.endsWith(MenuNavigationRoutes.CREATE) ||
     currentPath === NavigationRoutes.MAIN_PAGE;
+
+  const isPlaylists = currentPath.endsWith(MenuNavigationRoutes.LIBRARY);
 
   const handleToggle = (target: MenuNavigationRoutes) => {
     navigate(`${NavigationRoutes.MAIN_PAGE}${target}`);
@@ -32,7 +37,13 @@ export const MainPage = () => {
 
   return (
     <div className="main-wrapper">
-      <NavBar position="fixed">
+      <NavBar>
+        <div
+          className="profile-icon"
+          onClick={() => handleToggle(MenuNavigationRoutes.EDIT_PROFILE)}
+        >
+          <AccountCircle fontSize="large" />
+        </div>
         <div className="nav-toggle-group">
           <NavToggleButton
             selected={isCreate}
@@ -42,7 +53,7 @@ export const MainPage = () => {
           </NavToggleButton>
 
           <NavToggleButton
-            selected={!isCreate}
+            selected={isPlaylists}
             onClick={() => handleToggle(MenuNavigationRoutes.LIBRARY)}
           >
             Library
@@ -60,6 +71,10 @@ export const MainPage = () => {
           <Route
             path={MenuNavigationRoutes.LIBRARY}
             element={<DisplayPlaylistsPage />}
+          />
+          <Route
+            path={MenuNavigationRoutes.EDIT_PROFILE}
+            element={<EditProfileForm />}
           />
         </Routes>
       </ContentContainer>

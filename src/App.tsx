@@ -9,6 +9,7 @@ import { store } from './redux/store';
 import RegisterSpotifyPage from './pages/RegisterSpotifyPage/RegisterSpotifyPage';
 import { NavigationRoutes } from './models/NavigationRoutes';
 import { ToastContainer } from 'react-toastify';
+import EditProfileForm from './pages/EditProfile/editProfile';
 import { MainPage } from './pages/MainPage/mainPage';
 import ProfileForm from './pages/ProfileForm/profileForm';
 import { ThemeProvider } from '@mui/material';
@@ -37,7 +38,7 @@ function App() {
                   element={<MainPage />}
                 />
               </Routes>
-              <ToastContainer />
+              <ToastContainer position="bottom-center" />
             </>
           </Router>
         </Provider>

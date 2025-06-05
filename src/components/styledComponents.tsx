@@ -50,6 +50,7 @@ export const StyledFormBox = styled(Box)({
   border: `${primaryColor} solid 3px`,
   borderRadius: '2em',
   padding: '30px',
+  overflowY: 'hidden',
 });
 
 export const StyledTextField = styled(TextField)({

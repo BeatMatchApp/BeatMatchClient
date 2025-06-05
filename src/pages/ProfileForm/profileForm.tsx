@@ -31,18 +31,6 @@ const ProfileForm: React.FC = () => {
     selectedArtists.length === MAX_PREFERENCES_AMOUNT &&
     selectedGenres.length === MAX_PREFERENCES_AMOUNT;
 
-  const updateArtists = (artists: string[]): void => {
-    setSelectedArtists(artists);
-
-    handleNext();
-  };
-
-  const updateGenres = (genres: string[]): void => {
-    setSelectedGenres(genres);
-
-    handleNext();
-  };
-
   const updateSong = (song: string): void => {
     setSelectedSong(song);
   };
@@ -87,11 +75,23 @@ const ProfileForm: React.FC = () => {
     },
     {
       stepName: FormSteps.ARTISTS,
-      component: <TopArtists handleNextStep={updateArtists} />,
+      component: (
+        <TopArtists
+          handleNextStep={handleNext}
+          selectedArtists={selectedArtists}
+          setSelectedArtists={setSelectedArtists}
+        />
+      ),
     },
     {
       stepName: FormSteps.GENRES,
-      component: <TopGenres handleNextStep={updateGenres} />,
+      component: (
+        <TopGenres
+          handleNextStep={handleNext}
+          selectedGenres={selectedGenres}
+          setSelectedGenres={setSelectedGenres}
+        />
+      ),
     },
     {
       stepName: FormSteps.SONG,

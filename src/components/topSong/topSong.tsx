@@ -5,9 +5,10 @@ import { primaryColor } from '../../styles/consts';
 
 interface Props {
   handleNextStep: (selectedSong: string) => void;
+  song?: string;
 }
 
-const TopSong: React.FC<Props> = ({ handleNextStep }) => {
+const TopSong: React.FC<Props> = ({ handleNextStep, song }) => {
   const [options, setOptions] = useState<string[]>([]);
 
   const handleInputChange = async (
@@ -43,6 +44,7 @@ const TopSong: React.FC<Props> = ({ handleNextStep }) => {
       </Typography>
       <Autocomplete
         fullWidth
+        value={song}
         options={options}
         getOptionLabel={(option) => option}
         filterOptions={(x) => x} // disable mui additional filtering

@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Box, Button, TextField } from "@mui/material";
-import "../../App.css";
+import { useState } from 'react';
+import { Box, Button, TextField } from '@mui/material';
+import '../../App.css';
 import {
   StyledMenuButton,
   StyledPageTitle,
@@ -13,17 +13,17 @@ import { StyledCardBox } from "../styledPages";
 import ShinyCard from "../../components/ShinyCard/ShinyCard";
 
 function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
   const navigate = useNavigate();
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     if (!emailRegex.test(email)) {
-      setEmailError("Invalid email format");
+      setEmailError('Invalid email format');
     } else {
-      setEmailError("");
+      setEmailError('');
     }
   };
 
@@ -32,8 +32,8 @@ function LoginPage() {
       await login({ email, password });
       navigate(NavigationRoutes.MAIN_PAGE);
     } catch (error) {
-      console.error("Login failed:", error);
-      toast.error("Failed to login");
+      console.error('Login failed:', error);
+      toast.error('Failed to login');
     }
   };
 

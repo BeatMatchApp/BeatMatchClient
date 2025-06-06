@@ -2,18 +2,20 @@ import {
   Box,
   Button,
   Chip,
+  IconButton,
   styled,
   TextField,
   Typography,
   TypographyProps,
 } from '@mui/material';
+import theme from '../styles/consts';
 
 
 interface StyledChipProps {
   isSelected?: boolean;
 }
 
-export const StyledMenuButton = styled(Button)(({ theme, variant }) => ({
+export const StyledMenuButton = styled(Button)(({ variant }) => ({
   backgroundColor: variant === 'outlined' ? 'white' : theme.palette.customColors.medium,
   color: variant === 'outlined' ? theme.palette.customColors.medium :  'white',
   width: '12em',
@@ -48,7 +50,37 @@ export const StyledPageSubtitle = styled((props: TypographyProps) => (
   textAlign: 'center',
 }));
 
-export const StyledFormBox = styled(Box)(({ theme }) => ({
+export const StyledContentContainer = styled(Box)({
+  display: 'flex', 
+  flexDirection: 'column',
+  justifyContent: 'space-around',
+  textAlign: 'center',
+  width: '100%',
+  maxwidth: '450px',
+  padding: '1.5vh',
+  boxSizing: 'border-box',
+});
+
+export const StyledSongBox = styled(Box)({
+  flexDirection: 'row',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: '10px',
+  color: 'white',
+});
+
+export const StyledIconButton = styled(IconButton)({
+  color: 'white',
+  padding: '4px',
+  '&:hover': {
+    backgroundColor: 'rgba(255,255,255,0.1)',
+  },
+  '&:focus': {
+    outline: 'none',
+  },
+});
+export const StyledFormBox = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
   width: '40vw',
@@ -56,7 +88,8 @@ export const StyledFormBox = styled(Box)(({ theme }) => ({
   border: `3px solid ${theme.palette.customColors.dark}`,
   borderRadius: '2em',
   padding: '30px',
-}));
+  overflowY: 'hidden',
+});
 
 export const StyledTextField = styled(TextField)({
   background: 'white',
@@ -72,7 +105,7 @@ export const StyledTextField = styled(TextField)({
 
 export const StyledChip = styled(Chip, {
   shouldForwardProp: (prop) => prop !== 'isSelected',
-})<StyledChipProps>(({ theme, isSelected }) => ({
+})<StyledChipProps>(({ isSelected }) => ({
   '&.MuiChip-outlined .MuiChip-label': {
     color: theme.palette.customColors.medium,
   },

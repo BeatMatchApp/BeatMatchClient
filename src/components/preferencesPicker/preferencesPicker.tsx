@@ -5,6 +5,7 @@ import './PreferencesPicker.css';
 import { MAX_PREFERENCES_AMOUNT } from '../../shared/consts';
 import Preference from './Preference';
 import { StyledChip, StyledMenuButton } from '../styledComponents';
+import { toast } from 'react-toastify';
 
 interface Props {
   preferencesName: string;
@@ -13,6 +14,7 @@ interface Props {
   onChange: (newPreferences: string[]) => void;
   onMaxSelected: (selectedPreferences: string[]) => void;
   onSearch: (query: string) => void;
+  editMode?: boolean;
 }
 
 const PreferencesPicker: React.FC<Props> = ({
@@ -22,6 +24,7 @@ const PreferencesPicker: React.FC<Props> = ({
   onChange,
   onMaxSelected,
   onSearch,
+  editMode = false,
 }) => {
   const [inputValue, setInputValue] = useState('');
 
@@ -35,13 +38,22 @@ const PreferencesPicker: React.FC<Props> = ({
     if (debouncedValue) onSearch(debouncedValue);
   }, [debouncedValue]);
 
+  const handleRemove = (selectedItem: string): void => {
+    onChange(
+      selectedPreferences.filter((item: string) => item !== selectedItem)
+    );
+  };
+
   const handleToggleSelect = (selectedItem: string): void => {
     if (selectedPreferences.includes(selectedItem)) {
-      onChange(
-        selectedPreferences.filter((item: string) => item !== selectedItem)
-      );
+      handleRemove(selectedItem);
     } else if (!isMaxSelected) {
       onChange([...selectedPreferences, selectedItem]);
+    } else if (isMaxSelected) {
+      toast.info(
+        `You can only select ${MAX_PREFERENCES_AMOUNT} ${preferencesName}.
+          Please remove one before adding another.`
+      );
     }
   };
 
@@ -84,7 +96,7 @@ const PreferencesPicker: React.FC<Props> = ({
         <div className="selected-preview">
           {selectedPreferences.length > 0 ? (
             selectedPreferences.map(preference => (
-              <Preference key={preference} preference={preference} />
+              <Preference key={preference} preference={preference} handleDelete={() => handleRemove(preference)}/>
             ))
           ) : (
             <span className="selected-placeholder">
@@ -92,14 +104,17 @@ const PreferencesPicker: React.FC<Props> = ({
             </span>
           )}
         </div>
-        <StyledMenuButton
-          variant="contained"
-          disabled={!isMaxSelected}
-          onClick={handleMaxSelection}
-          sx={{ marginTop: '3vh'}}
-        >
-          keep going!
+  
+        {!editMode && (
+          <StyledMenuButton
+            variant="contained"
+            disabled={!isMaxSelected}
+            onClick={handleMaxSelection}
+            sx={{ marginTop: '3vh'}}
+          >
+            keep going!
         </StyledMenuButton>
+        )}
       </div>
     </>
   );

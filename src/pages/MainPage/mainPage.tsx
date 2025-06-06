@@ -1,6 +1,6 @@
-import { Typography } from '@mui/material';
-import { useNavigate, useLocation, Routes, Route } from 'react-router-dom';
-import { CreatePlaylist } from '../../components/createPlaylist/createPlaylist';
+import { Typography } from "@mui/material";
+import { useNavigate, useLocation, Routes, Route } from "react-router-dom";
+import CreatePlaylistPage from "../createPlaylistPage/createPlaylistPage";
 import { NavBar, NavToggleButton, ContentContainer } from './styled';
 import { MenuNavigationRoutes } from '../../models/MenuNavigationRoutes';
 import { NavigationRoutes } from '../../models/NavigationRoutes';
@@ -37,7 +37,7 @@ export const MainPage = () => {
 
   return (
     <div className="main-wrapper">
-      <NavBar>
+      <NavBar sx={{ height: '10vh'}}>
         <div
           className="profile-icon"
           onClick={() => handleToggle(MenuNavigationRoutes.EDIT_PROFILE)}
@@ -61,12 +61,12 @@ export const MainPage = () => {
         </div>
       </NavBar>
 
-      <ContentContainer>
+      <ContentContainer sx={{ height: '90vh', marginTop: '10vh'}}>
         <Routes>
-          <Route path="/" element={<CreatePlaylist />} />
+          <Route path="/" element={<CreatePlaylistPage  />} />
           <Route
             path={MenuNavigationRoutes.CREATE}
-            element={<CreatePlaylist />}
+            element={<CreatePlaylistPage  />}
           />
           <Route
             path={MenuNavigationRoutes.LIBRARY}

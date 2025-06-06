@@ -1,12 +1,6 @@
-import {
-  Box,
-  Button,
-  styled,
-  TextField,
-  Typography,
-  TypographyProps,
-} from '@mui/material';
+import { Box, Button, IconButton, styled, Typography, TypographyProps, TextField } from "@mui/material";
 import { disabledColor, primaryColor } from '../styles/consts';
+
 
 export const StyledMenuButton = styled(Button)({
   backgroundColor: primaryColor,
@@ -42,6 +36,36 @@ export const StyledPageSubtitle = styled((props: TypographyProps) => (
   textAlign: 'center',
 });
 
+export const StyledContentContainer = styled(Box)({
+  display: 'flex', 
+  flexDirection: 'column',
+  justifyContent: 'space-around',
+  textAlign: 'center',
+  width: '100%',
+  maxwidth: '450px',
+  padding: '1.5vh',
+  boxSizing: 'border-box',
+});
+
+export const StyledSongBox = styled(Box)({
+  flexDirection: 'row',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: '10px',
+  color: 'white',
+});
+
+export const StyledIconButton = styled(IconButton)({
+  color: 'white',
+  padding: '4px',
+  '&:hover': {
+    backgroundColor: 'rgba(255,255,255,0.1)',
+  },
+  '&:focus': {
+    outline: 'none',
+  },
+});
 export const StyledFormBox = styled(Box)({
   display: 'flex',
   flexDirection: 'column',

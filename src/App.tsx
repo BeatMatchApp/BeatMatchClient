@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage/homePage';
 import LoginPage from './pages/LoginPage/loginPage';
-import UserDetails from './components/userDetails/userDetails';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Provider } from 'react-redux';
@@ -9,7 +8,6 @@ import { store } from './redux/store';
 import RegisterSpotifyPage from './pages/RegisterSpotifyPage/RegisterSpotifyPage';
 import { NavigationRoutes } from './models/NavigationRoutes';
 import { ToastContainer } from 'react-toastify';
-import EditProfileForm from './pages/EditProfile/editProfile';
 import { MainPage } from './pages/MainPage/mainPage';
 import ProfileForm from './pages/ProfileForm/profileForm';
 import { ThemeProvider } from '@mui/material';

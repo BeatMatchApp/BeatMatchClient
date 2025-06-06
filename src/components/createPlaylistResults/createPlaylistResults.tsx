@@ -1,7 +1,7 @@
-import { Box } from "@mui/material";
+import { Box, TextareaAutosize } from "@mui/material";
 import { StyledContentContainer, StyledMenuButton, StyledPageTitle } from "../styledComponents";
 import { SongResult } from "./songResult";
-import Textarea from '@mui/joy/Textarea';
+// import Textarea from '@mui/joy/Textarea';
 import { useMemo, useState } from "react";
 
 const songs = [
@@ -57,7 +57,8 @@ export const CreatePlaylistResults: React.FC = () => {
                 />
               </Box>
             ))}
-            <Textarea sx={{ marginTop: '20px' }} minRows={2} placeholder="Any requests?" onChange={e => setRequetText(e.target.value)} />
+            <TextareaAutosize style={{ marginTop: '20px', height: '5vh', width: '100%', fontFamily: 'Poppins', resize: 'none' }} 
+            minRows={2} placeholder="Any requests?" onChange={e => setRequetText(e.target.value)} /> 
           </Box>
         </Box>
       </StyledContentContainer>

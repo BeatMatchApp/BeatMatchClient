@@ -37,7 +37,7 @@ export const MainPage = () => {
 
   return (
     <div className="main-wrapper">
-      <NavBar>
+      <NavBar sx={{ height: '10vh'}}>
         <div
           className="profile-icon"
           onClick={() => handleToggle(MenuNavigationRoutes.EDIT_PROFILE)}
@@ -61,7 +61,7 @@ export const MainPage = () => {
         </div>
       </NavBar>
 
-      <ContentContainer>
+      <ContentContainer sx={{ height: '90vh', marginTop: '10vh'}}>
         <Routes>
           <Route path="/" element={<CreatePlaylistPage  />} />
           <Route

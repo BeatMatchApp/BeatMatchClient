@@ -4,14 +4,12 @@ import './PreferencesPicker.css';
 
 interface Props {
   preference: string
+  handleDelete: (selectedItem: string) => void 
 }
-
-const handleDelete = () => {
-  console.info('You clicked the delete icon.');
-};
 
 const Preference: React.FC<Props> = ({
   preference,
+  handleDelete
 }) => {
 
   return (

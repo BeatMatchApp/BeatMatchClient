@@ -1,5 +1,5 @@
 import * as React from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
+// import CircularProgress from '@mui/material/CircularProgress';
 import { Box } from '@mui/material';
 
 const Loader: React.FC = () => {
@@ -14,7 +14,7 @@ const Loader: React.FC = () => {
           </linearGradient>
         </defs>
       </svg>
-      <CircularProgress size={80} sx={{ 'svg circle': { stroke: 'url(#my_gradient)' }}} />
+      {/* <CircularProgress size={80} sx={{ 'svg circle': { stroke: 'url(#my_gradient)' }}} /> */}
     </Box>
   )
 };

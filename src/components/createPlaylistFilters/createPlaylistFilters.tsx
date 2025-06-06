@@ -1,7 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { ScrollableSelector } from '../scrollableSelector/scrollableSelector';
 import { getEvents, getMoods } from '../../services/metaService';
-import './createPlaylist.css';
 import {
   StyledContentContainer,
   StyledPageTitle,

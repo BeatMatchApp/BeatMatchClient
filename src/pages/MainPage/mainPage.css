@@ -1,0 +1,23 @@
+.main-wrapper {
+  width: 100vw;
+  height: 100vh;
+  background: #f9f9f9;
+  overflow: hidden;
+  position: relative;
+}
+
+.nav-toggle-group {
+  display: flex;
+  gap: 16px;
+  background-color: #f0f0f0;
+  border-radius: 30px;
+  padding: 4px;
+}
+
+.profile-icon {
+  display: flex;
+  position: absolute;
+  right: 0;
+  padding-right: 15px;
+  cursor: pointer;
+}

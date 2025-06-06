@@ -1,15 +1,14 @@
 import { Box, TextField, Typography } from "@mui/material";
-import { ChangeEvent, useEffect, useState } from "react";
-import { ScrollableSelector } from "../scrollableSelector/scrollableSelector";
-import { getEvents, getMoods } from "../../services/metsService";
+import { ChangeEvent, useEffect, useState } from 'react';
+import { ScrollableSelector } from '../scrollableSelector/scrollableSelector';
+import { getEvents, getMoods } from '../../services/metaService';
 import { StyledContentContainer, StyledPageTitle } from "../styledComponents";
-
 interface Props {
   onValidChange: (isValid: boolean) => void;
 }
 
-export const CreatePlaylistFilters: React.FC<Props> = ({ onValidChange }) =>  {
-  const [playlistName, setPlaylistName] = useState("");
+export const CreatePlaylistFilters: React.FC<Props> = ({ onValidChange }) =>  {  
+  const [playlistName, setPlaylistName] = useState('');
   const [event, setEvent] = useState<string | null>(null);
   const [mood, setMood] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -21,7 +20,7 @@ export const CreatePlaylistFilters: React.FC<Props> = ({ onValidChange }) =>  {
       const response = await getEvents();
       setEvents(response);
     } catch (error) {
-      console.error("Error fetching events:", error);
+      console.error('Error fetching events:', error);
     }
   };
 
@@ -30,7 +29,7 @@ export const CreatePlaylistFilters: React.FC<Props> = ({ onValidChange }) =>  {
       const response = await getMoods();
       setMoods(response);
     } catch (error) {
-      console.error("Error fetching moods:", error);
+      console.error('Error fetching moods:', error);
     }
   };
 
@@ -43,8 +42,6 @@ export const CreatePlaylistFilters: React.FC<Props> = ({ onValidChange }) =>  {
     onValidChange(validatePlaylistName(playlistName) && !error);
   }, [playlistName, error, onValidChange]);
 
-  fetchEvents();
-
   const validatePlaylistName = (name: string): boolean => {
     const isValid = name.trim().length > 0 && name.length <= 100;
     return isValid;
@@ -52,11 +49,12 @@ export const CreatePlaylistFilters: React.FC<Props> = ({ onValidChange }) =>  {
 
   const handlePlaylistNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
+
     setPlaylistName(value);
     setError(
       validatePlaylistName(value)
         ? null
-        : "Enter a valid playlist name (1–100 chars)."
+        : 'Enter a valid playlist name (1–100 chars).'
     );
   };
 
@@ -90,6 +88,7 @@ export const CreatePlaylistFilters: React.FC<Props> = ({ onValidChange }) =>  {
           selected={mood}
           onSelect={setMood}
         />
+
       </StyledContentContainer>
     </Box>
   );

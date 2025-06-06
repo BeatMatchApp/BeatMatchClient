@@ -55,11 +55,11 @@ body {
   color: #888;
 }
 
-.aiTextarea{
+.aiTextarea {
   width: 80%;
 }
 
-.logoImg{
+.logoImg {
   border: none;
   outline: none;
 }
@@ -75,10 +75,34 @@ body {
   font-family: 'Poppins', sans-serif !important;
 }
 
-.MuiTextField-root{
+.MuiTextField-root {
   width: 100%;
 }
 
-.MuiPickersTextField-root{
+.MuiPickersTextField-root {
   width: 100%;
+}
+
+.Toastify__progress-bar--success {
+  background: #5a36a1;
+}
+
+.Toastify__progress-bar--info {
+  background: #b9ab43;
+}
+
+.Toastify__progress-bar--error {
+  background: #be4c44;
+}
+
+.Toastify__toast--success .Toastify__toast-icon > svg {
+  fill: #5a36a1 !important; /* green */
+}
+
+.Toastify__toast--info .Toastify__toast-icon > svg {
+  fill: #b9ab43 !important; /* blue */
+}
+
+.Toastify__toast--error .Toastify__toast-icon > svg {
+  fill: #be4c44 !important; /* red */
 }

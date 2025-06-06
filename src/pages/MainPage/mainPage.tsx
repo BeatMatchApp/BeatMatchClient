@@ -1,15 +1,12 @@
 import { Typography } from "@mui/material";
 import { useNavigate, useLocation, Routes, Route } from "react-router-dom";
-import {
-  MainWrapper,
-  NavBar,
-  NavToggleGroup,
-  NavToggleButton,
-  ContentContainer,
-} from "./styled";
-import { MenuNavigationRoutes } from "./mainPage.model";
-import { NavigationRoutes } from "../../models/NavigationRoutes";
 import CreatePlaylistPage from "../createPlaylistPage/createPlaylistPage";
+import { NavBar, NavToggleButton, ContentContainer } from './styled';
+import { MenuNavigationRoutes } from '../../models/MenuNavigationRoutes';
+import { NavigationRoutes } from '../../models/NavigationRoutes';
+import './mainPage.css';
+import { AccountCircle } from '@mui/icons-material';
+import EditProfileForm from '../EditProfile/editProfile';
 
 // todo: replace with actual component
 function DisplayPlaylistsPage() {
@@ -27,39 +24,60 @@ export const MainPage = () => {
   const location = useLocation();
 
   const currentPath = location.pathname;
+
   const isCreate =
     currentPath.endsWith(MenuNavigationRoutes.CREATE) ||
     currentPath === NavigationRoutes.MAIN_PAGE;
+
+  const isPlaylists = currentPath.endsWith(MenuNavigationRoutes.LIBRARY);
 
   const handleToggle = (target: MenuNavigationRoutes) => {
     navigate(`${NavigationRoutes.MAIN_PAGE}${target}`);
   };
 
   return (
-    <MainWrapper>
-      <NavBar position="fixed">
-        <NavToggleGroup>
+    <div className="main-wrapper">
+      <NavBar>
+        <div
+          className="profile-icon"
+          onClick={() => handleToggle(MenuNavigationRoutes.EDIT_PROFILE)}
+        >
+          <AccountCircle fontSize="large" />
+        </div>
+        <div className="nav-toggle-group">
           <NavToggleButton
             selected={isCreate}
-            onClick={() => handleToggle(MenuNavigationRoutes.CREATE)}>
+            onClick={() => handleToggle(MenuNavigationRoutes.CREATE)}
+          >
             Create
           </NavToggleButton>
 
           <NavToggleButton
-            selected={!isCreate}
-            onClick={() => handleToggle(MenuNavigationRoutes.LIBRARY)}>
+            selected={isPlaylists}
+            onClick={() => handleToggle(MenuNavigationRoutes.LIBRARY)}
+          >
             Library
           </NavToggleButton>
-        </NavToggleGroup>
+        </div>
       </NavBar>
 
       <ContentContainer>
         <Routes>
-          <Route path="/" element={<CreatePlaylistPage />} />
-          <Route path="/create" element={<CreatePlaylistPage />} />
-          <Route path="/library" element={<DisplayPlaylistsPage />} />
+          <Route path="/" element={<CreatePlaylistPage  />} />
+          <Route
+            path={MenuNavigationRoutes.CREATE}
+            element={<CreatePlaylistPage  />}
+          />
+          <Route
+            path={MenuNavigationRoutes.LIBRARY}
+            element={<DisplayPlaylistsPage />}
+          />
+          <Route
+            path={MenuNavigationRoutes.EDIT_PROFILE}
+            element={<EditProfileForm />}
+          />
         </Routes>
       </ContentContainer>
-    </MainWrapper>
+    </div>
   );
 };

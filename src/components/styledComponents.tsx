@@ -11,13 +11,12 @@ import {
   Typography,
   TypographyProps,
 } from '@mui/material';
-import theme from '../styles/consts';
 
 interface StyledChipProps {
   isSelected?: boolean;
 }
 
-export const StyledMenuButton = styled(Button)(({ variant }) => ({
+export const StyledMenuButton = styled(Button)(({ theme, variant }) => ({
   backgroundColor:
     variant === 'outlined' ? 'white' : theme.palette.customColors.medium,
   color: variant === 'outlined' ? theme.palette.customColors.medium : 'white',
@@ -39,14 +38,14 @@ export const StyledMenuButton = styled(Button)(({ variant }) => ({
   },
 }));
 
-export const StyledRefreshButton = styled(StyledMenuButton)({
+export const StyledRefreshButton = styled(StyledMenuButton)(({ theme }) => ({
   paddingTop: '1vh',
   marginTop: '1vh',
   background: theme.palette.customColors.pink,
   '&:hover': {
     background: '#f07a9d',
   },
-});
+}));
 
 export const StyledLoadingBox = styled(Box)({
   display: 'flex',
@@ -80,7 +79,7 @@ export const StyledContentContainer = styled(Box)({
   boxSizing: 'border-box',
 });
 
-export const StyledSongBox = styled(Box)({
+export const StyledSongBox = styled(Box)(({ theme }) => ({
   flexDirection: 'row',
   display: 'flex',
   alignItems: 'center',
@@ -90,7 +89,7 @@ export const StyledSongBox = styled(Box)({
   [theme.breakpoints.down('sm')]: {
     padding: '10px 12px',
   },
-});
+}));
 
 export const StyledIconButton = styled(IconButton)({
   color: 'white',
@@ -102,7 +101,7 @@ export const StyledIconButton = styled(IconButton)({
     outline: 'none',
   },
 });
-export const StyledFormBox = styled(Box)({
+export const StyledFormBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   width: '40vw',
@@ -111,7 +110,7 @@ export const StyledFormBox = styled(Box)({
   borderRadius: '2em',
   padding: '30px',
   overflowY: 'hidden',
-});
+}));
 
 export const StyledTextField = styled(TextField)({
   background: 'white',
@@ -127,7 +126,7 @@ export const StyledTextField = styled(TextField)({
 
 export const StyledChip = styled(Chip, {
   shouldForwardProp: (prop) => prop !== 'isSelected',
-})<StyledChipProps>(({ isSelected }) => ({
+})<StyledChipProps>(({ theme, isSelected }) => ({
   '&.MuiChip-outlined .MuiChip-label': {
     color: theme.palette.customColors.medium,
   },
@@ -289,21 +288,21 @@ export const PlaylistAvatar = styled(Avatar)({
   boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
 });
 
-export const PlaylistTitle = styled(Typography)({
+export const PlaylistTitle = styled(Typography)(({ theme }) => ({
   color: theme.palette.customColors.textMain,
   fontWeight: 'bold',
   marginBottom: 4,
-});
+}));
 
-export const PlaylistDataTitle = styled(Typography)({
+export const PlaylistDataTitle = styled(Typography)(({ theme }) => ({
   color: theme.palette.customColors.textMain,
   fontWeight: 'bold',
-});
+}));
 
-export const PlaylistDataText = styled(Typography)({
+export const PlaylistDataText = styled(Typography)(({ theme }) => ({
   color: theme.palette.customColors.medium,
   marginLeft: '5px',
-});
+}));
 
 export const PlaylistMetaText = styled(Typography)({
   display: 'flex',
@@ -317,11 +316,11 @@ export const ActionIconButton = styled(IconButton)({
   },
 });
 
-export const StyledPlaylistChip = styled(Chip)({
+export const StyledPlaylistChip = styled(Chip)(({ theme }) => ({
   backgroundColor: theme.palette.customColors.pink,
   color: 'white',
   fontWeight: 500,
-});
+}));
 
 export const PlaylistContextText = styled(Typography)({
   overflow: 'hidden',

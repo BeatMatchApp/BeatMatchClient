@@ -74,8 +74,11 @@
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: '10px',
     color: theme.palette.customColors.textSecondary,
+    padding: '12px 16px',
+    [theme.breakpoints.down('sm')]: {
+    padding: '10px 12px',
+  }
   });
 
   export const StyledIconButton = styled(IconButton)({
@@ -208,4 +211,59 @@
     overflow: 'hidden',
     borderColor: '#cccccc',
     color: theme.palette.customColors.textMain,
+}));
+
+export const StyledSongContainer = styled(Box)(({ theme }) => ({
+  backgroundColor: '#715cf8',
+  borderRadius: '8px',
+  marginBottom: '8px',
+  transition: 'all 0.2s ease',
+  '&:hover': {
+    transform: 'translateY(-2px)',
+    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+  },
+  [theme.breakpoints.down('sm')]: {
+    borderRadius: '6px',
+  }
+}));
+
+export const StyledUnlikeIconButton = styled(IconButton)(({ theme }) => ({
+  color: 'white',
+  padding: '8px',
+  '&:hover': {
+    backgroundColor: 'rgba(255,255,255,0.15)',
+  },
+  '&:focus': {
+    outline: 'none',
+  },
+  [theme.breakpoints.down('sm')]: {
+    padding: '6px',
+  }
+}));
+
+export const SongNumberTypography = styled(Typography)(({ theme }) => ({
+  marginRight: '16px',
+  width: '24px',
+  textAlign: 'center',
+  fontWeight: 'medium',
+  [theme.breakpoints.down('sm')]: {
+    marginRight: '12px',
+    width: '20px',
+    fontSize: '0.85rem',
+  }
+}));
+
+export const SongTitle = styled(Typography)(({ theme }) => ({
+  fontWeight: '500',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+  maxWidth: '280px',
+  [theme.breakpoints.down('md')]: {
+    maxWidth: '200px',
+  },
+  [theme.breakpoints.down('sm')]: {
+    maxWidth: '150px',
+    fontSize: '0.9rem',
+  }
 }));

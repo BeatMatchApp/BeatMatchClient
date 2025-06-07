@@ -1,4 +1,3 @@
-import { Typography } from '@mui/material';
 import { useNavigate, useLocation, Routes, Route } from 'react-router-dom';
 import { NavBar, ContentContainer } from './styled';
 import { MenuNavigationRoutes } from '../../models/MenuNavigationRoutes';
@@ -10,21 +9,11 @@ import { envConfig } from '../../config/config';
 import { AxiosError } from 'axios';
 import Loader from '../../components/Loader/Loader';
 import CreatePlaylistPage from '../createPlaylistPage/createPlaylistPage';
-import EditProfileForm from '../EditProfile/editProfile';
+import LibraryPage from "../LibraryPage/LibraryPage";
 import { AccountCircle } from '@mui/icons-material';
 import { StyledMainBox } from '../styledPages';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
-
-function DisplayPlaylistsPage() {
-  return (
-    <div>
-      <Typography variant="h5" fontWeight="bold">
-        Your Playlists
-      </Typography>
-    </div>
-  );
-}
-
+import EditProfileForm from '../EditProfile/editProfile';
 
 export const MainPage = () => {
   const navigate = useNavigate();
@@ -108,7 +97,7 @@ useEffect(() => {
           />
           <Route
             path={MenuNavigationRoutes.LIBRARY}
-            element={<DisplayPlaylistsPage />}
+            element={<LibraryPage />}
           />
           <Route
             path={MenuNavigationRoutes.EDIT_PROFILE}

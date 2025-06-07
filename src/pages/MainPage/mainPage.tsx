@@ -13,6 +13,7 @@ import CreatePlaylistPage from '../createPlaylistPage/createPlaylistPage';
 import EditProfileForm from '../EditProfile/editProfile';
 import { AccountCircle } from '@mui/icons-material';
 import { StyledMainBox } from '../styledPages';
+import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 
 function DisplayPlaylistsPage() {
   return (
@@ -84,14 +85,16 @@ useEffect(() => {
             onClick={() => handleToggle(MenuNavigationRoutes.CREATE)}
           >
             Create
-            <AccountCircle fontSize="large" sx={{ marginRight: '10px'}}/>
+            <AccountCircle fontSize="large" sx={{ marginRight: '5px'}}/>
           </StyledNavToggleButton>
 
-          <StyledNavToggleButton
+            <StyledNavToggleButton
             selected={isPlaylists}
+            sx={{ display: 'flex', alignItems: 'center'}}
             onClick={() => handleToggle(MenuNavigationRoutes.LIBRARY)}
           >
             Library
+            <LibraryMusicIcon fontSize="large" sx={{ marginRight: '5px'}}/>
           </StyledNavToggleButton>
         </StyledNavToggleGroup>
       </NavBar>

@@ -49,7 +49,7 @@ const LibraryPage: React.FC = () => {
 
   const PlaylistSkeletons = useMemo(
     () => (
-      <Box sx={{ display: 'grid', width: '90vw' }}>
+      <Box sx={{ display: 'grid', width: { xs: '90vw', sm: '50vw' } }}>
         <StyledPageTitle sx={{ marginBottom: '1vh' }}>
           Your library
         </StyledPageTitle>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { TextField } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 import TopGenres from '../../components/topGenres/topGenres';
 import TopArtists from '../../components/topArtists/topArtists';
 import TopSong from '../../components/topSong/topSong';
@@ -101,9 +101,14 @@ const EditProfileForm = () => {
   };
 
   return (
-    <div className="edit-profile-form-container">
-      <div className="content-container">
-        <StyledPageTitle>Edit Your Profile</StyledPageTitle>
+    <Box className="edit-profile-form-container">
+      <Box
+        className="content-container"
+        sx={{ width: { xs: '80vw', sm: '50vw' } }}
+      >
+        <StyledPageTitle sx={{ marginBottom: '1vh' }}>
+          Edit Your Profile
+        </StyledPageTitle>
 
         <TextField
           id="name"
@@ -152,27 +157,40 @@ const EditProfileForm = () => {
           slotProps={{ inputLabel: { shrink: !!userDetails.email } }}
         />
 
-        <TopGenres
-          setSelectedGenres={setSelectedGenres}
-          selectedGenres={selectedGenres}
-          genres={selectedGenres}
-        />
-        <TopArtists
-          selectedArtists={selectedArtists}
-          setSelectedArtists={setSelectedArtists}
-          artists={selectedArtists}
-        />
-        <TopSong handleNextStep={setSelectedSong} song={selectedSong} />
-
-        <StyledMenuButton
-          disabled={disableSave()}
-          variant="contained"
-          onClick={handleSave}
+        <Box sx={{ my: '1vh' }}>
+          <TopGenres
+            setSelectedGenres={setSelectedGenres}
+            selectedGenres={selectedGenres}
+            genres={selectedGenres}
+          />
+        </Box>
+        <Box sx={{ my: '1vh' }}>
+          <TopArtists
+            selectedArtists={selectedArtists}
+            setSelectedArtists={setSelectedArtists}
+            artists={selectedArtists}
+          />
+        </Box>
+        <Box sx={{ my: '1vh' }}>
+          <TopSong handleNextStep={setSelectedSong} song={selectedSong} />
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: '1vh',
+          }}
         >
-          Save Changes
-        </StyledMenuButton>
-      </div>
-    </div>
+          <StyledMenuButton
+            disabled={disableSave()}
+            variant="contained"
+            onClick={handleSave}
+          >
+            Save Changes
+          </StyledMenuButton>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

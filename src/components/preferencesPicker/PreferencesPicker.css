@@ -16,19 +16,30 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 2vh;
   flex-direction: column;
 }
 
 .selected-preview {
-  white-space: nowrap;
   width: 100%;
-  overflow-y: auto;
+  overflow: hidden;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.selected-preview-inner {
+  display: flex;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.selected-preview-inner::-webkit-scrollbar {
+  display: none;
 }
 
 .selected-placeholder {
   color: #aaa;
   font-style: italic;
+  margin-top: 2vh;
 }
 
 .next-button {
@@ -62,9 +73,4 @@
 
 .chip-remove:hover {
   color: red;
-}
-
-.selected-placeholder {
-  color: #aaa;
-  font-style: italic;
 }

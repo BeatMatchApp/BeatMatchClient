@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Stepper, Step, StepLabel } from '@mui/material';
+import { Stepper, Step, StepLabel, Box } from '@mui/material';
 import TopArtists from '../../components/topArtists/topArtists';
 import { updatePreferences } from '../../services/userPreferencesService';
 import { toast } from 'react-toastify';
@@ -7,7 +7,7 @@ import RegisterPage from '../RegisterPage/registerPage';
 import { useNavigate } from 'react-router-dom';
 import { NavigationRoutes } from '../../models/NavigationRoutes';
 import TopGenres from '../../components/topGenres/topGenres';
- import './ProfileForm.css';
+import './ProfileForm.css';
 import TopSong from '../../components/topSong/topSong';
 import { FormSteps } from '../../models/enums/FormSteps';
 import { MAX_PREFERENCES_AMOUNT } from '../../shared/consts';
@@ -101,7 +101,7 @@ const ProfileForm: React.FC = () => {
   ];
 
   return (
-    <div className="form-container">
+    <Box className="form-container">
       <StyledPageCard>
         <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: 4 }}>
           {stepComponents.map((step, index) => (
@@ -114,7 +114,7 @@ const ProfileForm: React.FC = () => {
         {stepComponents[activeStep].component}
 
         <StyledCardBox>
-        {isFinishedForm && (
+          {isFinishedForm && (
             <StyledMenuButton
               sx={{ marginTop: '3vh' }}
               disabled={!isPreferencesFilled}
@@ -124,10 +124,14 @@ const ProfileForm: React.FC = () => {
               Save my choices!
             </StyledMenuButton>
           )}
-          {activeStep > 1 && <StyledMenuButton variant="outlined" onClick={handlePrevious}>Back</StyledMenuButton>}
-      </StyledCardBox>
+          {activeStep > 1 && (
+            <StyledMenuButton variant="outlined" onClick={handlePrevious}>
+              Back
+            </StyledMenuButton>
+          )}
+        </StyledCardBox>
       </StyledPageCard>
-    </div>
+    </Box>
   );
 };
 

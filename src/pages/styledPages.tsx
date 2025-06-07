@@ -1,8 +1,4 @@
-import {
-  Box,
-  Card,
-  styled
-} from '@mui/material';
+import { Box, Card, styled } from '@mui/material';
 
 export const StyledPageCard = styled(Card)(({ theme }) => ({
   width: '80vw',
@@ -22,7 +18,7 @@ export const StyledCardBox = styled(Box)(({ theme }) => ({
   padding: '1vh',
   display: 'flex',
   flexDirection: 'column',
-  gap: '2vh',
+  gap: '1vh',
   justifyContent: 'center',
   alignItems: 'center',
   margin: 'auto',
@@ -37,7 +33,7 @@ export const StyledMainBox = styled(Box)(() => ({
   overflow: 'hidden',
   position: 'relative',
   backgroundImage: `url('/assets/main-background.jpg')`,
-  backgroundSize: 'cover',     
+  backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
   backgroundAttachment: 'fixed',

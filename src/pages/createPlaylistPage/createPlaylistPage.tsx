@@ -13,18 +13,20 @@ const CreatePlaylistPage: React.FC = () => {
     {
       stepText: 'Let’s get started!',
       stepButtonText: 'Start Creating my playlist',
-      StepContent: () => <CreatePlaylistFilters onValidChange={setIsStepValid} />
+      StepContent: () => (
+        <CreatePlaylistFilters onValidChange={setIsStepValid} />
+      ),
     },
     {
       stepText: 'Let’s customize it!',
       stepButtonText: 'My playlist is perfect!',
-      StepContent: () => <CreatePlaylistResults />
+      StepContent: () => <CreatePlaylistResults />,
     },
     {
       stepText: 'Finish',
-      stepButtonText: 'Create another playlist?',
-      StepContent: () => <CreatePlaylistFinish PlaylistUrl='myUrl' />
-    }
+      stepButtonText: 'Create another playlist',
+      StepContent: () => <CreatePlaylistFinish PlaylistUrl="myUrl" />,
+    },
   ];
 
   const handleNext = () => {

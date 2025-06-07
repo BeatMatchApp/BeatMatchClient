@@ -133,33 +133,30 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({
             </StyledRefreshButton>
           </Box>
 
-          <Box
-            sx={{
-              mb: '1vh',
-              height: '30vh',
-              overflow: 'auto',
-              padding: '1vh',
-              justifySelf: 'center',
-            }}
-          >
-            {playlist.songs.map((song, index) => (
-              <Box className="center" sx={{ margin: '5px' }} key={index}>
-                <SongResult
-                  key={index}
-                  isDisliked={dislikedSongs.has(index)}
-                  trackDetails={song}
-                  onDislikeChange={() => onDislikeChange(index)}
-                />
-              </Box>
-            ))}
+          <Box sx={{ overflow: 'hidden', height: '30vh' }}>
+            <Box
+              sx={{
+                mb: '1vh',
+                justifySelf: 'center',
+                width: '100%',
+                height: '100%',
+                overflowY: 'scroll',
+                padding: '0 1.5vw 1vh 1vh',
+              }}
+            >
+              {playlist.songs.map((song, index) => (
+                <Box className="center" sx={{ margin: '1vh' }} key={index}>
+                  <SongResult
+                    key={index}
+                    isDisliked={dislikedSongs.has(index)}
+                    trackDetails={song}
+                    onDislikeChange={() => onDislikeChange(index)}
+                  />
+                </Box>
+              ))}
+            </Box>
           </Box>
 
-          <Typography
-            variant="subtitle1"
-            sx={{ color: '#5a36a1', fontWeight: 'bold' }}
-          >
-            Any requests?
-          </Typography>
           <StyledTextArea
             minRows={4}
             placeholder="Add song requests or feedback for this playlist..."

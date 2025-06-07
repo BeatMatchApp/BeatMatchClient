@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Divider, TextField, Typography } from '@mui/material';
+import { Box, Divider, TextField, Typography } from '@mui/material';
 import { useDebounce } from 'use-debounce';
 import './PreferencesPicker.css';
 import { MAX_PREFERENCES_AMOUNT } from '../../shared/consts';
@@ -77,7 +77,7 @@ const PreferencesPicker: React.FC<Props> = ({
         className="search"
         sx={{ marginBottom: '2vh', marginTop: '2vh' }}
       />
-      <div className="items-list">
+      <Box className="items-list">
         {options.map((option) => {
           const isSelected = selectedPreferences.includes(option);
 
@@ -92,12 +92,14 @@ const PreferencesPicker: React.FC<Props> = ({
             />
           );
         })}
-      </div>
-      <div className="bottom-form">
-        <div className="selected-preview">
+      </Box>
+      {selectedPreferences.length > 0 && options.length > 0 && (
+        <Divider sx={{ margin: '1vh' }} />
+      )}
+      <Box className="bottom-form">
+        <Box className="selected-preview">
           {selectedPreferences.length > 0 ? (
-            <>
-              <Divider sx={{ margin: '1vh' }} />
+            <Box className="selected-preview-inner">
               {selectedPreferences.map((preference) => (
                 <Preference
                   key={preference}
@@ -105,13 +107,13 @@ const PreferencesPicker: React.FC<Props> = ({
                   handleDelete={() => handleRemove(preference)}
                 />
               ))}
-            </>
+            </Box>
           ) : (
-            <span className="selected-placeholder">
+            <Box className="selected-placeholder">
               No {preferencesName} selected
-            </span>
+            </Box>
           )}
-        </div>
+        </Box>
 
         {!editMode && (
           <StyledMenuButton
@@ -123,7 +125,7 @@ const PreferencesPicker: React.FC<Props> = ({
             keep going!
           </StyledMenuButton>
         )}
-      </div>
+      </Box>
     </>
   );
 };

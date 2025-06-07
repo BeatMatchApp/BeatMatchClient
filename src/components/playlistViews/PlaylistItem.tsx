@@ -37,17 +37,12 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
         <Box sx={{ flexGrow: 1, textAlign: 'start' }}>
           <PlaylistTitle variant="h6">{playlist.name}</PlaylistTitle>
 
-          {playlist.context && (
-            <PlaylistContextText
-              sx={{ mb: 1 }}
-              variant="body2"
-              color="text.secondary"
-            >
-              {playlist.context}
-            </PlaylistContextText>
-          )}
-
-          <Stack direction="row" spacing={1.5} alignItems="center">
+          <Stack
+            direction="row"
+            spacing={1.5}
+            alignItems="center"
+            sx={{ mb: 1 }}
+          >
             <StyledPlaylistChip
               size="small"
               label={`${playlist.songs.length} songs`}
@@ -57,6 +52,12 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
               {formattedDate}
             </PlaylistMetaText>
           </Stack>
+
+          {playlist.context && (
+            <PlaylistContextText variant="body2" color="text.secondary">
+              {playlist.context}
+            </PlaylistContextText>
+          )}
         </Box>
 
         <Box sx={{ display: 'flex', alignItems: 'center' }}>

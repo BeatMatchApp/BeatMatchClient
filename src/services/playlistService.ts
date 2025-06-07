@@ -4,7 +4,7 @@ const mockPlaylists: Playlist[] = [
   {
     id: '1',
     userId: 'user123',
-    name: 'playlist1',
+    name: 'playlist 1',
     context: '',
     songs: [
       { songName: 'Song A', artist: 'Artist A' },
@@ -22,8 +22,8 @@ const mockPlaylists: Playlist[] = [
   {
     id: '2',
     userId: 'user123',
-    name: 'playlist1',
-    context: '',
+    name: 'playlist 2',
+    context: 'my playlist context',
     songs: [
       { songName: 'Song A', artist: 'Artist A' },
       { songName: 'Song B', artist: 'Artist B' },
@@ -37,7 +37,7 @@ const mockPlaylists: Playlist[] = [
   {
     id: '3',
     userId: 'user123',
-    name: 'playlist1',
+    name: 'playlist 3',
     context: 'my playlist context',
     songs: [],
     creationTime: new Date('2025-04-15'),
@@ -46,7 +46,7 @@ const mockPlaylists: Playlist[] = [
   {
     id: '4',
     userId: 'user123',
-    name: 'playlist1',
+    name: 'playlist 4',
     context: '',
     songs: [
       { songName: 'Song A', artist: 'Artist A' },

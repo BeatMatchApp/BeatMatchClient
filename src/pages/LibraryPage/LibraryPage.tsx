@@ -48,18 +48,18 @@ const LibraryPage: React.FC = () => {
 
   const PlaylistSkeletons = useMemo(
     () => (
-      <Box sx={{ display: 'grid', gap: 3 }}>
+      <Box sx={{ display: 'grid', gap: 2, width: '90vw' }}>
+        <StyledPageTitle>Your library</StyledPageTitle>
         {[1, 2, 3].map((index) => (
           <Card
             key={index}
             sx={{
-              p: 2,
               borderRadius: 2,
               transition: 'all 0.3s',
               '&:hover': { transform: 'translateY(-4px)' },
             }}
           >
-            <CardContent sx={{ display: 'flex', p: 2 }}>
+            <CardContent sx={{ display: 'flex' }}>
               <Skeleton
                 variant="rounded"
                 width={80}
@@ -67,20 +67,11 @@ const LibraryPage: React.FC = () => {
                 sx={{ mr: 2 }}
               />
               <Box sx={{ width: '100%' }}>
-                <Skeleton
-                  variant="text"
-                  width="40%"
-                  height={32}
-                  sx={{ mb: 1 }}
-                />
+                <Skeleton variant="text" width="40%" sx={{ mb: 1 }} />
                 <Stack direction="row" spacing={2} sx={{ mb: 1 }}>
-                  <Skeleton variant="rounded" width={80} height={24} />
                   <Skeleton variant="text" width={100} height={24} />
                 </Stack>
                 <Skeleton variant="text" width="70%" />
-              </Box>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Skeleton variant="circular" width={40} height={40} />
               </Box>
             </CardContent>
           </Card>
@@ -109,14 +100,21 @@ const LibraryPage: React.FC = () => {
   );
   const playlistsList = useMemo(
     () => (
-      <Box sx={{ display: 'grid', gap: 3 }}>
-        {playlists.map((playlist) => (
-          <PlaylistItem
-            key={playlist.id}
-            playlist={playlist}
-            onView={() => setSelectedPlaylist(playlist)}
-          />
-        ))}
+      <Box className="center">
+        <StyledPageTitle sx={{ marginBottom: '1vh' }}>
+          Your library
+        </StyledPageTitle>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Box sx={{ display: 'grid', gap: 3 }}>
+            {playlists.map((playlist) => (
+              <PlaylistItem
+                key={playlist.id}
+                playlist={playlist}
+                onView={() => setSelectedPlaylist(playlist)}
+              />
+            ))}
+          </Box>
+        </Box>
       </Box>
     ),
     [playlists]
@@ -147,8 +145,6 @@ const LibraryPage: React.FC = () => {
   return (
     <Box className="center" sx={{ width: { sm: '80%' }, margin: 'auto' }}>
       {errorAlert}
-
-      <StyledPageTitle sx={{ height: '10%' }}>Your library</StyledPageTitle>
 
       <StyledContentContainer>
         {selectedPlaylist ? (

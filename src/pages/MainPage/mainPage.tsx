@@ -55,11 +55,11 @@ export const MainPage = () => {
 
   const currentPath = location.pathname;
 
-  const isCreate =
-    currentPath.endsWith(MenuNavigationRoutes.CREATE) ||
-    currentPath === NavigationRoutes.MAIN_PAGE;
+  const isCreate = currentPath.endsWith(MenuNavigationRoutes.CREATE);
 
-  const isPlaylists = currentPath.endsWith(MenuNavigationRoutes.LIBRARY);
+  const isPlaylists =
+    currentPath.endsWith(MenuNavigationRoutes.LIBRARY) ||
+    currentPath === NavigationRoutes.MAIN_PAGE;
 
   const handleToggle = (target: MenuNavigationRoutes) => {
     navigate(`${NavigationRoutes.MAIN_PAGE}${target}`);
@@ -111,7 +111,7 @@ export const MainPage = () => {
 
       <ContentContainer>
         <Routes>
-          <Route path="/" element={<CreatePlaylistPage />} />
+          <Route path="/" element={<LibraryPage />} />
           <Route
             path={MenuNavigationRoutes.CREATE}
             element={<CreatePlaylistPage />}

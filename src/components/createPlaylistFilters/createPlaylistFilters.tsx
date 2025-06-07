@@ -4,8 +4,7 @@ import { getEvents, getMoods } from '../../services/metaService';
 import { StyledContentContainer, StyledPageTitle } from '../styledComponents';
 import { Box, TextField, Typography } from '@mui/material';
 import EventIcon from '@mui/icons-material/Event';
-import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
-
+import MoodIcon from '@mui/icons-material/Mood';
 interface Props {
   onValidChange: (isValid: boolean) => void;
 }
@@ -94,7 +93,7 @@ export const CreatePlaylistFilters: React.FC<Props> = ({ onValidChange }) => {
           items={moods}
           selected={mood}
           onSelect={setMood}
-          icon={EmojiEmotionsIcon}
+          icon={MoodIcon}
         />
       </StyledContentContainer>
     </Box>

@@ -132,6 +132,8 @@ const EditProfileForm = () => {
           />
         </StyledIconBox>
 
+        <Divider sx={{ margin: '5px' }} />
+
         <TextField
           id="name"
           label="Name"

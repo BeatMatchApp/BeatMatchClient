@@ -8,6 +8,7 @@ import {
   Card,
   CardContent,
   Stack,
+  Divider,
 } from '@mui/material';
 import {
   StyledContentContainer,
@@ -50,6 +51,7 @@ const LibraryPage: React.FC = () => {
     () => (
       <Box sx={{ display: 'grid', gap: 2, width: '90vw' }}>
         <StyledPageTitle>Your library</StyledPageTitle>
+        <Divider sx={{ margin: '10px', width: '100%' }} />
         {[1, 2, 3].map((index) => (
           <Card
             key={index}
@@ -104,6 +106,7 @@ const LibraryPage: React.FC = () => {
         <StyledPageTitle sx={{ marginBottom: '1vh' }}>
           Your library
         </StyledPageTitle>
+        <Divider sx={{ margin: '10px', width: '100%' }} />
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Box sx={{ display: 'grid', gap: 3 }}>
             {playlists.map((playlist) => (

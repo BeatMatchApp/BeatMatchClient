@@ -3,6 +3,9 @@ import { ScrollableSelector } from '../scrollableSelector/scrollableSelector';
 import { getEvents, getMoods } from '../../services/metaService';
 import { StyledContentContainer, StyledPageTitle } from '../styledComponents';
 import { Box, TextField, Typography } from '@mui/material';
+import EventIcon from '@mui/icons-material/Event';
+import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+
 interface Props {
   onValidChange: (isValid: boolean) => void;
 }
@@ -83,6 +86,7 @@ export const CreatePlaylistFilters: React.FC<Props> = ({ onValidChange }) => {
           items={events}
           selected={event}
           onSelect={setEvent}
+          icon={EventIcon}
         />
 
         <ScrollableSelector
@@ -90,6 +94,7 @@ export const CreatePlaylistFilters: React.FC<Props> = ({ onValidChange }) => {
           items={moods}
           selected={mood}
           onSelect={setMood}
+          icon={EmojiEmotionsIcon}
         />
       </StyledContentContainer>
     </Box>

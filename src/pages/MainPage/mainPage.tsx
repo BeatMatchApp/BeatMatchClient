@@ -13,7 +13,7 @@ import { AxiosError } from 'axios';
 import Loader from '../../components/Loader/Loader';
 import CreatePlaylistPage from '../createPlaylistPage/createPlaylistPage';
 import LibraryPage from '../LibraryPage/LibraryPage';
-import { AccountCircle } from '@mui/icons-material';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import { StyledMainBox } from '../styledPages';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import EditProfileForm from '../EditProfile/editProfile';
@@ -76,7 +76,7 @@ export const MainPage = () => {
           sx={{ position: 'absolute', right: '0' }}
           onClick={() => handleToggle(MenuNavigationRoutes.EDIT_PROFILE)}
         >
-          <AccountCircle
+          <ManageAccountsIcon
             fontSize="large"
             sx={{
               marginRight: '5px',

@@ -330,3 +330,11 @@ export const PlaylistContextText = styled(Typography)({
   WebkitBoxOrient: 'vertical',
   lineHeight: 1.4,
 });
+
+export const StyledIconBox = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'row',
+  marginTop: '2vh',
+});

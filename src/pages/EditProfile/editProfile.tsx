@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, TextField } from '@mui/material';
+import { Box, Divider, TextField } from '@mui/material';
 import TopGenres from '../../components/topGenres/topGenres';
 import TopArtists from '../../components/topArtists/topArtists';
 import TopSong from '../../components/topSong/topSong';
@@ -12,7 +12,9 @@ import { NavigationRoutes } from '../../models/NavigationRoutes';
 import { useNavigate } from 'react-router-dom';
 import './editProfile.css';
 import {
+  StyledIconBox,
   StyledMenuButton,
+  StyledPageSubtitle,
   StyledPageTitle,
 } from '../../components/styledComponents';
 import {
@@ -23,6 +25,9 @@ import {
 import { DatePicker } from '@mui/x-date-pickers';
 import { getUserDetails, updateUserDetails } from '../../services/userService';
 import { formatDate } from '../../shared/dateFormatter';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import theme from '../../styles/consts';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 interface Errors {
   name: string;
@@ -106,9 +111,26 @@ const EditProfileForm = () => {
         className="content-container"
         sx={{ width: { xs: '80vw', sm: '50vw' } }}
       >
+        <img
+          width="100%"
+          src={`/assets/audio2.png`}
+          loading="lazy"
+          className="logoImg"
+        />
         <StyledPageTitle sx={{ marginBottom: '1vh' }}>
           Edit Your Profile
         </StyledPageTitle>
+
+        <StyledIconBox>
+          <StyledPageSubtitle> User details </StyledPageSubtitle>
+          <AccountCircleIcon
+            fontSize="large"
+            sx={{
+              marginLeft: '5px',
+              color: theme.palette.customColors.textSecondary,
+            }}
+          />
+        </StyledIconBox>
 
         <TextField
           id="name"
@@ -156,6 +178,19 @@ const EditProfileForm = () => {
           }}
           slotProps={{ inputLabel: { shrink: !!userDetails.email } }}
         />
+
+        <StyledIconBox>
+          <StyledPageSubtitle>User preferences</StyledPageSubtitle>
+          <AutoAwesomeIcon
+            fontSize="large"
+            sx={{
+              marginLeft: '5px',
+              color: theme.palette.customColors.textSecondary,
+            }}
+          />
+        </StyledIconBox>
+
+        <Divider sx={{ margin: '5px' }} />
 
         <Box sx={{ my: '1vh' }}>
           <TopGenres

@@ -1,26 +1,42 @@
-import { Box, TextareaAutosize } from "@mui/material";
+import { Box, TextareaAutosize, Typography } from "@mui/material";
 import { StyledContentContainer, StyledMenuButton, StyledPageTitle } from "../styledComponents";
 import { SongResult } from "./songResult";
-// import Textarea from '@mui/joy/Textarea';
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { refreshAiPlaylist} from "../../services/aiService.ts";
+import {Song} from "../../models/Playlist.ts";
 
-const songs = [
-  { id: 1, title: "Song A", artist: "Artist A" },
-  { id: 2, title: "Song B", artist: "Artist B" },
-  { id: 3, title: "Song C", artist: "Artist C" },
-  { id: 4, title: "Song E", artist: "Artist E" },
-  { id: 5, title: "Song F", artist: "Artist F" },
-  { id: 6, title: "Song G", artist: "Artist G" },
-  { id: 7, title: "Song H", artist: "Artist H" },
-  { id: 8, title: "Song I", artist: "Artist I" },
-  { id: 9, title: "Song J", artist: "Artist J" },
-  { id: 10, title: "Song K", artist: "Artist K" },
-];
+interface Props {
+  songs: any[];
+  loading: boolean;
+  vibe?: string | null;
+  activity?: string | null;
+  onSongsChange?: (songs: Song[]) => void;
 
-export const CreatePlaylistResults: React.FC = () => {
-  const [requestText, setRequetText] = useState('');
+}
+
+export const CreatePlaylistResults: React.FC<Props> = ({
+                                                         songs: initialSongs,
+                                                         loading: initialLoading,
+                                                         vibe,
+                                                         activity,
+                                                         onSongsChange
+                                                       }) => {
+  const [songs, setSongs] = useState<Song[]>([]);
+  const [requestText, setRequestText] = useState('');
   const [dislikedSongs, setDislikedSongs] = useState<Set<number>>(new Set());
+  const [loading, setLoading] = useState(initialLoading);
   const isRefreshDisabled = useMemo(() => dislikedSongs.size === 0, [dislikedSongs]);
+
+  useEffect(() => {
+    console.log('songs', initialSongs);
+    setSongs(initialSongs || []);
+    if(onSongsChange) {
+      onSongsChange(initialSongs);
+    }
+    setLoading(initialLoading);
+  }, [initialSongs, initialLoading]);
+
+
 
   const onDislikeChange = (songId: number) => {
     setDislikedSongs(prev => {
@@ -34,34 +50,84 @@ export const CreatePlaylistResults: React.FC = () => {
     });
   };
 
-  const changePlaylist = () => {
-    console.log([...dislikedSongs]);
-    console.log(requestText);
+  const changePlaylist = async () => {
+    if (dislikedSongs.size === 0) return;
+
+    setLoading(true);
+    try {
+      const songsForRefresh = songs.map(song => ({
+        name: song.name,
+        artist: song.artist,
+        isReplace: dislikedSongs.has(song.id ?? 0)
+      }));
+
+      const response = await refreshAiPlaylist({
+        vibe: vibe || '',
+        activity: activity || '',
+        songs: songsForRefresh,
+        requestChangesText: requestText
+      });
+
+      if (response && response.updatedPlaylist && response.updatedPlaylist.data ) {
+        const updatedSongs = response.updatedPlaylist.data.map((song: any, index: number) => ({
+          id: index + 1,
+          name: song.name,
+          artist: song.artist
+        }));
+        setSongs(updatedSongs);
+        setDislikedSongs(new Set());
+        if(onSongsChange) {
+          onSongsChange(updatedSongs);
+        }
+        setRequestText('');
+      }
+    } catch (error) {
+      console.error('Error refreshing playlist:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <Box className="center">
-      <StyledPageTitle>Almost done! Make some changes</StyledPageTitle>
-      <StyledMenuButton disabled={isRefreshDisabled} sx={{ padding: '10px', marginTop: '5px' }} onClick={changePlaylist}> 
-        Refresh! 
-      </StyledMenuButton>
-      <StyledContentContainer>
-        <Box className="center">
-          <Box sx={{ width: '80%' }}>
-            {songs.map((song) => (
-              <Box sx={{ margin: '5px' }} key={song.id}>
-                <SongResult
-                  trackDetails={{ songName: song.title, artist: song.artist }} 
-                  isDisliked={dislikedSongs.has(song.id)}
-                  onDislikeChange={() => onDislikeChange(song.id)}
-                />
-              </Box>
-            ))}
-            <TextareaAutosize style={{ marginTop: '20px', height: '5vh', width: '100%', fontFamily: 'Poppins', resize: 'none' }} 
-            minRows={2} placeholder="Any requests?" onChange={e => setRequetText(e.target.value)} /> 
+      <Box className="center">
+        <StyledPageTitle>Almost done! Make some changes</StyledPageTitle>
+        <StyledMenuButton
+            disabled={isRefreshDisabled || loading}
+            sx={{ padding: '10px', marginTop: '5px' }}
+            onClick={changePlaylist}
+        >
+          {loading ? 'Refreshing...' : 'Refresh!'}
+        </StyledMenuButton>
+        <StyledContentContainer>
+          <Box className="center">
+            {loading ? (
+                <Typography>Loading your playlist...</Typography>
+            ) : (
+                <Box sx={{ width: '80%' }}>
+                  {songs.length > 0 ? (
+                      songs.map((song) => (
+                          <Box sx={{ margin: '5px' }} key={song.id}>
+                            <SongResult
+                                trackDetails={{ name: song.name, artist: song.artist }}
+                                isDisliked={dislikedSongs.has(song.id ?? 0)}
+                                onDislikeChange={() => onDislikeChange(song.id ?? 0)}
+                            />
+                          </Box>
+                      ))
+                  ) : (
+                      <Typography>No songs available. Try different criteria or check your connection.</Typography>
+                  )}
+                  <TextareaAutosize
+                      style={{ marginTop: '20px', height: '5vh', width: '100%', fontFamily: 'Poppins', resize: 'none' }}
+                      minRows={2}
+                      placeholder="Any requests?"
+                      value={requestText}
+                      onChange={e => setRequestText(e.target.value)}
+                  />
+                </Box>
+            )}
           </Box>
-        </Box>
-      </StyledContentContainer>
-    </Box>
+        </StyledContentContainer>
+      </Box>
   );
 };

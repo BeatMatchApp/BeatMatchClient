@@ -8,10 +8,11 @@ import {
     SongTitle,
     StyledUnlikeIconButton
 } from "../styledComponents";
+import {Song} from "../../models/Playlist.ts";
 
 interface PlaylistSongProps {
     id: number;
-    song: string;
+    song: Song;
     trackNumber: number;
     onDislikeChange: (id: number) => void;
 }
@@ -32,7 +33,7 @@ export const PlaylistSong: React.FC<PlaylistSongProps> = ({ id, song, trackNumbe
             <StyledSongBox>
                 <Box sx={{ display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
                     <SongNumberTypography>{trackNumber}</SongNumberTypography>
-                    <SongTitle>{song}</SongTitle>
+                    <SongTitle>{song.name + "-" + song.artist}</SongTitle>
                 </Box>
                 <StyledUnlikeIconButton size="small" onClick={handleDislikeClick}>
                     <ThumbDownIcon 

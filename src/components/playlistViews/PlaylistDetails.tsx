@@ -35,8 +35,8 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlist, onBack, onEdi
     const [requestText, setRequestText] = useState('');
     const [isRefreshDisabled, setIsRefreshDisabled] = useState(true);
 
-    const creationDate = new Date(playlist.creationTime).toLocaleDateString();
-    const lastUpdated = new Date(playlist.lastUpdatedTime).toLocaleDateString();
+    const creationDate = new Date(playlist.creationDate).toLocaleDateString();
+    const lastUpdated = new Date(playlist.lastUpdatedDate).toLocaleDateString();
 
     const onDislikeChange = (id: number) => {
         setDislikedSongs(prev => {
@@ -91,13 +91,13 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({ playlist, onBack, onEdi
                     <Typography variant="body1" color="text.secondary">
                         <strong>Number of Songs:</strong> {playlist.songs.length}
                     </Typography>
-                    {playlist.context && (
+                    {playlist.description && (
                         <Box sx={{ mt: 2 }}>
                             <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#5a36a1' }}>
                                 Playlist Context:
                             </Typography>
                             <Typography variant="body2" sx={{ mt: 1, lineHeight: 1.6 }}>
-                                {playlist.context}
+                                {playlist.description}
                             </Typography>
                         </Box>
                     )}

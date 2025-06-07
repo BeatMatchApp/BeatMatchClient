@@ -72,7 +72,7 @@ interface PlaylistItemProps {
 }
 
 const PlaylistItem: React.FC<PlaylistItemProps> = ({ playlist, onView, onEdit }) => {
-    const formattedDate = new Date(playlist.lastUpdatedTime).toLocaleDateString();
+    const formattedDate = new Date(playlist.lastUpdatedDate).toLocaleDateString();
 
     return (
         <StyledPlaylistPaper elevation={2}>
@@ -93,9 +93,9 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ playlist, onView, onEdit })
                     </PlaylistMetaText>
                 </Stack>
 
-                {playlist.context && (
+                {playlist.description && (
                     <PlaylistContextText variant="body2" color="text.secondary">
-                        {playlist.context}
+                        {playlist.description}
                     </PlaylistContextText>
                 )}
             </Box>

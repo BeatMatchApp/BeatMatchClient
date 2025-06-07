@@ -14,7 +14,7 @@ export const SongResult: React.FC<Props> = ({ trackDetails, isDisliked, onDislik
   return (
     <Box sx={{ backgroundColor: '#9C27B0' }}>
       <StyledSongBox>
-        <Typography>{`${trackDetails.artist} - ${trackDetails.songName}`}</Typography>
+        <Typography>{`${trackDetails.artist} - ${trackDetails.name}`}</Typography>
         <StyledIconButton size="small" onClick={onDislikeChange}>
           <ThumbDownIcon fontSize="small" sx={{ color: isDisliked ? '#590505' : 'white' }} />
         </StyledIconButton>

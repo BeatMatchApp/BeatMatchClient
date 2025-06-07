@@ -3,11 +3,20 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { ScrollableSelector } from '../scrollableSelector/scrollableSelector';
 import { getEvents, getMoods } from '../../services/metaService';
 import { StyledContentContainer, StyledPageTitle } from "../styledComponents";
+
 interface Props {
   onValidChange: (isValid: boolean) => void;
+  onPlaylistNameChange: (name: string) => void;
+  onMoodChange: (mood: string | null) => void;
+  onEventChange: (event: string | null) => void;
 }
 
-export const CreatePlaylistFilters: React.FC<Props> = ({ onValidChange }) =>  {  
+export const CreatePlaylistFilters: React.FC<Props> = ({
+                                                         onValidChange,
+                                                         onPlaylistNameChange,
+                                                         onMoodChange,
+                                                         onEventChange
+                                                       }) => {
   const [playlistName, setPlaylistName] = useState('');
   const [event, setEvent] = useState<string | null>(null);
   const [mood, setMood] = useState<string | null>(null);
@@ -42,6 +51,19 @@ export const CreatePlaylistFilters: React.FC<Props> = ({ onValidChange }) =>  {
     onValidChange(validatePlaylistName(playlistName) && !error);
   }, [playlistName, error, onValidChange]);
 
+  // Add effects to pass values up to parent
+  useEffect(() => {
+    onPlaylistNameChange(playlistName);
+  }, [playlistName, onPlaylistNameChange]);
+
+  useEffect(() => {
+    onMoodChange(mood);
+  }, [mood, onMoodChange]);
+
+  useEffect(() => {
+    onEventChange(event);
+  }, [event, onEventChange]);
+
   const validatePlaylistName = (name: string): boolean => {
     const isValid = name.trim().length > 0 && name.length <= 100;
     return isValid;
@@ -52,44 +74,44 @@ export const CreatePlaylistFilters: React.FC<Props> = ({ onValidChange }) =>  {
 
     setPlaylistName(value);
     setError(
-      validatePlaylistName(value)
-        ? null
-        : 'Enter a valid playlist name (1–100 chars).'
+        validatePlaylistName(value)
+            ? null
+            : 'Enter a valid playlist name (1–100 chars).'
     );
   };
 
   return (
-    <Box className="center" sx={{width: '80%', margin: 'auto'}}>
-      <StyledPageTitle>Lets get started!</StyledPageTitle>
+      <Box className="center" sx={{width: '80%', margin: 'auto'}}>
+        <StyledPageTitle>Lets get started!</StyledPageTitle>
 
-      <StyledContentContainer>
+        <StyledContentContainer>
           <Typography variant="h6" gutterBottom>
             Playlist name
           </Typography>
           <TextField
-            value={playlistName}
-            onChange={handlePlaylistNameChange}
-            placeholder="Enter playlist name"
-            error={!!error}
-            helperText={error}
-            fullWidth
+              value={playlistName}
+              onChange={handlePlaylistNameChange}
+              placeholder="Enter playlist name"
+              error={!!error}
+              helperText={error}
+              fullWidth
           />
 
-        <ScrollableSelector
-          title="Special event?"
-          items={events}
-          selected={event}
-          onSelect={setEvent}
-        />
+          <ScrollableSelector
+              title="Special event?"
+              items={events}
+              selected={event}
+              onSelect={setEvent}
+          />
 
-        <ScrollableSelector
-          title="Specific mood?"
-          items={moods}
-          selected={mood}
-          onSelect={setMood}
-        />
+          <ScrollableSelector
+              title="Specific mood?"
+              items={moods}
+              selected={mood}
+              onSelect={setMood}
+          />
 
-      </StyledContentContainer>
-    </Box>
+        </StyledContentContainer>
+      </Box>
   );
 };

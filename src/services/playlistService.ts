@@ -1,71 +1,34 @@
-import { Playlist } from "../models/Playlist";
+import {Playlist, Song} from "../models/Playlist";
+import {serverService} from "./httpCommon.ts";
+import {envConfig} from "../config/config.ts";
 
-const mockPlaylists: Playlist[] = [
-  {
-    id: '1',
-    userId: 'user123',
-    name: 'playlist1',
-    context: '',
-    songs: [
-      'song 1',
-      'song 2',
-      'song 3',
-      'song 4',
-      'song 5'
-    ],
-    creationTime: new Date('2025-04-15'),
-    lastUpdatedTime: new Date('2025-05-20')
-  },
-  {
-    id: '2',
-    userId: 'user123',
-    name: 'playlist1',
-    context: '',
-    songs: [
-      'song 1',
-      'song 2',
-      'song 3',
-      'song 4',
-      'song 5'
-    ],
-    creationTime: new Date('2025-04-15'),
-    lastUpdatedTime: new Date('2025-05-20')
-  },
-  {
-    id: '3',
-    userId: 'user123',
-    name: 'playlist1',
-    context: 'playlist context',
-    songs: [],
-    creationTime: new Date('2025-04-15'),
-    lastUpdatedTime: new Date('2025-05-20')
-  },
-  {
-    id: '4',
-    userId: 'user123',
-    name: 'playlist1',
-    context: '',
-    songs: [
-      'song 1',
-      'song 2',
-      'song 3',
-      'song 4',
-      'song 5'
-    ],
-    creationTime: new Date('2025-04-15'),
-    lastUpdatedTime: new Date('2025-05-20')
-  },
-];
+export interface CreatePlaylistBody {
+    name: string;
+    description: string;
+    vibe: string;
+    activity: string;
+    songs: Song[];
+}
 
 class PlaylistService {
   async getUserPlaylists(): Promise<Playlist[]> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(mockPlaylists);
-      }, 1000);
-    });
+    const response = await serverService.get(
+        `${envConfig.BACKEND_SERVICE_URL}/playlist`
+    );
+
+    return response.data || [];
   }
 
+  async createPlaylist(body: CreatePlaylistBody): Promise<Playlist> {
+    const response = await serverService.post(
+        `${envConfig.BACKEND_SERVICE_URL}/playlist`,
+        {
+          ...body
+        }
+    );
+
+    return response.data;
+  }
 }
 
 export const playlistService = new PlaylistService();

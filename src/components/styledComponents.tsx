@@ -163,7 +163,8 @@ export const StyledNavToggleButton = styled(Button, {
   cursor: 'pointer',
   backgroundColor: selected ? theme.palette.customColors.medium : 'transparent',
   color: selected ? '#fff' : theme.palette.customColors.medium,
-  transition: 'all 0.2s ease-in-out',
+  transition:
+    'background-color 0.3s ease, color 0.3s ease, transform 0.2s ease',
   display: 'inline-block',
   '&:focus': {
     outlineColor: '#6a90dd',

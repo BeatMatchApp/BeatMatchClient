@@ -63,57 +63,65 @@ const PreferencesPicker: React.FC<Props> = ({
 
   return (
     <>
-        <Typography sx={{ color: (theme) => theme.palette.customColors.textMain }}>
-          Pick Your Favorite {preferencesName}!
-        </Typography>
-        <TextField
-          label={`Search ${preferencesName}...`}
-          variant="outlined"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          fullWidth
-          className="search"
-          sx={{ marginBottom: '2vh', marginTop: '2vh' }}
-        />
-        <div className="items-list">
-          {options.map((option) => {
-            const isSelected = selectedPreferences.includes(option);
+      <Typography
+        sx={{ color: (theme) => theme.palette.customColors.textMain }}
+      >
+        Pick Your Favorite {preferencesName}!
+      </Typography>
+      <TextField
+        label={`Search ${preferencesName}...`}
+        variant="outlined"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        fullWidth
+        className="search"
+        sx={{ marginBottom: '2vh', marginTop: '2vh' }}
+      />
+      <div className="items-list">
+        {options.map((option) => {
+          const isSelected = selectedPreferences.includes(option);
 
-            return (
-              <StyledChip
+          return (
+            <StyledChip
               key={option}
               label={option}
               onClick={() => handleToggleSelect(option)}
               variant={isSelected ? 'filled' : 'outlined'}
               className="chip"
               isSelected={isSelected}
-            />            
-            );
-          })}
-        </div>
-      <Divider sx={{ padding: '1vh'}}/>
+            />
+          );
+        })}
+      </div>
       <div className="bottom-form">
         <div className="selected-preview">
           {selectedPreferences.length > 0 ? (
-            selectedPreferences.map(preference => (
-              <Preference key={preference} preference={preference} handleDelete={() => handleRemove(preference)}/>
-            ))
+            <>
+              <Divider sx={{ margin: '1vh' }} />
+              {selectedPreferences.map((preference) => (
+                <Preference
+                  key={preference}
+                  preference={preference}
+                  handleDelete={() => handleRemove(preference)}
+                />
+              ))}
+            </>
           ) : (
             <span className="selected-placeholder">
               No {preferencesName} selected
             </span>
           )}
         </div>
-  
+
         {!editMode && (
           <StyledMenuButton
             variant="contained"
             disabled={!isMaxSelected}
             onClick={handleMaxSelection}
-            sx={{ marginTop: '3vh'}}
+            sx={{ marginTop: '3vh' }}
           >
             keep going!
-        </StyledMenuButton>
+          </StyledMenuButton>
         )}
       </div>
     </>

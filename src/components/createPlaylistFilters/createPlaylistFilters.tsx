@@ -1,16 +1,13 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { ScrollableSelector } from '../scrollableSelector/scrollableSelector';
 import { getEvents, getMoods } from '../../services/metaService';
-import {
-  StyledContentContainer,
-  StyledPageTitle,
-} from '../styledComponents';
-import { Box, TextField, Typography } from "@mui/material";
+import { StyledContentContainer, StyledPageTitle } from '../styledComponents';
+import { Box, TextField, Typography } from '@mui/material';
 interface Props {
   onValidChange: (isValid: boolean) => void;
 }
 
-export const CreatePlaylistFilters: React.FC<Props> = ({ onValidChange }) =>  {  
+export const CreatePlaylistFilters: React.FC<Props> = ({ onValidChange }) => {
   const [playlistName, setPlaylistName] = useState('');
   const [event, setEvent] = useState<string | null>(null);
   const [mood, setMood] = useState<string | null>(null);
@@ -62,21 +59,24 @@ export const CreatePlaylistFilters: React.FC<Props> = ({ onValidChange }) =>  {
   };
 
   return (
-    <Box className="center" sx={{ width: { xs: '100%', sm: '80%' }, margin: 'auto'}}>
+    <Box
+      className="center"
+      sx={{ width: { xs: '100%', sm: '80%' }, margin: 'auto' }}
+    >
       <StyledPageTitle>Lets get started!</StyledPageTitle>
 
       <StyledContentContainer>
-          <Typography variant="h6" gutterBottom>
-            Playlist name
-          </Typography>
-          <TextField
-            value={playlistName}
-            onChange={handlePlaylistNameChange}
-            placeholder="Enter playlist name"
-            error={!!error}
-            helperText={error}
-            fullWidth
-          />
+        <Typography variant="h6" gutterBottom>
+          Playlist name
+        </Typography>
+        <TextField
+          value={playlistName}
+          onChange={handlePlaylistNameChange}
+          placeholder="Enter playlist name"
+          error={!!error}
+          helperText={error}
+          fullWidth
+        />
 
         <ScrollableSelector
           title="Special event?"
@@ -91,7 +91,6 @@ export const CreatePlaylistFilters: React.FC<Props> = ({ onValidChange }) =>  {
           selected={mood}
           onSelect={setMood}
         />
-
       </StyledContentContainer>
     </Box>
   );

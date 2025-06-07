@@ -35,10 +35,6 @@
   margin-left: auto;
 }
 
-.selected-preview {
-  margin-top: 12px;
-}
-
 .selected-chip {
   display: flex;
   align-items: center;

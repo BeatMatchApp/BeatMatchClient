@@ -11,8 +11,11 @@ import './ProfileForm.css';
 import TopSong from '../../components/topSong/topSong';
 import { FormSteps } from '../../models/enums/FormSteps';
 import { MAX_PREFERENCES_AMOUNT } from '../../shared/consts';
-import { StyledCardBox, StyledPageCard } from '../styledPages';
-import { StyledMenuButton } from '../../components/styledComponents';
+import {
+  StyledCardBox,
+  StyledMenuButton,
+  StyledPageCard,
+} from '../../components/styledComponents';
 
 const ProfileForm: React.FC = () => {
   const navigate = useNavigate();

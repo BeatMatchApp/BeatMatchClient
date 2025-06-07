@@ -2,15 +2,15 @@ import { useState } from 'react';
 import { Box, Button, TextField } from '@mui/material';
 import '../../App.css';
 import {
+  StyledCardBox,
   StyledMenuButton,
   StyledPageTitle,
-} from "../../components/styledComponents";
-import { useNavigate } from "react-router-dom";
-import { login } from "../../services/userService";
-import { toast } from "react-toastify";
-import { NavigationRoutes } from "../../models/NavigationRoutes";
-import { StyledCardBox } from "../styledPages";
-import ShinyCard from "../../components/ShinyCard/ShinyCard";
+} from '../../components/styledComponents';
+import { useNavigate } from 'react-router-dom';
+import { login } from '../../services/userService';
+import { toast } from 'react-toastify';
+import { NavigationRoutes } from '../../models/NavigationRoutes';
+import ShinyCard from '../../components/ShinyCard/ShinyCard';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -38,37 +38,38 @@ function LoginPage() {
   };
 
   return (
-      <Box className="center fullHeight">
-        <ShinyCard colors={['#8d92f6', '#a2dfd0']}>
-          <StyledPageTitle> Login </StyledPageTitle>
-          <StyledCardBox>
-            <TextField
-              id="email"
-              label="email"
-              error={!!emailError}
-              helperText={emailError}
-              onChange={(e) => {
-                const email = e.target.value;
-                setEmail(email);
-                validateEmail(email);
-              }}
-            />
-            <TextField
-              id="password"
-              label="Password"
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <StyledMenuButton onClick={handleLogin}>Login</StyledMenuButton>
-          </StyledCardBox>
+    <Box className="center fullHeight">
+      <ShinyCard colors={['#8d92f6', '#a2dfd0']}>
+        <StyledPageTitle> Login </StyledPageTitle>
+        <StyledCardBox>
+          <TextField
+            id="email"
+            label="email"
+            error={!!emailError}
+            helperText={emailError}
+            onChange={(e) => {
+              const email = e.target.value;
+              setEmail(email);
+              validateEmail(email);
+            }}
+          />
+          <TextField
+            id="password"
+            label="Password"
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <StyledMenuButton onClick={handleLogin}>Login</StyledMenuButton>
+        </StyledCardBox>
 
-          <Button
-            sx={{ textTransform: "none", width: '100%' }}
-            onClick={() => navigate(NavigationRoutes.PROFILE_FORM)} >
-            Dont have an account? Register now!
-          </Button>
-        </ShinyCard>
-      </Box>
+        <Button
+          sx={{ textTransform: 'none', width: '100%' }}
+          onClick={() => navigate(NavigationRoutes.PROFILE_FORM)}
+        >
+          Dont have an account? Register now!
+        </Button>
+      </ShinyCard>
+    </Box>
   );
 }
 

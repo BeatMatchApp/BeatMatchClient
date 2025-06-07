@@ -3,6 +3,7 @@ import { NavBar, ContentContainer } from './styled';
 import { MenuNavigationRoutes } from '../../models/MenuNavigationRoutes';
 import { NavigationRoutes } from '../../models/NavigationRoutes';
 import {
+  StyledMainBox,
   StyledNavToggleButton,
   StyledNavToggleGroup,
 } from '../../components/styledComponents';
@@ -14,7 +15,6 @@ import Loader from '../../components/Loader/Loader';
 import CreatePlaylistPage from '../createPlaylistPage/createPlaylistPage';
 import LibraryPage from '../LibraryPage/LibraryPage';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import { StyledMainBox } from '../styledPages';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import EditProfileForm from '../EditProfile/editProfile';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';

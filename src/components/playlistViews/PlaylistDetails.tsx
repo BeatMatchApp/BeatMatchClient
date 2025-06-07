@@ -15,13 +15,13 @@ import {
 import ShinyCard from '../ShinyCard/ShinyCard.tsx';
 import { SongResult } from '../createPlaylistResults/songResult.tsx';
 
-interface PlaylistDetailProps {
+interface PlaylistDetailsProps {
   playlist: Playlist;
   onBack: () => void;
   onEdit?: (playlist: Playlist) => void;
 }
 
-const PlaylistDetail: React.FC<PlaylistDetailProps> = ({
+const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
   playlist,
   onBack,
   onEdit,
@@ -168,4 +168,4 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({
   );
 };
 
-export default PlaylistDetail;
+export default PlaylistDetails;

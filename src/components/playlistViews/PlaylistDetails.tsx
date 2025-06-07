@@ -113,11 +113,9 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
       ) : (
         <>
           <Box
+            className="center"
             sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'column',
+              paddingBottom: '1vh',
             }}
           >
             <StyledPageSubtitle sx={{ fontWeight: 'bold' }}>
@@ -126,7 +124,6 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
             <StyledRefreshButton
               disabled={isRefreshDisabled}
               onClick={handleRefresh}
-              size="small"
               startIcon={<RefreshIcon />}
             >
               Refresh

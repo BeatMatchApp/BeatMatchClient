@@ -7,6 +7,7 @@ import {
 } from '../styledComponents';
 import { SongResult } from './songResult';
 import { useMemo, useState } from 'react';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 const songs = [
   { id: 1, title: 'Song A', artist: 'Artist A' },
@@ -50,11 +51,12 @@ export const CreatePlaylistResults: React.FC = () => {
     <Box className="center">
       <StyledPageTitle>Almost done! Make some changes</StyledPageTitle>
       <StyledRefreshButton
-        sx={{ marginBottom: '2vh' }}
         disabled={isRefreshDisabled}
         onClick={changePlaylist}
+        sx={{ marginBottom: '2vh' }}
+        startIcon={<RefreshIcon />}
       >
-        Refresh the selected songs!
+        Refresh
       </StyledRefreshButton>
       <StyledContentContainer sx={{ height: '55vh', paddingTop: 0 }}>
         <Box className="center">

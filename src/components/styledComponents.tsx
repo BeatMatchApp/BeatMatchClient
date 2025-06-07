@@ -25,8 +25,7 @@ export const StyledMenuButton = styled(Button)(({ theme, variant }) => ({
   outline: 'none',
   boxShadow: 'none',
   '&:hover': {
-    opacity: '0.9',
-    backgroundColor: theme.palette.customColors.dark,
+    opacity: 0.8,
   },
   '&:disabled': {
     backgroundColor: theme.palette.customColors.disabled,
@@ -43,9 +42,6 @@ export const StyledRefreshButton = styled(StyledMenuButton)(({ theme }) => ({
   paddingTop: '1vh',
   marginTop: '1vh',
   background: theme.palette.customColors.pink,
-  '&:hover': {
-    background: '#f07a9d',
-  },
 }));
 
 export const StyledLoadingBox = styled(Box)({

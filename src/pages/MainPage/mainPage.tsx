@@ -27,14 +27,11 @@ export const MainPage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log('useEffect triggered');
-
     const login = async () => {
       try {
         const response = await serverService.post(
           `${envConfig.BACKEND_SERVICE_URL}/login`
         );
-        console.log('Login response:', response);
 
         if (response?.data?.user) {
           navigate(NavigationRoutes.MAIN_PAGE);

@@ -1,8 +1,6 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, JSX } from 'react';
 import {
   Box,
-  Typography,
-  Paper,
   Alert,
   Skeleton,
   Card,
@@ -12,6 +10,7 @@ import {
 } from '@mui/material';
 import {
   StyledContentContainer,
+  StyledPageSubtitle,
   StyledPageTitle,
 } from '../../components/styledComponents';
 import PlaylistItem from '../../components/playlistViews/PlaylistItem';
@@ -129,25 +128,21 @@ const LibraryPage: React.FC = () => {
 
   const emptyState = useMemo(
     () => (
-      <Paper
-        elevation={1}
-        sx={{
-          p: 6,
-          borderRadius: 3,
-          backgroundColor: '#f8f8ff',
-          textAlign: 'center',
-        }}
-      >
-        <Typography variant="h6" color="#5a36a1" gutterBottom>
-          No playlists yet
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
+      <Box className="center" sx={{ marginTop: '5vh' }}>
+        <StyledPageTitle>No playlists yet</StyledPageTitle>
+        <StyledPageSubtitle variant="body1" color="text.secondary">
           Create your first playlist to get started!
-        </Typography>
-      </Paper>
+        </StyledPageSubtitle>
+      </Box>
     ),
     []
   );
+
+  const libraryContent = () => {
+    if (loading) return PlaylistSkeletons;
+    if (playlists.length === 0) return emptyState;
+    return playlistsList;
+  };
 
   return (
     <Box className="center" sx={{ width: { sm: '80%' }, margin: 'auto' }}>
@@ -168,11 +163,7 @@ const LibraryPage: React.FC = () => {
               height: '90%',
             }}
           >
-            {loading
-              ? PlaylistSkeletons
-              : playlists.length === 0
-              ? emptyState
-              : playlistsList}
+            {libraryContent()}
           </Box>
         )}
       </StyledContentContainer>

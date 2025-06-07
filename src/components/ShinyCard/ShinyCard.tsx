@@ -47,7 +47,7 @@ const ShinyCard: React.FC<ShinyCardProps> = ({ children, colors, small }) => {
           maskComposite: 'exclude',
           pointerEvents: 'none',
           zIndex: -1,
-          filter: 'blur(5px)', // stronger blur for a stronger glow
+          filter: 'blur(5px)',
         },
       }}
     >

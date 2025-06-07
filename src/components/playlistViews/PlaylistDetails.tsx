@@ -106,65 +106,67 @@ const PlaylistDetail: React.FC<PlaylistDetailProps> = ({
         </ShinyCard>
       </Box>
 
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
-        }}
-      >
-        <StyledPageSubtitle sx={{ fontWeight: 'bold' }}>
-          Songs
-        </StyledPageSubtitle>
-        <StyledRefreshButton
-          disabled={isRefreshDisabled}
-          onClick={handleRefresh}
-          size="small"
-          startIcon={<RefreshIcon />}
-        >
-          Refresh
-        </StyledRefreshButton>
-      </Box>
-
       {playlist.songs.length === 0 ? (
-        <Typography variant="body1" color="secondary">
-          This playlist doesn't have any songs yet.
-        </Typography>
+        <StyledPageSubtitle>
+          This playlist doesn't have any songs.
+        </StyledPageSubtitle>
       ) : (
-        <Box
-          sx={{
-            mb: '1vh',
-            height: '30vh',
-            overflow: 'auto',
-            padding: '1vh',
-            justifySelf: 'center',
-          }}
-        >
-          {playlist.songs.map((song, index) => (
-            <Box className="center" sx={{ margin: '5px' }} key={index}>
-              <SongResult
-                key={index}
-                isDisliked={dislikedSongs.has(index)}
-                trackDetails={song}
-                onDislikeChange={() => onDislikeChange(index)}
-              />
-            </Box>
-          ))}
-        </Box>
-      )}
+        <>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'column',
+            }}
+          >
+            <StyledPageSubtitle sx={{ fontWeight: 'bold' }}>
+              Songs
+            </StyledPageSubtitle>
+            <StyledRefreshButton
+              disabled={isRefreshDisabled}
+              onClick={handleRefresh}
+              size="small"
+              startIcon={<RefreshIcon />}
+            >
+              Refresh
+            </StyledRefreshButton>
+          </Box>
 
-      <Typography
-        variant="subtitle1"
-        sx={{ color: '#5a36a1', fontWeight: 'bold' }}
-      >
-        Any requests?
-      </Typography>
-      <StyledTextArea
-        minRows={4}
-        placeholder="Add song requests or feedback for this playlist..."
-        onChange={() => handleRequestChange}
-      />
+          <Box
+            sx={{
+              mb: '1vh',
+              height: '30vh',
+              overflow: 'auto',
+              padding: '1vh',
+              justifySelf: 'center',
+            }}
+          >
+            {playlist.songs.map((song, index) => (
+              <Box className="center" sx={{ margin: '5px' }} key={index}>
+                <SongResult
+                  key={index}
+                  isDisliked={dislikedSongs.has(index)}
+                  trackDetails={song}
+                  onDislikeChange={() => onDislikeChange(index)}
+                />
+              </Box>
+            ))}
+          </Box>
+
+          <Typography
+            variant="subtitle1"
+            sx={{ color: '#5a36a1', fontWeight: 'bold' }}
+          >
+            Any requests?
+          </Typography>
+          <StyledTextArea
+            minRows={4}
+            placeholder="Add song requests or feedback for this playlist..."
+            onChange={() => handleRequestChange}
+          />
+        </>
+      )}
     </Box>
   );
 };

@@ -12,6 +12,7 @@ import Loader from '../../components/Loader/Loader';
 import CreatePlaylistPage from '../createPlaylistPage/createPlaylistPage';
 import EditProfileForm from '../EditProfile/editProfile';
 import { AccountCircle } from '@mui/icons-material';
+import { StyledMainBox } from '../styledPages';
 
 function DisplayPlaylistsPage() {
   return (
@@ -74,15 +75,16 @@ useEffect(() => {
   }
 
   return (
-    <div className="main-wrapper">
+    <StyledMainBox>
       <NavBar sx={{ backgroundColor: 'transparent' }} position="fixed">
         <StyledNavToggleGroup>
           <StyledNavToggleButton
             selected={isCreate}
+            sx={{ display: 'flex', alignItems: 'center'}}
             onClick={() => handleToggle(MenuNavigationRoutes.CREATE)}
           >
             Create
-            <AccountCircle fontSize="large" />
+            <AccountCircle fontSize="large" sx={{ marginRight: '10px'}}/>
           </StyledNavToggleButton>
 
           <StyledNavToggleButton
@@ -94,7 +96,7 @@ useEffect(() => {
         </StyledNavToggleGroup>
       </NavBar>
 
-      <ContentContainer sx={{ height: '90vh', marginTop: '10vh'}}>
+      <ContentContainer>
         <Routes>
           <Route path="/" element={<CreatePlaylistPage  />} />
           <Route
@@ -111,6 +113,6 @@ useEffect(() => {
           />
         </Routes>
       </ContentContainer>
-    </div>
+    </StyledMainBox>
   );
 };

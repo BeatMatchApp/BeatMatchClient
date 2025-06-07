@@ -1,5 +1,5 @@
-import { Box, TextareaAutosize } from "@mui/material";
-import { StyledContentContainer, StyledMenuButton, StyledPageTitle } from "../styledComponents";
+import { Box } from "@mui/material";
+import { StyledContentContainer, StyledMenuButton, StyledPageTitle, StyledTextArea } from "../styledComponents";
 import { SongResult } from "./songResult";
 // import Textarea from '@mui/joy/Textarea';
 import { useMemo, useState } from "react";
@@ -42,14 +42,19 @@ export const CreatePlaylistResults: React.FC = () => {
   return (
     <Box className="center">
       <StyledPageTitle>Almost done! Make some changes</StyledPageTitle>
-      <StyledMenuButton disabled={isRefreshDisabled} sx={{ padding: '10px', marginTop: '5px' }} onClick={changePlaylist}> 
-        Refresh! 
+      <StyledMenuButton disabled={isRefreshDisabled} 
+        sx={{ paddingTop: '1vh',  marginTop: '1vh',
+          background: (theme) => theme.palette.customColors.pink, 
+          '&:hover': {
+            background: '#f07a9d'
+          },}} 
+        onClick={changePlaylist}> 
+        Refresh the selected songs! 
       </StyledMenuButton>
-      <StyledContentContainer>
+      <StyledContentContainer sx={{ height: '55vh' }}>
         <Box className="center">
-          <Box sx={{ width: '80%' }}>
             {songs.map((song) => (
-              <Box sx={{ margin: '5px' }} key={song.id}>
+              <Box className="center" sx={{ margin: '5px' }} key={song.id}>
                 <SongResult
                   trackDetails={{ songName: song.title, artist: song.artist }} 
                   isDisliked={dislikedSongs.has(song.id)}
@@ -57,9 +62,7 @@ export const CreatePlaylistResults: React.FC = () => {
                 />
               </Box>
             ))}
-            <TextareaAutosize style={{ marginTop: '20px', height: '5vh', width: '100%', fontFamily: 'Poppins', resize: 'none' }} 
-            minRows={2} placeholder="Any requests?" onChange={e => setRequetText(e.target.value)} /> 
-          </Box>
+            <StyledTextArea minRows={4} placeholder="Any requests?" onChange={e => setRequetText(e.target.value)} /> 
         </Box>
       </StyledContentContainer>
     </Box>

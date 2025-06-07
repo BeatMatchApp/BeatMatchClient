@@ -4,16 +4,17 @@ import { Box, Card } from '@mui/material';
 type ShinyCardProps = {
   children: React.ReactNode;
   colors: string[];
+  small?: boolean;
 };
 
-const ShinyCard: React.FC<ShinyCardProps> = ({ children, colors }) => {
+const ShinyCard: React.FC<ShinyCardProps> = ({ children, colors, small}) => {
   return (
     <Card
       className='shinyCard'
       sx={{
         position: 'relative',
         borderRadius: '16px',
-        padding: 2,
+        padding: small ? 1 : 2,
         backgroundColor: 'white',
         overflow: 'hidden',
         zIndex: 1,

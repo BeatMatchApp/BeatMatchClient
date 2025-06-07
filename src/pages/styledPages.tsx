@@ -30,3 +30,15 @@ export const StyledCardBox = styled(Box)(({ theme }) => ({
     width: '30vw',
   },
 }));
+
+export const StyledMainBox = styled(Box)(() => ({
+  width: '100vw',
+  height: '100vh',
+  overflow: 'hidden',
+  position: 'relative',
+  backgroundImage: `url('/assets/main-background.jpg')`,
+  backgroundSize: 'cover',     
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
+  backgroundAttachment: 'fixed',
+}));

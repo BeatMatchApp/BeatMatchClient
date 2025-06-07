@@ -37,7 +37,7 @@ const CreatePlaylistPage: React.FC = () => {
   };
 
   return (
-    <Box sx={{ marginTop: '3vh', marginBottom: '3vh' }}>
+    <Box sx={{ marginTop: '3vh', height: '7vh' }}>
       <Stepper activeStep={activeStep} alternativeLabel>
         {steps.map((step) => (
           <Step key={step.stepText}>

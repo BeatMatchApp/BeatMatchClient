@@ -59,7 +59,6 @@ const LibraryPage: React.FC = () => {
             <Card
               key={index}
               sx={{
-                padding: 2,
                 borderRadius: 2,
                 transition: 'all 0.3s',
                 '&:hover': { transform: 'translateY(-4px)' },

@@ -1,10 +1,12 @@
 import { useNavigate, useLocation, Routes, Route } from 'react-router-dom';
-import { CreatePlaylist } from '../../components/createPlaylist/createPlaylist';
+import CreatePlaylistPage from "../createPlaylistPage/createPlaylistPage";
 import { NavBar, NavToggleButton, ContentContainer } from './styled';
 import { MenuNavigationRoutes } from '../../models/MenuNavigationRoutes';
 import { NavigationRoutes } from '../../models/NavigationRoutes';
 import LibraryPage from "../LibraryPage/LibraryPage";
 import './mainPage.css';
+import { AccountCircle } from '@mui/icons-material';
+import EditProfileForm from '../EditProfile/editProfile';
 
 
 export const MainPage = () => {
@@ -12,9 +14,12 @@ export const MainPage = () => {
   const location = useLocation();
 
   const currentPath = location.pathname;
+
   const isCreate =
     currentPath.endsWith(MenuNavigationRoutes.CREATE) ||
     currentPath === NavigationRoutes.MAIN_PAGE;
+
+  const isPlaylists = currentPath.endsWith(MenuNavigationRoutes.LIBRARY);
 
   const handleToggle = (target: MenuNavigationRoutes) => {
     navigate(`${NavigationRoutes.MAIN_PAGE}${target}`);
@@ -22,7 +27,13 @@ export const MainPage = () => {
 
   return (
     <div className="main-wrapper">
-      <NavBar position="fixed">
+      <NavBar sx={{ height: '10vh'}}>
+        <div
+          className="profile-icon"
+          onClick={() => handleToggle(MenuNavigationRoutes.EDIT_PROFILE)}
+        >
+          <AccountCircle fontSize="large" />
+        </div>
         <div className="nav-toggle-group">
           <NavToggleButton
             selected={isCreate}
@@ -32,7 +43,7 @@ export const MainPage = () => {
           </NavToggleButton>
 
           <NavToggleButton
-            selected={!isCreate}
+            selected={isPlaylists}
             onClick={() => handleToggle(MenuNavigationRoutes.LIBRARY)}
           >
             Library
@@ -40,16 +51,20 @@ export const MainPage = () => {
         </div>
       </NavBar>
 
-      <ContentContainer>
+      <ContentContainer sx={{ height: '90vh', marginTop: '10vh'}}>
         <Routes>
-          <Route path="/" element={<CreatePlaylist />} />
+          <Route path="/" element={<CreatePlaylistPage  />} />
           <Route
             path={MenuNavigationRoutes.CREATE}
-            element={<CreatePlaylist />}
+            element={<CreatePlaylistPage  />}
           />
           <Route
             path={MenuNavigationRoutes.LIBRARY}
             element={<LibraryPage />}
+          />
+          <Route
+            path={MenuNavigationRoutes.EDIT_PROFILE}
+            element={<EditProfileForm />}
           />
         </Routes>
       </ContentContainer>

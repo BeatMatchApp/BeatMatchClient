@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage/homePage';
 import LoginPage from './pages/LoginPage/loginPage';
-import UserDetails from './components/userDetails/userDetails';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Provider } from 'react-redux';
@@ -37,7 +36,7 @@ function App() {
                   element={<MainPage />}
                 />
               </Routes>
-              <ToastContainer />
+              <ToastContainer position="bottom-center" />
             </>
           </Router>
         </Provider>

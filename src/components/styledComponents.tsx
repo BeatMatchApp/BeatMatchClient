@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { disabledColor, primaryColor } from '../styles/consts';
 
+
 export const StyledMenuButton = styled(Button)({
   backgroundColor: primaryColor,
   color: 'white',
@@ -43,6 +44,38 @@ export const StyledPageSubtitle = styled((props: TypographyProps) => (
   textAlign: 'center',
 });
 
+export const StyledContentContainer = styled(Box)({
+  display: 'flex', 
+  flexDirection: 'column',
+  justifyContent: 'space-around',
+  textAlign: 'center',
+  width: '100%',
+  maxwidth: '450px',
+  padding: '1.5vh',
+  boxSizing: 'border-box',
+});
+
+export const StyledSongBox = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: '12px 16px',
+  color: 'white',
+  [theme.breakpoints.down('sm')]: {
+    padding: '10px 12px',
+  }
+}));
+
+export const StyledIconButton = styled(IconButton)({
+  color: 'white',
+  padding: '4px',
+  '&:hover': {
+    backgroundColor: 'rgba(255,255,255,0.1)',
+  },
+  '&:focus': {
+    outline: 'none',
+  },
+});
 export const StyledFormBox = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
@@ -51,6 +84,7 @@ export const StyledFormBox = styled(Box)({
   border: `${primaryColor} solid 3px`,
   borderRadius: '2em',
   padding: '30px',
+  overflowY: 'hidden',
 });
 
 export const StyledTextField = styled(TextField)({
@@ -76,17 +110,6 @@ export const StyledSongContainer = styled(Box)(({ theme }) => ({
   },
   [theme.breakpoints.down('sm')]: {
     borderRadius: '6px',
-  }
-}));
-
-export const StyledSongBox = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: '12px 16px',
-  color: 'white',
-  [theme.breakpoints.down('sm')]: {
-    padding: '10px 12px',
   }
 }));
 

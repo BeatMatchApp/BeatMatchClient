@@ -6,7 +6,7 @@ export const redirectToSpotify = () => {
   window.location.href = `${import.meta.env.VITE_SPOTIFY_SERVICE_URL}/login`;
 };
 
-export const getUserDetails = async (): Promise<UserSpotifyProfile> => {
+export const getSpotifyUserDetails = async (): Promise<UserSpotifyProfile> => {
   const response = await spotifyService.get(
     `${envConfig.SPOTIFY_SERVICE_URL}/users/userDetails`
   );

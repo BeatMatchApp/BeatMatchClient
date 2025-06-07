@@ -21,7 +21,7 @@ const RegisterSpotifyPage = () => {
     >
       <ShinyCard colors={['#00cc66', '#00cc66']}>
         <StyledPageTitle>Connect your Spotify account!</StyledPageTitle>
-        <Box className="MenuCard">
+        <Box className="center">
           <Tooltip title={'Connect to Spotify'}>
             <IconButton onClick={fetchSpotifyUser} sx={{ color: '#1DB954' }}>
               <img

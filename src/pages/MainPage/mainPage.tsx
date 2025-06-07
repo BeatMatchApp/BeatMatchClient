@@ -1,23 +1,13 @@
-import { Typography } from "@mui/material";
-import { useNavigate, useLocation, Routes, Route } from "react-router-dom";
+import { useNavigate, useLocation, Routes, Route } from 'react-router-dom';
 import CreatePlaylistPage from "../createPlaylistPage/createPlaylistPage";
 import { NavBar, NavToggleButton, ContentContainer } from './styled';
 import { MenuNavigationRoutes } from '../../models/MenuNavigationRoutes';
 import { NavigationRoutes } from '../../models/NavigationRoutes';
+import LibraryPage from "../LibraryPage/LibraryPage";
 import './mainPage.css';
 import { AccountCircle } from '@mui/icons-material';
 import EditProfileForm from '../EditProfile/editProfile';
 
-// todo: replace with actual component
-function DisplayPlaylistsPage() {
-  return (
-    <div>
-      <Typography variant="h5" fontWeight="bold">
-        Your Playlists
-      </Typography>
-    </div>
-  );
-}
 
 export const MainPage = () => {
   const navigate = useNavigate();
@@ -70,7 +60,7 @@ export const MainPage = () => {
           />
           <Route
             path={MenuNavigationRoutes.LIBRARY}
-            element={<DisplayPlaylistsPage />}
+            element={<LibraryPage />}
           />
           <Route
             path={MenuNavigationRoutes.EDIT_PROFILE}

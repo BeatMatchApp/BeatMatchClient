@@ -5,6 +5,7 @@ import { StyledContentContainer, StyledPageTitle } from '../styledComponents';
 import { Box, TextField, Typography } from '@mui/material';
 import EventIcon from '@mui/icons-material/Event';
 import MoodIcon from '@mui/icons-material/Mood';
+
 interface Props {
   onValidChange: (isValid: boolean) => void;
 }

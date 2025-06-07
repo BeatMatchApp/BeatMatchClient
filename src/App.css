@@ -3,12 +3,12 @@
 body {
   margin: 0;
   padding: 0;
-  background-image: url('../public/assets/background.jpg');
-  background-size: cover;     
+  background-image: url('../public/assets/images/background.jpg');
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  height: 100vh;              
+  height: 100vh;
   width: 100vw;
   font-family: 'Poppins', sans-serif;
 }
@@ -78,18 +78,18 @@ body {
 }
 
 .fullHeight {
- height: 100vh;
+  height: 100vh;
 }
 
 .fullWidth {
   height: 100vw;
- }
+}
 
 .MuiTypography-root {
   font-family: 'Poppins', sans-serif !important;
 }
 
-.MuiStepIcon-text{
+.MuiStepIcon-text {
   fill: white !important;
 }
 

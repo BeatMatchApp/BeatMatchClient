@@ -21,6 +21,7 @@
     color: variant === 'outlined' ? theme.palette.customColors.medium :  'white',
     width: '50vw',
     textTransform: 'none',
+    outline: 'none',
     '&:hover': {
       opacity: '0.9',
       backgroundColor: theme.palette.customColors.dark,

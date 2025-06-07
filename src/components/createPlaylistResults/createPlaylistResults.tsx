@@ -6,7 +6,6 @@ import {
   StyledTextArea,
 } from '../styledComponents';
 import { SongResult } from './songResult';
-// import Textarea from '@mui/joy/Textarea';
 import { useMemo, useState } from 'react';
 
 const songs = [
@@ -51,12 +50,13 @@ export const CreatePlaylistResults: React.FC = () => {
     <Box className="center">
       <StyledPageTitle>Almost done! Make some changes</StyledPageTitle>
       <StyledRefreshButton
+        sx={{ marginBottom: '2vh' }}
         disabled={isRefreshDisabled}
         onClick={changePlaylist}
       >
         Refresh the selected songs!
       </StyledRefreshButton>
-      <StyledContentContainer sx={{ height: '55vh' }}>
+      <StyledContentContainer sx={{ height: '55vh', paddingTop: 0 }}>
         <Box className="center">
           {songs.map((song) => (
             <Box className="center" sx={{ margin: '5px' }} key={song.id}>

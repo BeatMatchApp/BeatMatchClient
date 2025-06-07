@@ -23,6 +23,7 @@ export const StyledMenuButton = styled(Button)(({ theme, variant }) => ({
   width: '50vw',
   textTransform: 'none',
   outline: 'none',
+  boxShadow: 'none',
   '&:hover': {
     opacity: '0.9',
     backgroundColor: theme.palette.customColors.dark,

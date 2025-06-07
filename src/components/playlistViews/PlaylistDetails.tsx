@@ -116,6 +116,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
             className="center"
             sx={{
               paddingBottom: '1vh',
+              boxShadow: 'rgba(0, 0, 0, 0.45) 0px 12px 20px -20px',
             }}
           >
             <StyledPageSubtitle sx={{ fontWeight: 'bold' }}>

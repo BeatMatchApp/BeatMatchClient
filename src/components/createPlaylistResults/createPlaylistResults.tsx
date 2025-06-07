@@ -50,14 +50,23 @@ export const CreatePlaylistResults: React.FC = () => {
   return (
     <Box className="center">
       <StyledPageTitle>Almost done! Make some changes</StyledPageTitle>
-      <StyledRefreshButton
-        disabled={isRefreshDisabled}
-        onClick={changePlaylist}
-        sx={{ marginBottom: '2vh' }}
-        startIcon={<RefreshIcon />}
+      <Box
+        sx={{
+          width: '100%',
+          textAlign: 'center',
+          boxShadow: 'rgba(0, 0, 0, 0.45) 0px 12px 20px -20px',
+        }}
       >
-        Refresh
-      </StyledRefreshButton>
+        <StyledRefreshButton
+          disabled={isRefreshDisabled}
+          onClick={changePlaylist}
+          sx={{ marginBottom: '2vh' }}
+          startIcon={<RefreshIcon />}
+        >
+          Refresh
+        </StyledRefreshButton>
+      </Box>
+
       <StyledContentContainer sx={{ height: '55vh', paddingTop: 0 }}>
         <Box className="center">
           {songs.map((song) => (

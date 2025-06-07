@@ -106,7 +106,7 @@ body {
 }
 
 .Toastify__progress-bar--info {
-  background: #ebc942;
+  background: #ffcc00;
 }
 
 .Toastify__progress-bar--error {
@@ -118,7 +118,7 @@ body {
 }
 
 .Toastify__toast--info .Toastify__toast-icon > svg {
-  fill: #ebc942 !important;
+  fill: #ffcc00 !important;
 }
 
 .Toastify__toast--error .Toastify__toast-icon > svg {

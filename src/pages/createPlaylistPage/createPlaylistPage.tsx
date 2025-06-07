@@ -12,7 +12,7 @@ const CreatePlaylistPage: React.FC = () => {
   const steps = [
     {
       stepText: 'Let’s get started!',
-      stepButtonText: 'Start Creating my playlist',
+      stepButtonText: 'Start creating my playlist',
       StepContent: () => (
         <CreatePlaylistFilters onValidChange={setIsStepValid} />
       ),

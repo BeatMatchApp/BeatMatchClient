@@ -66,7 +66,7 @@ export const CreatePlaylistFilters: React.FC<Props> = ({ onValidChange }) => {
       className="center"
       sx={{ width: { xs: '100%', sm: '80%' }, margin: 'auto' }}
     >
-      <StyledPageTitle>Lets get started!</StyledPageTitle>
+      <StyledPageTitle>{`Let's get started!`}</StyledPageTitle>
 
       <StyledContentContainer>
         <Typography variant="h6" gutterBottom>

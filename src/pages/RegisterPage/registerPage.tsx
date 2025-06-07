@@ -171,7 +171,7 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
         disabled={disableContinue()}
         onClick={handleContinue}
       >
-        Lets start!
+        {`Let's start!`}
       </StyledMenuButton>
     </Box>
   );

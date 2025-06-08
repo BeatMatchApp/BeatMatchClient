@@ -17,3 +17,9 @@ export interface Song {
     name: string;
     artist: string
 }
+
+export interface RefreshSong {
+    name: string,
+    artist: string,
+    isReplace: boolean
+}

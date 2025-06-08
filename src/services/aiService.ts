@@ -1,5 +1,6 @@
 import { envConfig } from "../config/config";
 import { serverService } from "./httpCommon";
+import {RefreshSong} from "../models/Playlist.ts";
 export interface PlaylistSuggestionParams {
     favoriteArtist?: string;
     mood?: string;
@@ -13,11 +14,7 @@ export interface PlaylistCreationBody {
 export interface PlaylistRefreshBody {
     vibe: string,
     activity: string,
-    songs: {
-        name: string,
-        artist: string,
-        isReplace: boolean
-    }[],
+    songs: RefreshSong[],
     requestChangesText?: string
 }
 

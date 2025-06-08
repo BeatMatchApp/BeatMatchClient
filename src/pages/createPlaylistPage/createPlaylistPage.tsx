@@ -6,6 +6,7 @@ import { CreatePlaylistResults } from '../../components/createPlaylistResults/cr
 import { CreatePlaylistFinish } from '../../components/createPlaylistFinish/createPlaylistFinish';
 import { getAiPlaylistCreationAnswer} from "../../services/aiService.ts";
 import {playlistService} from "../../services/playlistService.ts";
+import {Song} from "../../models/Playlist.ts";
 
 const CreatePlaylistPage: React.FC = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -58,8 +59,8 @@ const CreatePlaylistPage: React.FC = () => {
         activity: event || ''
       });
 
-      if (result && result.playlist && result.playlist.data) {
-        const formattedSongs = result.playlist.data.map((song: any, index: number) => ({
+      if (result?.playlist?.data) {
+        const formattedSongs = result.playlist.data.map((song: Song, index: number) => ({
           id: index + 1,
           name: song.name,
           artist: song.artist
@@ -92,7 +93,8 @@ const CreatePlaylistPage: React.FC = () => {
         activity: event || ''
       });
 
-      if (result && result.id) {
+      if (result?.id) {
+        // TODO: update playlistUrl
         setPlaylistUrl("updatedPlaylistUrl");
       } else {
         setPlaylistUrl('https://example.com/playlist');
@@ -115,6 +117,7 @@ const CreatePlaylistPage: React.FC = () => {
       await savePlaylist();
       setActiveStep((prev) => prev + 1);
     } else {
+      // reset state
       setActiveStep(0);
       setIsStepValid(false);
       setPlaylistName('');

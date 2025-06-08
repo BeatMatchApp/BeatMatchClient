@@ -6,7 +6,7 @@ import { refreshAiPlaylist} from "../../services/aiService.ts";
 import {Song} from "../../models/Playlist.ts";
 
 interface Props {
-  songs: any[];
+  songs: Song[];
   loading: boolean;
   vibe?: string | null;
   activity?: string | null;
@@ -28,7 +28,6 @@ export const CreatePlaylistResults: React.FC<Props> = ({
   const isRefreshDisabled = useMemo(() => dislikedSongs.size === 0, [dislikedSongs]);
 
   useEffect(() => {
-    console.log('songs', initialSongs);
     setSongs(initialSongs || []);
     if(onSongsChange) {
       onSongsChange(initialSongs);
@@ -68,13 +67,14 @@ export const CreatePlaylistResults: React.FC<Props> = ({
         requestChangesText: requestText
       });
 
-      if (response && response.updatedPlaylist && response.updatedPlaylist.data ) {
-        const updatedSongs = response.updatedPlaylist.data.map((song: any, index: number) => ({
+      if (response?.updatedPlaylist?.data ) {
+        const updatedSongs = response.updatedPlaylist.data.map((song: Song, index: number) => ({
           id: index + 1,
           name: song.name,
           artist: song.artist
         }));
         setSongs(updatedSongs);
+        // Reset disliked songs
         setDislikedSongs(new Set());
         if(onSongsChange) {
           onSongsChange(updatedSongs);

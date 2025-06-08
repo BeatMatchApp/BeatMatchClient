@@ -5,8 +5,8 @@ import {envConfig} from "../config/config.ts";
 export interface CreatePlaylistBody {
     name: string;
     description: string;
-    vibe: string;
-    activity: string;
+    mood: string;
+    event: string;
     songs: Song[];
 }
 

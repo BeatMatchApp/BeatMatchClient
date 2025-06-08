@@ -7,27 +7,16 @@ export interface PlaylistSuggestionParams {
 }
 
 export interface PlaylistCreationBody {
-    vibe: string,
-    activity: string,
+    mood: string,
+    event: string,
 }
 
 export interface PlaylistRefreshBody {
-    vibe: string,
-    activity: string,
+    mood: string,
+    event: string,
     songs: RefreshSong[],
     requestChangesText?: string
 }
-
-export const getAiPlaylistSuggestionAnswer = async (params: PlaylistSuggestionParams) => {
-    const response = await serverService.get(
-        `${envConfig.BACKEND_SERVICE_URL}/musicalAIConsultant/suggestion`,
-        {
-            params: { ...params },
-        }
-    );
-
-    return response.data;
-};
 
 export const getAiPlaylistCreationAnswer = async (body: PlaylistCreationBody)=> {
     const response = await serverService.post(

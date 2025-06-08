@@ -8,6 +8,12 @@ import { getAiPlaylistCreationAnswer} from "../../services/aiService.ts";
 import {playlistService} from "../../services/playlistService.ts";
 import {Song} from "../../models/Playlist.ts";
 
+interface SavedPlaylist {
+  url?: string;
+  error?: boolean;
+  errorMessage?: string;
+}
+
 const CreatePlaylistPage: React.FC = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [isStepValid, setIsStepValid] = useState(false);
@@ -16,7 +22,7 @@ const CreatePlaylistPage: React.FC = () => {
   const [event, setEvent] = useState<string | null>(null);
   const [songs, setSongs] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [playlistUrl, setPlaylistUrl] = useState('');
+  const [savedPlaylist, setSavedPlaylist] = useState<SavedPlaylist | null>(null);
 
   const steps = [
     {
@@ -38,8 +44,8 @@ const CreatePlaylistPage: React.FC = () => {
           <CreatePlaylistResults
               songs={songs}
               loading={loading}
-              vibe={mood}
-              activity={event}
+              mood={mood}
+              event={event}
               onSongsChange={setSongs}
           />
       )
@@ -47,7 +53,7 @@ const CreatePlaylistPage: React.FC = () => {
     {
       stepText: 'Finish',
       stepButtonText: 'Create another playlist?',
-      StepContent: () => <CreatePlaylistFinish PlaylistUrl={playlistUrl} />
+      StepContent: () => <CreatePlaylistFinish savedPlaylist={savedPlaylist} />
     }
   ];
 
@@ -55,15 +61,16 @@ const CreatePlaylistPage: React.FC = () => {
     setLoading(true);
     try {
       const result = await getAiPlaylistCreationAnswer({
-        vibe: mood || '',
-        activity: event || ''
+        mood: mood || '',
+        event: event || ''
       });
 
       if (result?.playlist?.data) {
         const formattedSongs = result.playlist.data.map((song: Song, index: number) => ({
           id: index + 1,
           name: song.name,
-          artist: song.artist
+          artist: song.artist,
+          trackUri: song.trackUri
         }));
         setSongs(formattedSongs);
       } else {
@@ -82,26 +89,31 @@ const CreatePlaylistPage: React.FC = () => {
     try {
       const formattedSongs = songs.map(song => ({
         name: song.name,
-        artist: song.artist
+        artist: song.artist,
+        trackUri: song.trackUri
       }));
 
       const result = await playlistService.createPlaylist({
         name: playlistName,
         songs: formattedSongs,
         description: '',
-        vibe: mood || '',
-        activity: event || ''
+        mood: mood || '',
+        event: event || ''
       });
 
-      if (result?.id) {
-        // TODO: update playlistUrl
-        setPlaylistUrl("updatedPlaylistUrl");
+      if (result?.url) {
+        setSavedPlaylist({
+          url: result.url
+        });
       } else {
-        setPlaylistUrl('https://example.com/playlist');
+        setSavedPlaylist({});
       }
     } catch (error) {
       console.error('Error creating playlist:', error);
-      setPlaylistUrl('Error creating playlist. Please try again.');
+      setSavedPlaylist({
+        error: true,
+        errorMessage: 'Error creating playlist. Please try again.'
+      });
     } finally {
       setLoading(false);
     }
@@ -124,7 +136,7 @@ const CreatePlaylistPage: React.FC = () => {
       setMood(null);
       setEvent(null);
       setSongs([]);
-      setPlaylistUrl('');
+      setSavedPlaylist(null);
     }
   };
 

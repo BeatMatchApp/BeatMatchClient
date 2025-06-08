@@ -10,8 +10,7 @@ import {
   PlaylistMetaText,
   StyledPlaylistChip,
   PlaylistTitle,
-  PlaylistContextText,
-  ActionIconButton,
+  ActionIconButton, PlaylistDescriptionText,
 } from '../styledComponents.tsx';
 
 interface PlaylistItemProps {
@@ -27,7 +26,10 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ playlist, onView, onEdit })
     <ShinyCard colors={['#8d92f6', '#a2dfd0']}>
       <Box sx={{ display: 'flex' }} onClick={() => onView(playlist)}>
         <PlaylistAvatar variant="rounded">
-          <MusicNoteIcon sx={{ fontSize: 36, color: 'white' }} />
+          {playlist.imageUrl ? (
+              <img src={playlist.imageUrl} alt={playlist.name} style={{ objectFit: 'cover' }} />
+          ): (<MusicNoteIcon sx={{ fontSize: 36, color: 'white' }} />)}
+
         </PlaylistAvatar>
 
         <Box sx={{ flexGrow: 1, textAlign: 'start' }}>
@@ -50,9 +52,9 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ playlist, onView, onEdit })
           </Stack>
 
           {playlist.description && (
-            <PlaylistContextText variant="body2" color="text.secondary">
+            <PlaylistDescriptionText variant="body2" color="text.secondary">
               {playlist.description}
-            </PlaylistContextText>
+            </PlaylistDescriptionText>
           )}
         </Box>
 

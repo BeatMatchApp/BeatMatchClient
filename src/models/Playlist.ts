@@ -5,8 +5,10 @@ export interface Playlist {
     description: string;
     songs: Song[];
     spotifyPlaylistId: string;
-    vibe: string;
-    activity: string;
+    mood: string;
+    event: string;
+    url?:string;
+    imageUrl?:string;
     creationDate: Date;
     lastUpdatedDate: Date;
 }
@@ -15,11 +17,13 @@ export interface Playlist {
 export interface Song {
     id?: number
     name: string;
-    artist: string
+    artist: string;
+    trackUri?: string;
 }
 
 export interface RefreshSong {
     name: string,
     artist: string,
+    trackUri?: string;
     isReplace: boolean
 }

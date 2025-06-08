@@ -147,7 +147,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
                   <SongResult
                     key={index}
                     isDisliked={dislikedSongs.has(index)}
-                    trackDetails={song}
+                    song={song}
                     onDislikeChange={() => onDislikeChange(index)}
                   />
                 </Box>

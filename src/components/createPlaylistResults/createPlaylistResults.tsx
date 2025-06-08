@@ -14,8 +14,8 @@ import { refreshAiPlaylist} from "../../services/aiService.ts";
 interface Props {
   songs: Song[];
   loading: boolean;
-  vibe?: string | null;
-  activity?: string | null;
+  mood?: string | null;
+  event?: string | null;
   onSongsChange?: (songs: Song[]) => void;
 
 }
@@ -23,8 +23,8 @@ interface Props {
 export const CreatePlaylistResults: React.FC<Props> = ({
                                                          songs: initialSongs,
                                                          loading: initialLoading,
-                                                         vibe,
-                                                         activity,
+                                                         mood,
+                                                         event,
                                                          onSongsChange
                                                        }) => {
   const [songs, setSongs] = useState<Song[]>([]);
@@ -66,12 +66,13 @@ export const CreatePlaylistResults: React.FC<Props> = ({
       const songsForRefresh = songs.map(song => ({
         name: song.name,
         artist: song.artist,
+        trackUri: song.trackUri,
         isReplace: dislikedSongs.has(song.id ?? 0)
       }));
 
       const response = await refreshAiPlaylist({
-        vibe: vibe || '',
-        activity: activity || '',
+        mood: mood || '',
+        event: event || '',
         songs: songsForRefresh,
         requestChangesText: requestText
       });
@@ -80,7 +81,8 @@ export const CreatePlaylistResults: React.FC<Props> = ({
         const updatedSongs = response.updatedPlaylist.data.map((song: Song, index: number) => ({
           id: index + 1,
           name: song.name,
-          artist: song.artist
+          artist: song.artist,
+          trackUri: song.trackUri
         }));
         setSongs(updatedSongs);
         // Reset disliked songs
@@ -122,7 +124,7 @@ export const CreatePlaylistResults: React.FC<Props> = ({
           {songs.map((song) => (
             <Box className="center" sx={{ margin: '5px' }} key={song.id}>
               <SongResult
-                trackDetails={{ name: song.name, artist: song.artist }}
+                song={song}
                 isDisliked={dislikedSongs.has(song.id ?? 0)}
                 onDislikeChange={() => onDislikeChange(song.id ?? 0)}
               />

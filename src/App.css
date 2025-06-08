@@ -3,12 +3,12 @@
 body {
   margin: 0;
   padding: 0;
-  background-image: url('../public/assets/background.jpg');
-  background-size: cover;     
+  background-image: url('../public/assets/images/background.jpg');
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  height: 100vh;              
+  height: 100vh;
   width: 100vw;
   font-family: 'Poppins', sans-serif;
 }
@@ -78,18 +78,18 @@ body {
 }
 
 .fullHeight {
- height: 100vh;
+  height: 100vh;
 }
 
 .fullWidth {
   height: 100vw;
- }
+}
 
 .MuiTypography-root {
   font-family: 'Poppins', sans-serif !important;
 }
 
-.MuiStepIcon-text{
+.MuiStepIcon-text {
   fill: white !important;
 }
 
@@ -102,11 +102,11 @@ body {
 }
 
 .Toastify__progress-bar--success {
-  background: #5a36a1;
+  background: #557dcd;
 }
 
 .Toastify__progress-bar--info {
-  background: #b9ab43;
+  background: #ffcc00;
 }
 
 .Toastify__progress-bar--error {
@@ -114,15 +114,15 @@ body {
 }
 
 .Toastify__toast--success .Toastify__toast-icon > svg {
-  fill: #5a36a1 !important; /* green */
+  fill: #557dcd !important;
 }
 
 .Toastify__toast--info .Toastify__toast-icon > svg {
-  fill: #b9ab43 !important; /* blue */
+  fill: #ffcc00 !important;
 }
 
 .Toastify__toast--error .Toastify__toast-icon > svg {
-  fill: #be4c44 !important; /* red */
+  fill: #be4c44 !important;
 }
 
 @keyframes shine {

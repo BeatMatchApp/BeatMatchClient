@@ -6,8 +6,8 @@ import {
   StyledTextArea,
 } from '../styledComponents';
 import { SongResult } from './songResult';
-// import Textarea from '@mui/joy/Textarea';
-import {useEffect, useMemo, useState} from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import {Song} from "../../models/Playlist.ts";
 import { refreshAiPlaylist} from "../../services/aiService.ts";
 
@@ -100,13 +100,24 @@ export const CreatePlaylistResults: React.FC<Props> = ({
   return (
     <Box className="center">
       <StyledPageTitle>Almost done! Make some changes</StyledPageTitle>
-      <StyledRefreshButton
-        disabled={isRefreshDisabled}
-        onClick={changePlaylist}
+      <Box
+        sx={{
+          width: '100%',
+          textAlign: 'center',
+          boxShadow: 'rgba(0, 0, 0, 0.45) 0px 12px 20px -20px',
+        }}
       >
-        Refresh the selected songs!
-      </StyledRefreshButton>
-      <StyledContentContainer sx={{ height: '55vh' }}>
+        <StyledRefreshButton
+          disabled={isRefreshDisabled}
+          onClick={changePlaylist}
+          sx={{ marginBottom: '2vh' }}
+          startIcon={<RefreshIcon />}
+        >
+          Refresh
+        </StyledRefreshButton>
+      </Box>
+
+      <StyledContentContainer sx={{ height: '55vh', paddingTop: 0 }}>
         <Box className="center">
           {songs.map((song) => (
             <Box className="center" sx={{ margin: '5px' }} key={song.id}>

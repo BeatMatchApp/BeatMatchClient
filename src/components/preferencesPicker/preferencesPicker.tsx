@@ -1,11 +1,13 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { Divider, TextField, Typography } from '@mui/material';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
+import { Box, Divider, TextField, Typography, IconButton } from '@mui/material';
 import { useDebounce } from 'use-debounce';
 import './PreferencesPicker.css';
 import { MAX_PREFERENCES_AMOUNT } from '../../shared/consts';
 import Preference from './Preference';
 import { StyledChip, StyledMenuButton } from '../styledComponents';
 import { toast } from 'react-toastify';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
 interface Props {
   preferencesName: string;
@@ -27,6 +29,32 @@ const PreferencesPicker: React.FC<Props> = ({
   editMode = false,
 }) => {
   const [inputValue, setInputValue] = useState('');
+  const [isOptionsExpanded, setIsOptionsExpanded] = useState(false);
+  const [isOptionsOverflowing, setIsOptionsOverflowing] = useState(false);
+  const [animateOptions, setAnimateOptions] = useState(false);
+  const optionsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setAnimateOptions(true);
+    const timeoutId = setTimeout(() => setAnimateOptions(false), 300); // match your CSS duration
+    return () => clearTimeout(timeoutId);
+  }, [options]);
+
+  useEffect(() => {
+    const checkOverflow = () => {
+      const currentOptionsList = optionsRef.current;
+      if (currentOptionsList) {
+        setIsOptionsOverflowing(
+          currentOptionsList.scrollHeight > currentOptionsList.clientHeight
+        );
+      }
+    };
+
+    checkOverflow();
+
+    window.addEventListener('resize', checkOverflow);
+    return () => window.removeEventListener('resize', checkOverflow);
+  }, [options.length]);
 
   const isMaxSelected = useMemo(
     () => selectedPreferences.length === MAX_PREFERENCES_AMOUNT,
@@ -77,27 +105,59 @@ const PreferencesPicker: React.FC<Props> = ({
         className="search"
         sx={{ marginBottom: '2vh', marginTop: '2vh' }}
       />
-      <div className="items-list">
-        {options.map((option) => {
-          const isSelected = selectedPreferences.includes(option);
+      <Box className="items-container">
+        <Box
+          className={`items-list ${animateOptions ? 'animate-options' : ''}`}
+          ref={optionsRef}
+          style={{
+            maxHeight: isOptionsExpanded ? 'none' : '80px',
+            overflowY: isOptionsExpanded ? 'visible' : 'hidden',
+          }}
+        >
+          {options.map((option) => {
+            const isSelected = selectedPreferences.includes(option);
 
-          return (
-            <StyledChip
-              key={option}
-              label={option}
-              onClick={() => handleToggleSelect(option)}
-              variant={isSelected ? 'filled' : 'outlined'}
-              className="chip"
-              isSelected={isSelected}
-            />
-          );
-        })}
-      </div>
-      <div className="bottom-form">
-        <div className="selected-preview">
+            return (
+              <StyledChip
+                key={option}
+                label={option}
+                onClick={() => handleToggleSelect(option)}
+                variant={isSelected ? 'filled' : 'outlined'}
+                className="chip"
+                isSelected={isSelected}
+              />
+            );
+          })}
+        </Box>
+        {isOptionsOverflowing && (
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <IconButton
+              size="small"
+              onClick={() => setIsOptionsExpanded((prev) => !prev)}
+              sx={{
+                alignSelf: 'flex-end',
+                marginTop: '4px',
+                outline: 'none',
+                boxShadow: 'none',
+                '&:focus:not(:focus-visible)': {
+                  outline: 'none',
+                  boxShadow: 'none',
+                },
+              }}
+            >
+              {isOptionsExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+            </IconButton>
+          </Box>
+        )}
+      </Box>
+
+      {selectedPreferences.length > 0 && options.length > 0 && (
+        <Divider sx={{ margin: '1vh' }} />
+      )}
+      <Box className="bottom-form">
+        <Box className="selected-preview">
           {selectedPreferences.length > 0 ? (
-            <>
-              <Divider sx={{ margin: '1vh' }} />
+            <Box className="selected-preview-inner">
               {selectedPreferences.map((preference) => (
                 <Preference
                   key={preference}
@@ -105,13 +165,13 @@ const PreferencesPicker: React.FC<Props> = ({
                   handleDelete={() => handleRemove(preference)}
                 />
               ))}
-            </>
+            </Box>
           ) : (
-            <span className="selected-placeholder">
+            <Box className="selected-placeholder">
               No {preferencesName} selected
-            </span>
+            </Box>
           )}
-        </div>
+        </Box>
 
         {!editMode && (
           <StyledMenuButton
@@ -123,7 +183,7 @@ const PreferencesPicker: React.FC<Props> = ({
             keep going!
           </StyledMenuButton>
         )}
-      </div>
+      </Box>
     </>
   );
 };

@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Button,
+  Card,
   Chip,
   IconButton,
   styled,
@@ -10,22 +11,21 @@ import {
   Typography,
   TypographyProps,
 } from '@mui/material';
-import theme from '../styles/consts';
 
 interface StyledChipProps {
   isSelected?: boolean;
 }
 
-export const StyledMenuButton = styled(Button)(({ variant }) => ({
+export const StyledMenuButton = styled(Button)(({ theme, variant }) => ({
   backgroundColor:
     variant === 'outlined' ? 'white' : theme.palette.customColors.medium,
   color: variant === 'outlined' ? theme.palette.customColors.medium : 'white',
   width: '50vw',
   textTransform: 'none',
   outline: 'none',
+  boxShadow: 'none',
   '&:hover': {
-    opacity: '0.9',
-    backgroundColor: theme.palette.customColors.dark,
+    opacity: 0.8,
   },
   '&:disabled': {
     backgroundColor: theme.palette.customColors.disabled,
@@ -38,14 +38,11 @@ export const StyledMenuButton = styled(Button)(({ variant }) => ({
   },
 }));
 
-export const StyledRefreshButton = styled(StyledMenuButton)({
+export const StyledRefreshButton = styled(StyledMenuButton)(({ theme }) => ({
   paddingTop: '1vh',
   marginTop: '1vh',
   background: theme.palette.customColors.pink,
-  '&:hover': {
-    background: '#f07a9d',
-  },
-});
+}));
 
 export const StyledLoadingBox = styled(Box)({
   display: 'flex',
@@ -79,7 +76,7 @@ export const StyledContentContainer = styled(Box)({
   boxSizing: 'border-box',
 });
 
-export const StyledSongBox = styled(Box)({
+export const StyledSongBox = styled(Box)(({ theme }) => ({
   flexDirection: 'row',
   display: 'flex',
   alignItems: 'center',
@@ -89,7 +86,7 @@ export const StyledSongBox = styled(Box)({
   [theme.breakpoints.down('sm')]: {
     padding: '10px 12px',
   },
-});
+}));
 
 export const StyledIconButton = styled(IconButton)({
   color: 'white',
@@ -101,7 +98,7 @@ export const StyledIconButton = styled(IconButton)({
     outline: 'none',
   },
 });
-export const StyledFormBox = styled(Box)({
+export const StyledFormBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   width: '40vw',
@@ -110,7 +107,7 @@ export const StyledFormBox = styled(Box)({
   borderRadius: '2em',
   padding: '30px',
   overflowY: 'hidden',
-});
+}));
 
 export const StyledTextField = styled(TextField)({
   background: 'white',
@@ -126,7 +123,7 @@ export const StyledTextField = styled(TextField)({
 
 export const StyledChip = styled(Chip, {
   shouldForwardProp: (prop) => prop !== 'isSelected',
-})<StyledChipProps>(({ isSelected }) => ({
+})<StyledChipProps>(({ theme, isSelected }) => ({
   '&.MuiChip-outlined .MuiChip-label': {
     color: theme.palette.customColors.medium,
   },
@@ -166,7 +163,8 @@ export const StyledNavToggleButton = styled(Button, {
   cursor: 'pointer',
   backgroundColor: selected ? theme.palette.customColors.medium : 'transparent',
   color: selected ? '#fff' : theme.palette.customColors.medium,
-  transition: 'all 0.2s ease-in-out',
+  transition:
+    'background-color 0.3s ease, color 0.3s ease, transform 0.2s ease',
   display: 'inline-block',
   '&:focus': {
     outlineColor: '#6a90dd',
@@ -288,21 +286,21 @@ export const PlaylistAvatar = styled(Avatar)({
   boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
 });
 
-export const PlaylistTitle = styled(Typography)({
+export const PlaylistTitle = styled(Typography)(({ theme }) => ({
   color: theme.palette.customColors.textMain,
   fontWeight: 'bold',
   marginBottom: 4,
-});
+}));
 
-export const PlaylistDataTitle = styled(Typography)({
+export const PlaylistDataTitle = styled(Typography)(({ theme }) => ({
   color: theme.palette.customColors.textMain,
   fontWeight: 'bold',
-});
+}));
 
-export const PlaylistDataText = styled(Typography)({
+export const PlaylistDataText = styled(Typography)(({ theme }) => ({
   color: theme.palette.customColors.medium,
   marginLeft: '5px',
-});
+}));
 
 export const PlaylistMetaText = styled(Typography)({
   display: 'flex',
@@ -316,11 +314,11 @@ export const ActionIconButton = styled(IconButton)({
   },
 });
 
-export const StyledPlaylistChip = styled(Chip)({
+export const StyledPlaylistChip = styled(Chip)(({ theme }) => ({
   backgroundColor: theme.palette.customColors.pink,
   color: 'white',
   fontWeight: 500,
-});
+}));
 
 export const PlaylistContextText = styled(Typography)({
   overflow: 'hidden',
@@ -330,3 +328,50 @@ export const PlaylistContextText = styled(Typography)({
   WebkitBoxOrient: 'vertical',
   lineHeight: 1.4,
 });
+
+export const StyledIconBox = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'row',
+  marginTop: '2vh',
+});
+
+export const StyledPageCard = styled(Card)(({ theme }) => ({
+  width: '80vw',
+  flexDirection: 'column',
+  padding: '3vh',
+  display: 'flex',
+  margin: '0 auto',
+  borderRadius: '15px',
+
+  [theme.breakpoints.up('sm')]: {
+    width: '50vw',
+  },
+}));
+
+export const StyledCardBox = styled(Box)(({ theme }) => ({
+  width: '60vw',
+  padding: '1vh',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '1vh',
+  justifyContent: 'center',
+  alignItems: 'center',
+  margin: 'auto',
+  [theme.breakpoints.up('sm')]: {
+    width: '30vw',
+  },
+}));
+
+export const StyledMainBox = styled(Box)(() => ({
+  width: '100vw',
+  height: '100vh',
+  overflow: 'hidden',
+  position: 'relative',
+  backgroundImage: `url('/assets/images/main-background.jpg')`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
+  backgroundAttachment: 'fixed',
+}));

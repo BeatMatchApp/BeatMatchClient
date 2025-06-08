@@ -7,10 +7,10 @@ type ShinyCardProps = {
   small?: boolean;
 };
 
-const ShinyCard: React.FC<ShinyCardProps> = ({ children, colors, small}) => {
+const ShinyCard: React.FC<ShinyCardProps> = ({ children, colors, small }) => {
   return (
     <Card
-      className='shinyCard'
+      className="shinyCard"
       sx={{
         position: 'relative',
         borderRadius: '16px',
@@ -18,7 +18,7 @@ const ShinyCard: React.FC<ShinyCardProps> = ({ children, colors, small}) => {
         backgroundColor: 'white',
         overflow: 'hidden',
         zIndex: 1,
-        width: { xs: '80vw', sm: '50vw' },
+        width: { xs: '80vw', sm: '40vw' },
 
         '&::before': {
           content: '""',
@@ -47,7 +47,7 @@ const ShinyCard: React.FC<ShinyCardProps> = ({ children, colors, small}) => {
           maskComposite: 'exclude',
           pointerEvents: 'none',
           zIndex: -1,
-          filter: 'blur(5px)', // stronger blur for a stronger glow
+          filter: 'blur(5px)',
         },
       }}
     >

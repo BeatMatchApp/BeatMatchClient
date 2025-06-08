@@ -3,6 +3,9 @@ import { ScrollableSelector } from '../scrollableSelector/scrollableSelector';
 import { getEvents, getMoods } from '../../services/metaService';
 import { StyledContentContainer, StyledPageTitle } from '../styledComponents';
 import { Box, TextField, Typography } from '@mui/material';
+import EventIcon from '@mui/icons-material/Event';
+import MoodIcon from '@mui/icons-material/Mood';
+
 interface Props {
   onValidChange: (isValid: boolean) => void;
   onPlaylistNameChange: (name: string) => void;
@@ -84,7 +87,7 @@ export const CreatePlaylistFilters: React.FC<Props> = ({
       className="center"
       sx={{ width: { xs: '100%', sm: '80%' }, margin: 'auto' }}
     >
-      <StyledPageTitle>Lets get started!</StyledPageTitle>
+      <StyledPageTitle>{`Let's get started!`}</StyledPageTitle>
 
       <StyledContentContainer>
         <Typography variant="h6" gutterBottom>
@@ -99,19 +102,21 @@ export const CreatePlaylistFilters: React.FC<Props> = ({
           fullWidth
         />
 
-          <ScrollableSelector
-              title="Special event?"
-              items={events}
-              selected={event}
-              onSelect={setEvent}
-          />
+        <ScrollableSelector
+          title="Special event?"
+          items={events}
+          selected={event}
+          onSelect={setEvent}
+          icon={EventIcon}
+        />
 
-          <ScrollableSelector
-              title="Specific mood?"
-              items={moods}
-              selected={mood}
-              onSelect={setMood}
-          />
+        <ScrollableSelector
+          title="Specific mood?"
+          items={moods}
+          selected={mood}
+          onSelect={setMood}
+          icon={MoodIcon}
+        />
       </StyledContentContainer>
     </Box>
   );

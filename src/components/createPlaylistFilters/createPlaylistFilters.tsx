@@ -1,9 +1,8 @@
-import { Box, TextField, Typography } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from 'react';
 import { ScrollableSelector } from '../scrollableSelector/scrollableSelector';
 import { getEvents, getMoods } from '../../services/metaService';
-import { StyledContentContainer, StyledPageTitle } from "../styledComponents";
-
+import { StyledContentContainer, StyledPageTitle } from '../styledComponents';
+import { Box, TextField, Typography } from '@mui/material';
 interface Props {
   onValidChange: (isValid: boolean) => void;
   onPlaylistNameChange: (name: string) => void;
@@ -81,21 +80,24 @@ export const CreatePlaylistFilters: React.FC<Props> = ({
   };
 
   return (
-      <Box className="center" sx={{width: '80%', margin: 'auto'}}>
-        <StyledPageTitle>Lets get started!</StyledPageTitle>
+    <Box
+      className="center"
+      sx={{ width: { xs: '100%', sm: '80%' }, margin: 'auto' }}
+    >
+      <StyledPageTitle>Lets get started!</StyledPageTitle>
 
-        <StyledContentContainer>
-          <Typography variant="h6" gutterBottom>
-            Playlist name
-          </Typography>
-          <TextField
-              value={playlistName}
-              onChange={handlePlaylistNameChange}
-              placeholder="Enter playlist name"
-              error={!!error}
-              helperText={error}
-              fullWidth
-          />
+      <StyledContentContainer>
+        <Typography variant="h6" gutterBottom>
+          Playlist name
+        </Typography>
+        <TextField
+          value={playlistName}
+          onChange={handlePlaylistNameChange}
+          placeholder="Enter playlist name"
+          error={!!error}
+          helperText={error}
+          fullWidth
+        />
 
           <ScrollableSelector
               title="Special event?"
@@ -110,8 +112,7 @@ export const CreatePlaylistFilters: React.FC<Props> = ({
               selected={mood}
               onSelect={setMood}
           />
-
-        </StyledContentContainer>
-      </Box>
+      </StyledContentContainer>
+    </Box>
   );
 };

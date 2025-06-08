@@ -1,7 +1,6 @@
 import React, { useState, ChangeEvent, SyntheticEvent } from 'react';
 import { Autocomplete, TextField, Typography } from '@mui/material';
 import { getSongs } from '../../services/spotifyService';
-import { primaryColor } from '../../styles/consts';
 
 interface Props {
   handleNextStep: (selectedSong: string) => void;
@@ -12,7 +11,7 @@ const TopSong: React.FC<Props> = ({ handleNextStep, song }) => {
   const [options, setOptions] = useState<string[]>([]);
 
   const handleInputChange = async (
-    _event: ChangeEvent<{}>,
+    _event: ChangeEvent<object>,
     value: string
   ): Promise<void> => {
     if (!value) {
@@ -39,7 +38,7 @@ const TopSong: React.FC<Props> = ({ handleNextStep, song }) => {
 
   return (
     <div className="picker-container">
-      <Typography color={primaryColor} variant="h6" gutterBottom>
+      <Typography sx={{ color: (theme) => theme.palette.customColors.textMain }} variant="h6" gutterBottom>
         Pick Your Favorite Song!
       </Typography>
       <Autocomplete

@@ -129,14 +129,14 @@ const CreatePlaylistPage: React.FC = () => {
   };
 
   return (
-      <Box sx={{ marginTop: '3vh', marginBottom: '3vh' }}>
-        <Stepper activeStep={activeStep} alternativeLabel>
-          {steps.map((step) => (
-              <Step key={step.stepText}>
-                <StepLabel>{step.stepText}</StepLabel>
-              </Step>
-          ))}
-        </Stepper>
+    <Box sx={{ marginTop: '3vh', height: '7vh' }}>
+      <Stepper activeStep={activeStep} alternativeLabel>
+        {steps.map((step) => (
+          <Step key={step.stepText}>
+            <StepLabel>{step.stepText}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
 
         <Box sx={{ mt: 4, minHeight: 100 }}>
           {steps[activeStep].StepContent()}

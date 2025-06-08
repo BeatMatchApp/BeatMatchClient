@@ -1,9 +1,15 @@
-import { Box, TextareaAutosize, Typography } from "@mui/material";
-import { StyledContentContainer, StyledMenuButton, StyledPageTitle } from "../styledComponents";
-import { SongResult } from "./songResult";
-import { useEffect, useMemo, useState } from "react";
-import { refreshAiPlaylist} from "../../services/aiService.ts";
+import { Box } from '@mui/material';
+import {
+  StyledContentContainer,
+  StyledPageTitle,
+  StyledRefreshButton,
+  StyledTextArea,
+} from '../styledComponents';
+import { SongResult } from './songResult';
+// import Textarea from '@mui/joy/Textarea';
+import {useEffect, useMemo, useState} from 'react';
 import {Song} from "../../models/Playlist.ts";
+import { refreshAiPlaylist} from "../../services/aiService.ts";
 
 interface Props {
   songs: Song[];
@@ -24,8 +30,11 @@ export const CreatePlaylistResults: React.FC<Props> = ({
   const [songs, setSongs] = useState<Song[]>([]);
   const [requestText, setRequestText] = useState('');
   const [dislikedSongs, setDislikedSongs] = useState<Set<number>>(new Set());
-  const [loading, setLoading] = useState(initialLoading);
-  const isRefreshDisabled = useMemo(() => dislikedSongs.size === 0, [dislikedSongs]);
+  const isRefreshDisabled = useMemo(
+    () => dislikedSongs.size === 0,
+    [dislikedSongs]
+  );
+  const [_, setLoading] = useState(initialLoading);
 
   useEffect(() => {
     setSongs(initialSongs || []);
@@ -38,7 +47,7 @@ export const CreatePlaylistResults: React.FC<Props> = ({
 
 
   const onDislikeChange = (songId: number) => {
-    setDislikedSongs(prev => {
+    setDislikedSongs((prev) => {
       const updatedSongs = new Set(prev);
       if (updatedSongs.has(songId)) {
         updatedSongs.delete(songId);
@@ -89,45 +98,32 @@ export const CreatePlaylistResults: React.FC<Props> = ({
   };
 
   return (
-      <Box className="center">
-        <StyledPageTitle>Almost done! Make some changes</StyledPageTitle>
-        <StyledMenuButton
-            disabled={isRefreshDisabled || loading}
-            sx={{ padding: '10px', marginTop: '5px' }}
-            onClick={changePlaylist}
-        >
-          {loading ? 'Refreshing...' : 'Refresh!'}
-        </StyledMenuButton>
-        <StyledContentContainer>
-          <Box className="center">
-            {loading ? (
-                <Typography>Loading your playlist...</Typography>
-            ) : (
-                <Box sx={{ width: '80%' }}>
-                  {songs.length > 0 ? (
-                      songs.map((song) => (
-                          <Box sx={{ margin: '5px' }} key={song.id}>
-                            <SongResult
-                                trackDetails={{ name: song.name, artist: song.artist }}
-                                isDisliked={dislikedSongs.has(song.id ?? 0)}
-                                onDislikeChange={() => onDislikeChange(song.id ?? 0)}
-                            />
-                          </Box>
-                      ))
-                  ) : (
-                      <Typography>No songs available. Try different criteria or check your connection.</Typography>
-                  )}
-                  <TextareaAutosize
-                      style={{ marginTop: '20px', height: '5vh', width: '100%', fontFamily: 'Poppins', resize: 'none' }}
-                      minRows={2}
-                      placeholder="Any requests?"
-                      value={requestText}
-                      onChange={e => setRequestText(e.target.value)}
-                  />
-                </Box>
-            )}
-          </Box>
-        </StyledContentContainer>
-      </Box>
+    <Box className="center">
+      <StyledPageTitle>Almost done! Make some changes</StyledPageTitle>
+      <StyledRefreshButton
+        disabled={isRefreshDisabled}
+        onClick={changePlaylist}
+      >
+        Refresh the selected songs!
+      </StyledRefreshButton>
+      <StyledContentContainer sx={{ height: '55vh' }}>
+        <Box className="center">
+          {songs.map((song) => (
+            <Box className="center" sx={{ margin: '5px' }} key={song.id}>
+              <SongResult
+                trackDetails={{ name: song.name, artist: song.artist }}
+                isDisliked={dislikedSongs.has(song.id ?? 0)}
+                onDislikeChange={() => onDislikeChange(song.id ?? 0)}
+              />
+            </Box>
+          ))}
+          <StyledTextArea
+            minRows={4}
+            placeholder="Any requests?"
+            onChange={(e) => setRequestText(e.target.value)}
+          />
+        </Box>
+      </StyledContentContainer>
+    </Box>
   );
 };

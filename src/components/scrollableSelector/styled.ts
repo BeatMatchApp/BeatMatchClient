@@ -1,11 +1,10 @@
 import { Typography, IconButton } from '@mui/material';
 import styled from 'styled-components';
-import { primaryColor } from '../../styles/consts';
 
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 32px 0;
+  margin: 2vh 0;
   width: 100%;
 `;
 
@@ -18,6 +17,7 @@ export const ScrollArea = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  padding: 2vh;
 `;
 
 export const ScrollContent = styled.div`
@@ -32,19 +32,4 @@ export const ScrollButton = styled(IconButton)<{ side: 'left' | 'right' }>`
     props.side === 'left'
       ? 'margin-right: 12px !important;'
       : 'margin-left: 12px !important;'}
-`;
-
-export const SelectableItem = styled.div<{ selected: boolean }>`
-  padding: 8px 16px;
-  border-radius: 16px;
-  white-space: nowrap;
-  background: ${(props) =>
-    props.selected ? primaryColor : 'linear-gradient(to right, #f5f5f5, #ddd)'};
-  color: ${(props) => (props.selected ? 'white' : '#333')};
-  font-weight: 500;
-  cursor: pointer;
-  user-select: none;
-  box-shadow: ${(props) =>
-    props.selected ? '0 0 6px rgba(0,0,0,0.2)' : 'none'};
-  transition: background 0.2s ease;
 `;

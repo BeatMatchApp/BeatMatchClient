@@ -1,7 +1,7 @@
-import { StyledIconButton, StyledSongBox } from "../styledComponents";
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
-import { Box, Typography } from "@mui/material";
+import { StyledIconButton, StyledSongBox, StyledSongResultText} from "../styledComponents";
+import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 import { TrackDetails } from "../../models/AiResponse";
+import ShinyCard from "../ShinyCard/ShinyCard";
 
 interface Props {
   trackDetails: TrackDetails;
@@ -12,13 +12,13 @@ interface Props {
 export const SongResult: React.FC<Props> = ({ trackDetails, isDisliked, onDislikeChange }) => {
 
   return (
-    <Box sx={{ backgroundColor: '#9C27B0' }}>
+    <ShinyCard colors={['#8d92f6', '#a2dfd0']} small>
       <StyledSongBox>
-        <Typography>{`${trackDetails.artist} - ${trackDetails.name}`}</Typography>
+        <StyledSongResultText>{`${trackDetails.artist} - ${trackDetails.songName}`}</StyledSongResultText>
         <StyledIconButton size="small" onClick={onDislikeChange}>
-          <ThumbDownIcon fontSize="small" sx={{ color: isDisliked ? '#590505' : 'white' }} />
+          <RefreshRoundedIcon fontSize="medium" sx={{ color: (theme) => isDisliked ? theme.palette.customColors.pink : 'grey' }} />
         </StyledIconButton>
       </StyledSongBox>
-    </Box>
+    </ShinyCard>
   );
 };

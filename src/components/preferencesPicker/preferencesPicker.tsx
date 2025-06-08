@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Chip, TextField, Typography, Button } from '@mui/material';
-import { primaryColor } from '../../styles/consts';
+import { Divider, TextField, Typography } from '@mui/material';
 import { useDebounce } from 'use-debounce';
 import './PreferencesPicker.css';
 import { MAX_PREFERENCES_AMOUNT } from '../../shared/consts';
+import Preference from './Preference';
+import { StyledChip, StyledMenuButton } from '../styledComponents';
 import { toast } from 'react-toastify';
 
 interface Props {
@@ -62,65 +63,65 @@ const PreferencesPicker: React.FC<Props> = ({
 
   return (
     <>
-      <div className="picker-container">
-        <Typography color={primaryColor} variant="h6" gutterBottom>
-          Pick Your Favorite {preferencesName}!
-        </Typography>
-        <TextField
-          label={`Search ${preferencesName}...`}
-          variant="outlined"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          fullWidth
-          className="search"
-          sx={{ marginBottom: '16px' }}
-        />
-        <div className="items-list">
-          {options.map((option) => {
-            const isSelected = selectedPreferences.includes(option);
+      <Typography
+        sx={{ color: (theme) => theme.palette.customColors.textMain }}
+      >
+        Pick Your Favorite {preferencesName}!
+      </Typography>
+      <TextField
+        label={`Search ${preferencesName}...`}
+        variant="outlined"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        fullWidth
+        className="search"
+        sx={{ marginBottom: '2vh', marginTop: '2vh' }}
+      />
+      <div className="items-list">
+        {options.map((option) => {
+          const isSelected = selectedPreferences.includes(option);
 
-            return (
-              <Chip
-                key={option}
-                label={option}
-                onClick={() => handleToggleSelect(option)}
-                color={isSelected ? 'primary' : 'default'}
-                variant={isSelected ? 'filled' : 'outlined'}
-                className="chip"
-              />
-            );
-          })}
-        </div>
+          return (
+            <StyledChip
+              key={option}
+              label={option}
+              onClick={() => handleToggleSelect(option)}
+              variant={isSelected ? 'filled' : 'outlined'}
+              className="chip"
+              isSelected={isSelected}
+            />
+          );
+        })}
       </div>
       <div className="bottom-form">
         <div className="selected-preview">
           {selectedPreferences.length > 0 ? (
-            selectedPreferences.map((item) => (
-              <div className="selected-chip" key={item}>
-                <span className="chip-label">{item}</span>
-                <button
-                  className="chip-remove"
-                  onClick={() => handleRemove(item)}
-                >
-                  ×
-                </button>
-              </div>
-            ))
+            <>
+              <Divider sx={{ margin: '1vh' }} />
+              {selectedPreferences.map((preference) => (
+                <Preference
+                  key={preference}
+                  preference={preference}
+                  handleDelete={() => handleRemove(preference)}
+                />
+              ))}
+            </>
           ) : (
             <span className="selected-placeholder">
               No {preferencesName} selected
             </span>
           )}
         </div>
+
         {!editMode && (
-          <Button
+          <StyledMenuButton
             variant="contained"
             disabled={!isMaxSelected}
             onClick={handleMaxSelection}
-            className="next-button"
+            sx={{ marginTop: '3vh' }}
           >
             keep going!
-          </Button>
+          </StyledMenuButton>
         )}
       </div>
     </>

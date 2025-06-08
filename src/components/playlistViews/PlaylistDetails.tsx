@@ -131,7 +131,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
             </StyledRefreshButton>
           </Box>
 
-          <Box sx={{ overflow: 'hidden', height: '30vh' }}>
+          <Box sx={{ overflow: 'hidden', height: '40vh' }}>
             <Box
               sx={{
                 mb: '1vh',

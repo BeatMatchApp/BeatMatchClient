@@ -10,6 +10,7 @@ import { useEffect, useMemo, useState } from 'react';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import {Song} from "../../models/Playlist.ts";
 import { refreshAiPlaylist} from "../../services/aiService.ts";
+import Loader from "../Loader/Loader.tsx";
 
 interface Props {
   songs: Song[];
@@ -34,7 +35,7 @@ export const CreatePlaylistResults: React.FC<Props> = ({
     () => dislikedSongs.size === 0,
     [dislikedSongs]
   );
-  const [_, setLoading] = useState(initialLoading);
+  const [loading, setLoading] = useState(initialLoading);
 
   useEffect(() => {
     setSongs(initialSongs || []);
@@ -120,22 +121,27 @@ export const CreatePlaylistResults: React.FC<Props> = ({
       </Box>
 
       <StyledContentContainer sx={{ height: '55vh', paddingTop: 0 }}>
-        <Box className="center">
-          {songs.map((song) => (
-            <Box className="center" sx={{ margin: '5px' }} key={song.id}>
-              <SongResult
-                song={song}
-                isDisliked={dislikedSongs.has(song.id ?? 0)}
-                onDislikeChange={() => onDislikeChange(song.id ?? 0)}
-              />
-            </Box>
-          ))}
-          <StyledTextArea
-            minRows={4}
-            placeholder="Any requests?"
-            onChange={(e) => setRequestText(e.target.value)}
-          />
-        </Box>
+        {loading
+            ? <Loader /> :
+            (
+                <Box className="center">
+                  {songs.map((song) => (
+                      <Box className="center" sx={{ margin: '5px' }} key={song.id}>
+                        <SongResult
+                            song={song}
+                            isDisliked={dislikedSongs.has(song.id ?? 0)}
+                            onDislikeChange={() => onDislikeChange(song.id ?? 0)}
+                        />
+                      </Box>
+                  ))}
+                  <StyledTextArea
+                      minRows={4}
+                      placeholder="Any requests?"
+                      onChange={(e) => setRequestText(e.target.value)}
+                  />
+                </Box>
+            )}
+
       </StyledContentContainer>
     </Box>
   );

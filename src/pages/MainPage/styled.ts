@@ -2,7 +2,7 @@ import { AppBar, Container } from '@mui/material';
 import styled from 'styled-components';
 
 export const NavBar = styled(AppBar)`
-  height: 85px;
+  height: 8vh;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -17,7 +17,7 @@ export const ContentContainer = styled(Container).attrs(() => ({
   disableGutters: true,
   maxWidth: false,
 }))`
-  height: 100%;
+  height: 92vh;
   overflow-y: auto;
   padding-bottom: 10px;
 `;

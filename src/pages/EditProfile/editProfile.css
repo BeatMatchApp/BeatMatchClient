@@ -10,11 +10,9 @@
 .content-container {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding: 24px;
+  gap: 1vh;
+  padding: 1vh;
   min-width: 40%;
-  width: 100%;
-  max-width: 500px;
 }
 
 .picker-container {

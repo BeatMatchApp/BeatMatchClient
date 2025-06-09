@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Stepper, Step, StepLabel, Button, Box } from '@mui/material';
+import { Stepper, Step, StepLabel, Box } from '@mui/material';
 import TopArtists from '../../components/topArtists/topArtists';
 import { updatePreferences } from '../../services/userPreferencesService';
 import { toast } from 'react-toastify';
@@ -7,11 +7,15 @@ import RegisterPage from '../RegisterPage/registerPage';
 import { useNavigate } from 'react-router-dom';
 import { NavigationRoutes } from '../../models/NavigationRoutes';
 import TopGenres from '../../components/topGenres/topGenres';
-import { StyledFormBox } from '../../components/styledComponents';
 import './ProfileForm.css';
 import TopSong from '../../components/topSong/topSong';
 import { FormSteps } from '../../models/enums/FormSteps';
 import { MAX_PREFERENCES_AMOUNT } from '../../shared/consts';
+import {
+  StyledCardBox,
+  StyledMenuButton,
+  StyledPageCard,
+} from '../../components/styledComponents';
 
 const ProfileForm: React.FC = () => {
   const navigate = useNavigate();
@@ -100,8 +104,8 @@ const ProfileForm: React.FC = () => {
   ];
 
   return (
-    <div className="form-container">
-      <StyledFormBox>
+    <Box className="form-container">
+      <StyledPageCard>
         <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: 4 }}>
           {stepComponents.map((step, index) => (
             <Step key={index}>
@@ -112,20 +116,25 @@ const ProfileForm: React.FC = () => {
 
         {stepComponents[activeStep].component}
 
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          {activeStep > 1 && <Button onClick={handlePrevious}>Back</Button>}
+        <StyledCardBox>
           {isFinishedForm && (
-            <Button
+            <StyledMenuButton
+              sx={{ marginTop: '3vh' }}
               disabled={!isPreferencesFilled}
               variant="contained"
               onClick={savePreferences}
             >
               Save my choices!
-            </Button>
+            </StyledMenuButton>
           )}
-        </Box>
-      </StyledFormBox>
-    </div>
+          {activeStep > 1 && (
+            <StyledMenuButton variant="outlined" onClick={handlePrevious}>
+              Back
+            </StyledMenuButton>
+          )}
+        </StyledCardBox>
+      </StyledPageCard>
+    </Box>
   );
 };
 

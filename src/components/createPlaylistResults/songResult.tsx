@@ -1,7 +1,12 @@
-import { StyledIconButton, StyledSongBox } from "../styledComponents";
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
-import { Box, Typography } from "@mui/material";
-import { TrackDetails } from "../../models/AiResponse";
+import {
+  StyledIconButton,
+  StyledSongBox,
+  StyledSongResultText,
+} from '../styledComponents';
+import { TrackDetails } from '../../models/AiResponse';
+import ShinyCard from '../ShinyCard/ShinyCard';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 interface Props {
   trackDetails: TrackDetails;
@@ -9,16 +14,30 @@ interface Props {
   onDislikeChange: () => void;
 }
 
-export const SongResult: React.FC<Props> = ({ trackDetails, isDisliked, onDislikeChange }) => {
-
+export const SongResult: React.FC<Props> = ({
+  trackDetails,
+  isDisliked,
+  onDislikeChange,
+}) => {
   return (
-    <Box sx={{ backgroundColor: '#9C27B0' }}>
+    <ShinyCard colors={['#8d92f6', '#a2dfd0']} small>
       <StyledSongBox>
-        <Typography>{`${trackDetails.artist} - ${trackDetails.songName}`}</Typography>
+        <StyledSongResultText>{`${trackDetails.artist} - ${trackDetails.songName}`}</StyledSongResultText>
         <StyledIconButton size="small" onClick={onDislikeChange}>
-          <ThumbDownIcon fontSize="small" sx={{ color: isDisliked ? '#590505' : 'white' }} />
+          {isDisliked ? (
+            <RemoveCircleIcon
+              color="primary"
+              fontSize="medium"
+              sx={{ color: (theme) => theme.palette.customColors.pink }}
+            />
+          ) : (
+            <RadioButtonUncheckedIcon
+              fontSize="medium"
+              sx={{ color: 'grey' }}
+            />
+          )}
         </StyledIconButton>
       </StyledSongBox>
-    </Box>
+    </ShinyCard>
   );
 };

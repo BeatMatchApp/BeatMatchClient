@@ -104,7 +104,7 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
       >
         Already Registered? Login
       </Button>
-      <Box className="MenuCard MenuCard-form">
+      <Box className="MenuCard">
         <TextField
           id="name"
           label="Name"
@@ -166,8 +166,12 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
           }}
         />
       </Box>
-      <StyledMenuButton disabled={disableContinue()} onClick={handleContinue}>
-        Lets start!
+      <StyledMenuButton
+        sx={{ marginTop: '3vh' }}
+        disabled={disableContinue()}
+        onClick={handleContinue}
+      >
+        {`Let's start!`}
       </StyledMenuButton>
     </Box>
   );

@@ -1,9 +1,11 @@
+import { TrackDetails } from './AiResponse';
+
 export interface Playlist {
-    id: string;
-    userId: string;
-    name: string;
-    context: string;
-    songs: string[];
-    creationTime: Date;
-    lastUpdatedTime: Date;
+  id: string;
+  userId: string;
+  name: string;
+  context: string;
+  songs: TrackDetails[];
+  creationTime: Date;
+  lastUpdatedTime: Date;
 }

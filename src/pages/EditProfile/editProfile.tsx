@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { TextField } from '@mui/material';
+import { Box, Divider, TextField } from '@mui/material';
 import TopGenres from '../../components/topGenres/topGenres';
 import TopArtists from '../../components/topArtists/topArtists';
 import TopSong from '../../components/topSong/topSong';
@@ -12,7 +12,9 @@ import { NavigationRoutes } from '../../models/NavigationRoutes';
 import { useNavigate } from 'react-router-dom';
 import './editProfile.css';
 import {
+  StyledIconBox,
   StyledMenuButton,
+  StyledPageSubtitle,
   StyledPageTitle,
 } from '../../components/styledComponents';
 import {
@@ -23,6 +25,9 @@ import {
 import { DatePicker } from '@mui/x-date-pickers';
 import { getUserDetails, updateUserDetails } from '../../services/userService';
 import { formatDate } from '../../shared/dateFormatter';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import theme from '../../styles/consts';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 interface Errors {
   name: string;
@@ -101,9 +106,33 @@ const EditProfileForm = () => {
   };
 
   return (
-    <div className="edit-profile-form-container">
-      <div className="content-container">
-        <StyledPageTitle>Edit Your Profile</StyledPageTitle>
+    <Box className="edit-profile-form-container">
+      <Box
+        className="content-container"
+        sx={{ width: { xs: '80vw', sm: '50vw' } }}
+      >
+        <img
+          width="100%"
+          src={`/assets/images/audio.png`}
+          loading="lazy"
+          className="logoImg"
+        />
+        <StyledPageTitle sx={{ marginBottom: '1vh' }}>
+          Edit Your Profile
+        </StyledPageTitle>
+
+        <StyledIconBox>
+          <StyledPageSubtitle> User details </StyledPageSubtitle>
+          <AccountCircleIcon
+            fontSize="large"
+            sx={{
+              marginLeft: '5px',
+              color: theme.palette.customColors.textSecondary,
+            }}
+          />
+        </StyledIconBox>
+
+        <Divider sx={{ margin: '5px' }} />
 
         <TextField
           id="name"
@@ -152,27 +181,53 @@ const EditProfileForm = () => {
           slotProps={{ inputLabel: { shrink: !!userDetails.email } }}
         />
 
-        <TopGenres
-          setSelectedGenres={setSelectedGenres}
-          selectedGenres={selectedGenres}
-          genres={selectedGenres}
-        />
-        <TopArtists
-          selectedArtists={selectedArtists}
-          setSelectedArtists={setSelectedArtists}
-          artists={selectedArtists}
-        />
-        <TopSong handleNextStep={setSelectedSong} song={selectedSong} />
+        <StyledIconBox>
+          <StyledPageSubtitle>User preferences</StyledPageSubtitle>
+          <AutoAwesomeIcon
+            fontSize="large"
+            sx={{
+              marginLeft: '5px',
+              color: theme.palette.customColors.textSecondary,
+            }}
+          />
+        </StyledIconBox>
 
-        <StyledMenuButton
-          disabled={disableSave()}
-          variant="contained"
-          onClick={handleSave}
+        <Divider sx={{ margin: '5px' }} />
+
+        <Box sx={{ my: '1vh' }}>
+          <TopGenres
+            setSelectedGenres={setSelectedGenres}
+            selectedGenres={selectedGenres}
+            genres={selectedGenres}
+          />
+        </Box>
+        <Box sx={{ my: '1vh' }}>
+          <TopArtists
+            selectedArtists={selectedArtists}
+            setSelectedArtists={setSelectedArtists}
+            artists={selectedArtists}
+          />
+        </Box>
+        <Box sx={{ my: '1vh' }}>
+          <TopSong handleNextStep={setSelectedSong} song={selectedSong} />
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: '1vh',
+          }}
         >
-          Save Changes
-        </StyledMenuButton>
-      </div>
-    </div>
+          <StyledMenuButton
+            disabled={disableSave()}
+            variant="contained"
+            onClick={handleSave}
+          >
+            Save Changes
+          </StyledMenuButton>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

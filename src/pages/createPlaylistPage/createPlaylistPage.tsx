@@ -4,37 +4,146 @@ import { CreatePlaylistFilters } from '../../components/createPlaylistFilters/cr
 import { StyledMenuButton } from '../../components/styledComponents';
 import { CreatePlaylistResults } from '../../components/createPlaylistResults/createPlaylistResults';
 import { CreatePlaylistFinish } from '../../components/createPlaylistFinish/createPlaylistFinish';
+import { getAiPlaylistCreationAnswer} from "../../services/aiService.ts";
+import {playlistService} from "../../services/playlistService.ts";
+import {Song} from "../../models/Playlist.ts";
+
+interface SavedPlaylist {
+  url?: string;
+  error?: boolean;
+  errorMessage?: string;
+}
 
 const CreatePlaylistPage: React.FC = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [isStepValid, setIsStepValid] = useState(false);
+  const [playlistName, setPlaylistName] = useState('');
+  const [mood, setMood] = useState<string | null>(null);
+  const [event, setEvent] = useState<string | null>(null);
+  const [songs, setSongs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [savedPlaylist, setSavedPlaylist] = useState<SavedPlaylist | null>(null);
 
   const steps = [
     {
-      stepText: 'Let’s get started!',
+      stepText: "Let's get started!",
       stepButtonText: 'Start creating my playlist',
       StepContent: () => (
-        <CreatePlaylistFilters onValidChange={setIsStepValid} />
-      ),
+          <CreatePlaylistFilters
+              onValidChange={setIsStepValid}
+              onPlaylistNameChange={setPlaylistName}
+              onMoodChange={setMood}
+              onEventChange={setEvent}
+          />
+      )
     },
     {
-      stepText: 'Let’s customize it!',
+      stepText: "Let's customize it!",
       stepButtonText: 'My playlist is perfect!',
-      StepContent: () => <CreatePlaylistResults />,
+      StepContent: () => (
+          <CreatePlaylistResults
+              songs={songs}
+              loading={loading}
+              mood={mood}
+              event={event}
+              onSongsChange={setSongs}
+          />
+      )
     },
     {
       stepText: 'Finish',
-      stepButtonText: 'Create another playlist',
-      StepContent: () => <CreatePlaylistFinish PlaylistUrl="myUrl" />,
-    },
+      stepButtonText: 'Create another playlist?',
+      StepContent: () => <CreatePlaylistFinish savedPlaylist={savedPlaylist} />
+    }
   ];
 
-  const handleNext = () => {
+  const fetchPlaylistSuggestions = async () => {
+    setLoading(true);
+    try {
+      const result = await getAiPlaylistCreationAnswer({
+        mood: mood || '',
+        event: event || ''
+      });
+
+      if (result?.playlist?.data) {
+        const formattedSongs = result.playlist.data.map((song: Song, index: number) => ({
+          id: index + 1,
+          name: song.name,
+          artist: song.artist,
+          trackUri: song.trackUri
+        }));
+        setSongs(formattedSongs);
+      } else {
+        setSongs([]);
+      }
+    } catch (error) {
+      console.error('Error fetching playlist suggestions:', error);
+      setSongs([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const savePlaylist = async () => {
+    if(!mood || !event) {
+      setSavedPlaylist({
+        error: true,
+        errorMessage: 'Mood and event must be selected to create a playlist.'
+      });
+      return;
+    }
+    setLoading(true);
+    try {
+      const formattedSongs = songs.map(song => ({
+        name: song.name,
+        artist: song.artist,
+        trackUri: song.trackUri
+      }));
+
+      const result = await playlistService.createPlaylist({
+        name: playlistName,
+        songs: formattedSongs,
+        description: '',
+        mood: mood,
+        event: event
+      });
+
+      if (result?.url) {
+        setSavedPlaylist({
+          url: result.url
+        });
+      } else {
+        setSavedPlaylist({});
+      }
+    } catch (error) {
+      console.error('Error creating playlist:', error);
+      setSavedPlaylist({
+        error: true,
+        errorMessage: 'Error creating playlist. Please try again.'
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleNext = async () => {
     if (!isStepValid && activeStep === 0) return;
-    if (activeStep < steps.length - 1) {
+
+    if (activeStep === 0) {
+      await fetchPlaylistSuggestions();
+      setActiveStep((prev) => prev + 1);
+    } else if (activeStep === 1) {
+      await savePlaylist();
       setActiveStep((prev) => prev + 1);
     } else {
+      // reset state
       setActiveStep(0);
+      setIsStepValid(false);
+      setPlaylistName('');
+      setMood(null);
+      setEvent(null);
+      setSongs([]);
+      setSavedPlaylist(null);
     }
   };
 
@@ -48,20 +157,20 @@ const CreatePlaylistPage: React.FC = () => {
         ))}
       </Stepper>
 
-      <Box sx={{ mt: 4, minHeight: 100 }}>
-        {steps[activeStep].StepContent()}
-      </Box>
+        <Box sx={{ mt: 4, minHeight: 100 }}>
+          {steps[activeStep].StepContent()}
+        </Box>
 
-      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        <StyledMenuButton
-          variant="contained"
-          onClick={handleNext}
-          disabled={!isStepValid && activeStep === 0}
-        >
-          {steps[activeStep].stepButtonText}
-        </StyledMenuButton>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <StyledMenuButton
+              variant="contained"
+              onClick={handleNext}
+              disabled={(!isStepValid && activeStep === 0) || loading}
+          >
+            {loading ? 'Loading...' : steps[activeStep].stepButtonText}
+          </StyledMenuButton>
+        </Box>
       </Box>
-    </Box>
   );
 };
 

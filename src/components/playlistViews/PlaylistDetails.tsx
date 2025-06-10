@@ -30,8 +30,8 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
   const [requestText, setRequestText] = useState('');
   const [isRefreshDisabled, setIsRefreshDisabled] = useState(true);
 
-  const creationDate = new Date(playlist.creationTime).toLocaleDateString();
-  const lastUpdated = new Date(playlist.lastUpdatedTime).toLocaleDateString();
+    const creationDate = new Date(playlist.creationDate).toLocaleDateString();
+    const lastUpdated = new Date(playlist.lastUpdatedDate).toLocaleDateString();
 
   const onDislikeChange = (id: number) => {
     setDislikedSongs((prev) => {
@@ -93,12 +93,12 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
               <PlaylistDataText>{playlist.songs.length}</PlaylistDataText>
             </Box>
 
-            {playlist.context && (
+            {playlist.description && (
               <Box>
                 <Divider sx={{ margin: '5px' }} />
                 <PlaylistDataTitle>Playlist Context:</PlaylistDataTitle>
                 <Typography variant="body2" sx={{ mt: 1, lineHeight: 1.6 }}>
-                  {playlist.context}
+                  {playlist.description}
                 </Typography>
               </Box>
             )}
@@ -131,7 +131,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
             </StyledRefreshButton>
           </Box>
 
-          <Box sx={{ overflow: 'hidden', height: '30vh' }}>
+          <Box sx={{ overflow: 'hidden', height: '40vh' }}>
             <Box
               sx={{
                 mb: '1vh',
@@ -147,7 +147,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
                   <SongResult
                     key={index}
                     isDisliked={dislikedSongs.has(index)}
-                    trackDetails={song}
+                    song={song}
                     onDislikeChange={() => onDislikeChange(index)}
                   />
                 </Box>

@@ -6,29 +6,46 @@ import {
   StyledTextArea,
 } from '../styledComponents';
 import { SongResult } from './songResult';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import {Song} from "../../models/Playlist.ts";
+import { refreshAiPlaylist} from "../../services/aiService.ts";
+import Loader from "../Loader/Loader.tsx";
 
-const songs = [
-  { id: 1, title: 'Song A', artist: 'Artist A' },
-  { id: 2, title: 'Song B', artist: 'Artist B' },
-  { id: 3, title: 'Song C', artist: 'Artist C' },
-  { id: 4, title: 'Song E', artist: 'Artist E' },
-  { id: 5, title: 'Song F', artist: 'Artist F' },
-  { id: 6, title: 'Song G', artist: 'Artist G' },
-  { id: 7, title: 'Song H', artist: 'Artist H' },
-  { id: 8, title: 'Song I', artist: 'Artist I' },
-  { id: 9, title: 'Song J', artist: 'Artist J' },
-  { id: 10, title: 'Song K', artist: 'Artist K' },
-];
+interface Props {
+  songs: Song[];
+  loading: boolean;
+  mood?: string | null;
+  event?: string | null;
+  onSongsChange?: (songs: Song[]) => void;
 
-export const CreatePlaylistResults: React.FC = () => {
-  const [requestText, setRequetText] = useState('');
+}
+
+export const CreatePlaylistResults: React.FC<Props> = ({
+                                                         songs: initialSongs,
+                                                         loading: initialLoading,
+                                                         mood,
+                                                         event,
+                                                         onSongsChange
+                                                       }) => {
+  const [songs, setSongs] = useState<Song[]>([]);
+  const [requestText, setRequestText] = useState('');
   const [dislikedSongs, setDislikedSongs] = useState<Set<number>>(new Set());
   const isRefreshDisabled = useMemo(
     () => dislikedSongs.size === 0,
     [dislikedSongs]
   );
+  const [loading, setLoading] = useState(initialLoading);
+
+  useEffect(() => {
+    setSongs(initialSongs || []);
+    if(onSongsChange) {
+      onSongsChange(initialSongs);
+    }
+    setLoading(initialLoading);
+  }, [initialSongs, initialLoading]);
+
+
 
   const onDislikeChange = (songId: number) => {
     setDislikedSongs((prev) => {
@@ -42,9 +59,45 @@ export const CreatePlaylistResults: React.FC = () => {
     });
   };
 
-  const changePlaylist = () => {
-    console.log([...dislikedSongs]);
-    console.log(requestText);
+  const changePlaylist = async () => {
+    if (dislikedSongs.size === 0) return;
+
+    setLoading(true);
+    try {
+      const songsForRefresh = songs.map(song => ({
+        name: song.name,
+        artist: song.artist,
+        trackUri: song.trackUri,
+        isReplace: dislikedSongs.has(song.id ?? 0)
+      }));
+
+      const response = await refreshAiPlaylist({
+        mood: mood || '',
+        event: event || '',
+        songs: songsForRefresh,
+        requestChangesText: requestText
+      });
+
+      if (response?.updatedPlaylist?.data ) {
+        const updatedSongs = response.updatedPlaylist.data.map((song: Song, index: number) => ({
+          id: index + 1,
+          name: song.name,
+          artist: song.artist,
+          trackUri: song.trackUri
+        }));
+        setSongs(updatedSongs);
+        // Reset disliked songs
+        setDislikedSongs(new Set());
+        if(onSongsChange) {
+          onSongsChange(updatedSongs);
+        }
+        setRequestText('');
+      }
+    } catch (error) {
+      console.error('Error refreshing playlist:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -68,22 +121,27 @@ export const CreatePlaylistResults: React.FC = () => {
       </Box>
 
       <StyledContentContainer sx={{ height: '55vh', paddingTop: 0 }}>
-        <Box className="center">
-          {songs.map((song) => (
-            <Box className="center" sx={{ margin: '5px' }} key={song.id}>
-              <SongResult
-                trackDetails={{ songName: song.title, artist: song.artist }}
-                isDisliked={dislikedSongs.has(song.id)}
-                onDislikeChange={() => onDislikeChange(song.id)}
-              />
-            </Box>
-          ))}
-          <StyledTextArea
-            minRows={4}
-            placeholder="Any requests?"
-            onChange={(e) => setRequetText(e.target.value)}
-          />
-        </Box>
+        {loading
+            ? <Loader /> :
+            (
+                <Box className="center">
+                  {songs.map((song) => (
+                      <Box className="center" sx={{ margin: '5px' }} key={song.id}>
+                        <SongResult
+                            song={song}
+                            isDisliked={dislikedSongs.has(song.id ?? 0)}
+                            onDislikeChange={() => onDislikeChange(song.id ?? 0)}
+                        />
+                      </Box>
+                  ))}
+                  <StyledTextArea
+                      minRows={4}
+                      placeholder="Any requests?"
+                      onChange={(e) => setRequestText(e.target.value)}
+                  />
+                </Box>
+            )}
+
       </StyledContentContainer>
     </Box>
   );

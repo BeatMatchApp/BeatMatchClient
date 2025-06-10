@@ -3,26 +3,26 @@ import {
   StyledSongBox,
   StyledSongResultText,
 } from '../styledComponents';
-import { TrackDetails } from '../../models/AiResponse';
 import ShinyCard from '../ShinyCard/ShinyCard';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import {Song} from "../../models/Playlist.ts";
 
 interface Props {
-  trackDetails: TrackDetails;
+  song: Song;
   isDisliked: boolean;
   onDislikeChange: () => void;
 }
 
 export const SongResult: React.FC<Props> = ({
-  trackDetails,
-  isDisliked,
-  onDislikeChange,
-}) => {
+                                              song,
+                                              isDisliked,
+                                              onDislikeChange,
+                                            }) => {
   return (
     <ShinyCard colors={['#8d92f6', '#a2dfd0']} small>
       <StyledSongBox>
-        <StyledSongResultText>{`${trackDetails.artist} - ${trackDetails.songName}`}</StyledSongResultText>
+        <StyledSongResultText>{`${song.artist} - ${song.name}`}</StyledSongResultText>
         <StyledIconButton size="small" onClick={onDislikeChange}>
           {isDisliked ? (
             <RemoveCircleIcon

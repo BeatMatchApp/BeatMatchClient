@@ -17,7 +17,6 @@ export const ContentContainer = styled(Container).attrs(() => ({
   disableGutters: true,
   maxWidth: false,
 }))`
-  height: 100%;
+  flex: 1;
   overflow-y: auto;
-  padding-bottom: 10px;
 `;

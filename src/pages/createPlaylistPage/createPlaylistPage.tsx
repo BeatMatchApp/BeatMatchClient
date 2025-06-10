@@ -40,7 +40,7 @@ const CreatePlaylistPage: React.FC = () => {
       ),
     },
     {
-      stepText: 'Time to customize :)',
+      stepText: 'Time to customize',
       stepButtonText: 'My playlist is perfect!',
       StepContent: () => (
         <CreatePlaylistResults
@@ -161,7 +161,7 @@ const CreatePlaylistPage: React.FC = () => {
         ))}
       </Stepper>
 
-      <Box sx={{ mt: 4, minHeight: 100 }}>
+      <Box sx={{ mt: 4, minHeight: 100, mb: '10px' }}>
         {steps[activeStep].StepContent()}
       </Box>
 

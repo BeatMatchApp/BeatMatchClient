@@ -374,4 +374,6 @@ export const StyledMainBox = styled(Box)(() => ({
   height: '100vh',
   overflow: 'hidden',
   position: 'relative',
+  display: 'flex',
+  flexDirection: 'column',
 }));

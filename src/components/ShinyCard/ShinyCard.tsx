@@ -19,6 +19,13 @@ const ShinyCard: React.FC<ShinyCardProps> = ({ children, colors, small }) => {
         overflow: 'hidden',
         zIndex: 1,
         width: { xs: '80vw', sm: '40vw' },
+        transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
+
+        '&:hover': {
+          cursor: 'pointer',
+          transform: 'scale(1.03)',
+          boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+        },
 
         '&::before': {
           content: '""',

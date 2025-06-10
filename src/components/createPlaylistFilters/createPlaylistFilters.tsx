@@ -1,16 +1,16 @@
-import { ChangeEvent, useEffect, useState } from 'react';
-import { ScrollableSelector } from '../scrollableSelector/scrollableSelector';
-import { getEvents, getMoods } from '../../services/metaService';
-import { StyledContentContainer, StyledPageTitle } from '../styledComponents';
-import { Box, TextField, Typography } from '@mui/material';
+import {ChangeEvent, useEffect, useState} from 'react';
+import {ScrollableSelector} from '../scrollableSelector/scrollableSelector';
+import {getEvents, getMoods} from '../../services/metaService';
+import {StyledContentContainer, StyledPageTitle} from '../styledComponents';
+import {Box, TextField, Typography} from '@mui/material';
 import EventIcon from '@mui/icons-material/Event';
 import MoodIcon from '@mui/icons-material/Mood';
 
 interface Props {
   onValidChange: (isValid: boolean) => void;
   onPlaylistNameChange: (name: string) => void;
-  onMoodChange: (mood: string | null) => void;
-  onEventChange: (event: string | null) => void;
+  onMoodChange: (mood: string) => void;
+  onEventChange: (event: string) => void;
 }
 
 export const CreatePlaylistFilters: React.FC<Props> = ({
@@ -59,16 +59,17 @@ export const CreatePlaylistFilters: React.FC<Props> = ({
   }, [playlistName, onPlaylistNameChange]);
 
   useEffect(() => {
+    if(!mood) return;
     onMoodChange(mood);
   }, [mood, onMoodChange]);
 
   useEffect(() => {
+    if(!event) return;
     onEventChange(event);
   }, [event, onEventChange]);
 
   const validatePlaylistName = (name: string): boolean => {
-    const isValid = name.trim().length > 0 && name.length <= 100;
-    return isValid;
+    return name.trim().length > 0 && name.length <= 100;
   };
 
   const handlePlaylistNameChange = (event: ChangeEvent<HTMLInputElement>) => {

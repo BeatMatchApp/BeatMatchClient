@@ -10,8 +10,7 @@ import {
   PlaylistMetaText,
   StyledPlaylistChip,
   PlaylistTitle,
-  PlaylistContextText,
-  ActionIconButton,
+  ActionIconButton, PlaylistDescriptionText,
 } from '../styledComponents.tsx';
 
 interface PlaylistItemProps {
@@ -20,18 +19,17 @@ interface PlaylistItemProps {
   onEdit?: (playlist: Playlist) => void;
 }
 
-const PlaylistItem: React.FC<PlaylistItemProps> = ({
-  playlist,
-  onView,
-  onEdit,
-}) => {
-  const formattedDate = new Date(playlist.lastUpdatedTime).toLocaleDateString();
+const PlaylistItem: React.FC<PlaylistItemProps> = ({ playlist, onView, onEdit }) => {
+    const formattedDate = new Date(playlist.lastUpdatedDate).toLocaleDateString();
 
   return (
     <ShinyCard colors={['#8d92f6', '#a2dfd0']}>
       <Box sx={{ display: 'flex' }} onClick={() => onView(playlist)}>
         <PlaylistAvatar variant="rounded">
-          <MusicNoteIcon sx={{ fontSize: 36, color: 'white' }} />
+          {playlist.imageUrl ? (
+              <img src={playlist.imageUrl} alt={playlist.name} style={{ objectFit: 'cover' }} />
+          ): (<MusicNoteIcon sx={{ fontSize: 36, color: 'white' }} />)}
+
         </PlaylistAvatar>
 
         <Box sx={{ flexGrow: 1, textAlign: 'start' }}>
@@ -53,10 +51,10 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
             </PlaylistMetaText>
           </Stack>
 
-          {playlist.context && (
-            <PlaylistContextText variant="body2" color="text.secondary">
-              {playlist.context}
-            </PlaylistContextText>
+          {playlist.description && (
+            <PlaylistDescriptionText variant="body2" color="text.secondary">
+              {playlist.description}
+            </PlaylistDescriptionText>
           )}
         </Box>
 

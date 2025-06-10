@@ -320,7 +320,7 @@ export const StyledPlaylistChip = styled(Chip)(({ theme }) => ({
   fontWeight: 500,
 }));
 
-export const PlaylistContextText = styled(Typography)({
+export const PlaylistDescriptionText = styled(Typography)({
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   display: '-webkit-box',

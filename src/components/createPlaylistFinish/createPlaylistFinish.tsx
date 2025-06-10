@@ -1,21 +1,69 @@
 import ShinyCard from "../ShinyCard/ShinyCard";
 import { StyledContentContainer, StyledPageTitle } from "../styledComponents";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Link } from "@mui/material";
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 interface Props {
-  PlaylistUrl: string;
+  savedPlaylist: {
+    url?: string;
+    error?: boolean;
+    errorMessage?: string;
+  } | null;
 }
 
-export const CreatePlaylistFinish: React.FC<Props> = ({ PlaylistUrl }) => {
+export const CreatePlaylistFinish: React.FC<Props> = ({ savedPlaylist }) => {
+  const renderContent = () => {
+    if (!savedPlaylist) {
+      return (
+        <Box sx={{ display: 'flex', alignItems: 'center', color: '#ff5252' }}>
+          <ErrorOutlineIcon sx={{ mr: 1 }} />
+          <Typography>Could not fetch playlist information</Typography>
+        </Box>
+      );
+    }
+    
+    if (savedPlaylist.error) {
+      return (
+        <Box sx={{ display: 'flex', alignItems: 'center', color: '#ff5252' }}>
+          <ErrorOutlineIcon sx={{ mr: 1 }} />
+          <Typography>{savedPlaylist.errorMessage || 'Error creating playlist. Please try again.'}</Typography>
+        </Box>
+      );
+    }
+    
+    if (savedPlaylist.url) {
+      return (
+        <Link 
+          href={savedPlaylist.url} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          sx={{ 
+            color: '#715cf8', 
+            '&:hover': { 
+              color: '#5a36a1',
+              textDecoration: 'underline'
+            },
+            textDecoration: 'none'
+          }}
+        >
+          {savedPlaylist.url}
+        </Link>
+      );
+    }
+    
+    return <Typography>Playlist created but no URL available</Typography>;
+  };
 
   return (
-     <Box className="center">
-       <StyledPageTitle>Playlist created!</StyledPageTitle>
-       <StyledContentContainer sx={{ color: 'white', alignItems: 'center' }}>
+    <Box className="center">
+      <StyledPageTitle>Playlist created!</StyledPageTitle>
+      <StyledContentContainer sx={{ color: 'white', alignItems: 'center' }}>
         <ShinyCard colors={['#8d92f6', '#a2dfd0']}>
-          <Typography sx={{ padding: '1vh'}}>{PlaylistUrl}</Typography>
+          <Box sx={{ padding: '1vh'}}>
+            {renderContent()}
+          </Box>
         </ShinyCard>
-       </StyledContentContainer>
-     </Box>
+      </StyledContentContainer>
+    </Box>
   );
 };

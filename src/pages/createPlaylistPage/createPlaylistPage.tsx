@@ -4,9 +4,9 @@ import { CreatePlaylistFilters } from '../../components/createPlaylistFilters/cr
 import { StyledMenuButton } from '../../components/styledComponents';
 import { CreatePlaylistResults } from '../../components/createPlaylistResults/createPlaylistResults';
 import { CreatePlaylistFinish } from '../../components/createPlaylistFinish/createPlaylistFinish';
-import { getAiPlaylistCreationAnswer} from "../../services/aiService.ts";
-import {playlistService} from "../../services/playlistService.ts";
-import {Song} from "../../models/Playlist.ts";
+import { getAiPlaylistCreationAnswer } from '../../services/aiService.ts';
+import { playlistService } from '../../services/playlistService.ts';
+import { Song } from '../../models/Playlist.ts';
 
 interface SavedPlaylist {
   url?: string;
@@ -22,39 +22,41 @@ const CreatePlaylistPage: React.FC = () => {
   const [event, setEvent] = useState<string | null>(null);
   const [songs, setSongs] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [savedPlaylist, setSavedPlaylist] = useState<SavedPlaylist | null>(null);
+  const [savedPlaylist, setSavedPlaylist] = useState<SavedPlaylist | null>(
+    null
+  );
 
   const steps = [
     {
       stepText: "Let's get started!",
       stepButtonText: 'Start creating my playlist',
       StepContent: () => (
-          <CreatePlaylistFilters
-              onValidChange={setIsStepValid}
-              onPlaylistNameChange={setPlaylistName}
-              onMoodChange={setMood}
-              onEventChange={setEvent}
-          />
-      )
+        <CreatePlaylistFilters
+          onValidChange={setIsStepValid}
+          onPlaylistNameChange={setPlaylistName}
+          onMoodChange={setMood}
+          onEventChange={setEvent}
+        />
+      ),
     },
     {
-      stepText: "Let's customize it!",
+      stepText: 'Time to customize :)',
       stepButtonText: 'My playlist is perfect!',
       StepContent: () => (
-          <CreatePlaylistResults
-              songs={songs}
-              loading={loading}
-              mood={mood}
-              event={event}
-              onSongsChange={setSongs}
-          />
-      )
+        <CreatePlaylistResults
+          songs={songs}
+          loading={loading}
+          mood={mood}
+          event={event}
+          onSongsChange={setSongs}
+        />
+      ),
     },
     {
       stepText: 'Finish',
       stepButtonText: 'Create another playlist?',
-      StepContent: () => <CreatePlaylistFinish savedPlaylist={savedPlaylist} />
-    }
+      StepContent: () => <CreatePlaylistFinish savedPlaylist={savedPlaylist} />,
+    },
   ];
 
   const fetchPlaylistSuggestions = async () => {
@@ -62,16 +64,18 @@ const CreatePlaylistPage: React.FC = () => {
     try {
       const result = await getAiPlaylistCreationAnswer({
         mood: mood || '',
-        event: event || ''
+        event: event || '',
       });
 
       if (result?.playlist?.data) {
-        const formattedSongs = result.playlist.data.map((song: Song, index: number) => ({
-          id: index + 1,
-          name: song.name,
-          artist: song.artist,
-          trackUri: song.trackUri
-        }));
+        const formattedSongs = result.playlist.data.map(
+          (song: Song, index: number) => ({
+            id: index + 1,
+            name: song.name,
+            artist: song.artist,
+            trackUri: song.trackUri,
+          })
+        );
         setSongs(formattedSongs);
       } else {
         setSongs([]);
@@ -85,19 +89,19 @@ const CreatePlaylistPage: React.FC = () => {
   };
 
   const savePlaylist = async () => {
-    if(!mood || !event) {
+    if (!mood || !event) {
       setSavedPlaylist({
         error: true,
-        errorMessage: 'Mood and event must be selected to create a playlist.'
+        errorMessage: 'Mood and event must be selected to create a playlist.',
       });
       return;
     }
     setLoading(true);
     try {
-      const formattedSongs = songs.map(song => ({
+      const formattedSongs = songs.map((song) => ({
         name: song.name,
         artist: song.artist,
-        trackUri: song.trackUri
+        trackUri: song.trackUri,
       }));
 
       const result = await playlistService.createPlaylist({
@@ -105,12 +109,12 @@ const CreatePlaylistPage: React.FC = () => {
         songs: formattedSongs,
         description: '',
         mood: mood,
-        event: event
+        event: event,
       });
 
       if (result?.url) {
         setSavedPlaylist({
-          url: result.url
+          url: result.url,
         });
       } else {
         setSavedPlaylist({});
@@ -119,7 +123,7 @@ const CreatePlaylistPage: React.FC = () => {
       console.error('Error creating playlist:', error);
       setSavedPlaylist({
         error: true,
-        errorMessage: 'Error creating playlist. Please try again.'
+        errorMessage: 'Error creating playlist. Please try again.',
       });
     } finally {
       setLoading(false);
@@ -157,20 +161,20 @@ const CreatePlaylistPage: React.FC = () => {
         ))}
       </Stepper>
 
-        <Box sx={{ mt: 4, minHeight: 100 }}>
-          {steps[activeStep].StepContent()}
-        </Box>
-
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <StyledMenuButton
-              variant="contained"
-              onClick={handleNext}
-              disabled={(!isStepValid && activeStep === 0) || loading}
-          >
-            {loading ? 'Loading...' : steps[activeStep].stepButtonText}
-          </StyledMenuButton>
-        </Box>
+      <Box sx={{ mt: 4, minHeight: 100 }}>
+        {steps[activeStep].StepContent()}
       </Box>
+
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <StyledMenuButton
+          variant="contained"
+          onClick={handleNext}
+          disabled={(!isStepValid && activeStep === 0) || loading}
+        >
+          {loading ? 'Loading...' : steps[activeStep].stepButtonText}
+        </StyledMenuButton>
+      </Box>
+    </Box>
   );
 };
 

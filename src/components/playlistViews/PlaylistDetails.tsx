@@ -11,6 +11,7 @@ import {
   PlaylistDataText,
   StyledRefreshButton,
   StyledTextArea,
+  PlaylistDataBox,
 } from '../styledComponents';
 import ShinyCard from '../ShinyCard/ShinyCard.tsx';
 import { SongResult } from '../createPlaylistResults/songResult.tsx';
@@ -30,8 +31,8 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
   const [requestText, setRequestText] = useState('');
   const [isRefreshDisabled, setIsRefreshDisabled] = useState(true);
 
-    const creationDate = new Date(playlist.creationDate).toLocaleDateString();
-    const lastUpdated = new Date(playlist.lastUpdatedDate).toLocaleDateString();
+  const creationDate = new Date(playlist.creationDate).toLocaleDateString();
+  const lastUpdated = new Date(playlist.lastUpdatedDate).toLocaleDateString();
 
   const onDislikeChange = (id: number) => {
     setDislikedSongs((prev) => {
@@ -80,18 +81,17 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
       >
         <ShinyCard colors={['#8d92f6', '#a2dfd0']}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <PlaylistDataBox>
               <PlaylistDataTitle> created: </PlaylistDataTitle>
               <PlaylistDataText>{creationDate}</PlaylistDataText>
-            </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            </PlaylistDataBox>
+            <PlaylistDataBox>
               <PlaylistDataTitle> Last Updated: </PlaylistDataTitle>
               <PlaylistDataText>{lastUpdated}</PlaylistDataText>
-            </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <PlaylistDataTitle> Number of Songs: </PlaylistDataTitle>
-              <PlaylistDataText>{playlist.songs.length}</PlaylistDataText>
-            </Box>
+            </PlaylistDataBox>
+            <PlaylistDataBox>
+              <PlaylistDataText>{playlist.songs.length} songs</PlaylistDataText>
+            </PlaylistDataBox>
 
             {playlist.description && (
               <Box>

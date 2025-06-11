@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme } from '@mui/material/styles';
 import {
   lightColor,
   mediumColor,
@@ -8,8 +8,9 @@ import {
   disabledColor,
   textLightColor,
   lightPurpleColor,
-  pinkColor
-} from "./colors";
+  pinkColor,
+  lightPinkColor,
+} from './colors';
 
 declare module '@mui/material/styles' {
   interface Palette {
@@ -23,6 +24,7 @@ declare module '@mui/material/styles' {
       pink: string;
       default: string;
       lightPurple: string;
+      lightPink: string;
     };
   }
   interface PaletteOptions {
@@ -37,15 +39,15 @@ declare module '@mui/material/styles' {
       pink: string;
       default: string;
       lightPurple: string;
+      lightPink: string;
     };
   }
 }
 
 const theme = createTheme({
-
   palette: {
     primary: {
-      main: lightPurpleColor
+      main: lightPurpleColor,
     },
     customColors: {
       light: lightColor,
@@ -57,7 +59,8 @@ const theme = createTheme({
       disabled: disabledColor,
       pink: pinkColor,
       lightPurple: lightPurpleColor,
-      default: "#e8f0fe"
+      lightPink: lightPinkColor,
+      default: '#e8f0fe',
     },
   },
 });

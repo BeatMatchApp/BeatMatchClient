@@ -7,9 +7,11 @@ import {
   CardContent,
   Stack,
   Divider,
+  Modal,
 } from '@mui/material';
 import {
   StyledContentContainer,
+  StyledMenuButton,
   StyledPageSubtitle,
   StyledPageTitle,
 } from '../../components/styledComponents';
@@ -17,11 +19,13 @@ import PlaylistItem from '../../components/playlistViews/PlaylistItem';
 import PlaylistDetails from '../../components/playlistViews/PlaylistDetails';
 import { Playlist } from '../../models/Playlist.ts';
 import { playlistService } from '../../services/playlistService';
+import MoodPlaylistsChart from '../../components/moodBoard/moodBoard.tsx';
 
 const LibraryPage: React.FC = () => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [isMoodsModalOpen, setIsMoodsModalOpen] = useState<boolean>(false);
   const [selectedPlaylist, setSelectedPlaylist] = useState<Playlist | null>(
     null
   );
@@ -44,6 +48,19 @@ const LibraryPage: React.FC = () => {
 
   const handleCloseDetailView = () => {
     setSelectedPlaylist(null);
+  };
+
+  const playlistMoods: Pick<Playlist, 'id' | 'mood'>[] = useMemo(() => {
+    return playlists.map((playlist: Playlist) => {
+      return {
+        id: playlist.id,
+        mood: playlist.mood,
+      };
+    });
+  }, [playlists]);
+
+  const toggleMoodsModal = (): void => {
+    setIsMoodsModalOpen((prev) => !prev);
   };
 
   const PlaylistSkeletons = useMemo(
@@ -137,10 +154,36 @@ const LibraryPage: React.FC = () => {
               />
             ))}
           </Box>
+          <Modal
+            open={isMoodsModalOpen}
+            onClose={toggleMoodsModal}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                borderRadius: 5,
+                width: { xs: '90%', sm: '60%', md: '40%' },
+                overflowY: 'auto',
+                bgcolor: '#e0f3ff',
+              }}
+            >
+              <MoodPlaylistsChart playlists={playlistMoods} />
+            </Box>
+          </Modal>
+          <Box className="center" sx={{ mt: '10px' }}>
+            <StyledMenuButton variant="contained" onClick={toggleMoodsModal}>
+              discover my mood board
+            </StyledMenuButton>
+          </Box>
         </Box>
       </Box>
     ),
-    [playlists]
+    [playlists, isMoodsModalOpen]
   );
 
   const emptyState = useMemo(

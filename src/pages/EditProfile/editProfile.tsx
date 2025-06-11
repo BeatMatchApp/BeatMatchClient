@@ -28,6 +28,7 @@ import { formatDate } from '../../shared/dateFormatter';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import theme from '../../styles/consts';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { MAX_PREFERENCES_AMOUNT } from '../../shared/consts';
 
 interface Errors {
   name: string;
@@ -79,8 +80,8 @@ const EditProfileForm = () => {
   const disableSave = () => {
     return (
       Object.values(errors).some((error) => error !== '') ||
-      selectedGenres.length !== 3 ||
-      selectedArtists.length !== 3 ||
+      selectedGenres.length !== MAX_PREFERENCES_AMOUNT ||
+      selectedArtists.length !== MAX_PREFERENCES_AMOUNT ||
       !selectedSong
     );
   };

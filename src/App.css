@@ -114,6 +114,10 @@ button:focus-visible {
   outline: none;
 }
 
+::-webkit-scrollbar {
+  width: 0;
+}
+
 .Toastify__progress-bar--success {
   background: #557dcd;
 }

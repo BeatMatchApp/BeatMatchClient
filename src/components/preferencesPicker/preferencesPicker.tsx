@@ -100,7 +100,7 @@ const PreferencesPicker: React.FC<Props> = ({
         variant="body2"
         sx={{ color: (theme) => theme.palette.customColors.textSecondary }}
       >
-        Pick Your Top 3 {preferencesName}
+        Pick Your Top {MAX_PREFERENCES_AMOUNT} {preferencesName}
       </Typography>
       <TextField
         label={`Search ${preferencesName}...`}

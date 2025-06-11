@@ -76,7 +76,7 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
   };
 
   const validatePassword = (password: string) => {
-    if (password.length < 5) {
+    if (password.length < 6) {
       setErrors((prev) => ({
         ...prev,
         password: 'Must be at least 5 characters',
@@ -176,7 +176,6 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
           type={showPassword ? 'text' : 'password'}
           error={!!errors.password}
           helperText={errors.password}
-          sx={{ outline: 'none' }}
           onChange={(e) => {
             const password = e.target.value;
             setNewUser((prevState) => ({ ...prevState, password }));

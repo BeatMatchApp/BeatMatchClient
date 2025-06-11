@@ -89,13 +89,6 @@ const CreatePlaylistPage: React.FC = () => {
   };
 
   const savePlaylist = async () => {
-    if (!mood || !event) {
-      setSavedPlaylist({
-        error: true,
-        errorMessage: 'Mood and event must be selected to create a playlist.',
-      });
-      return;
-    }
     setLoading(true);
     try {
       const formattedSongs = songs.map((song) => ({

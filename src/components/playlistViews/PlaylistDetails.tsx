@@ -15,6 +15,10 @@ import {
 } from '../styledComponents';
 import ShinyCard from '../ShinyCard/ShinyCard.tsx';
 import { SongResult } from '../createPlaylistResults/songResult.tsx';
+import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
+import './playlistDetails.css';
+import { pinkColor } from '../../styles/colors.ts';
+import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 
 interface PlaylistDetailsProps {
   playlist: Playlist;
@@ -33,6 +37,8 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
 
   const creationDate = new Date(playlist.creationDate).toLocaleDateString();
   const lastUpdated = new Date(playlist.lastUpdatedDate).toLocaleDateString();
+
+  const isAllSongDisliked = dislikedSongs.size === playlist.songs.length;
 
   const onDislikeChange = (id: number) => {
     setDislikedSongs((prev) => {
@@ -57,6 +63,16 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
   const handleRefresh = () => {
     console.log('Disliked songs:', dislikedSongs);
     console.log('Request text:', requestText);
+  };
+
+  const markAllForDisliked = () => {
+    setDislikedSongs(new Set(playlist.songs.map((_, index) => index)));
+    setIsRefreshDisabled(false);
+  };
+
+  const removeAllFromDisliked = () => {
+    setDislikedSongs(new Set());
+    setIsRefreshDisabled(true);
   };
 
   return (
@@ -122,13 +138,35 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
             <StyledPageSubtitle sx={{ fontWeight: 'bold' }}>
               Songs
             </StyledPageSubtitle>
-            <StyledRefreshButton
-              disabled={isRefreshDisabled}
-              onClick={handleRefresh}
-              startIcon={<RefreshIcon />}
-            >
-              Refresh
-            </StyledRefreshButton>
+            <div className="playlist-actions">
+              <StyledRefreshButton
+                disabled={isRefreshDisabled}
+                onClick={handleRefresh}
+                startIcon={<RefreshIcon />}
+              >
+                Refresh
+              </StyledRefreshButton>
+
+              <IconButton
+                onClick={
+                  isAllSongDisliked ? removeAllFromDisliked : markAllForDisliked
+                }
+                sx={{
+                  border: `1px solid ${pinkColor}`,
+                  color: pinkColor,
+                  height: '40px',
+                  width: '40px',
+                  position: 'absolute',
+                  right: '0',
+                }}
+              >
+                {isAllSongDisliked ? (
+                  <PlaylistRemoveIcon />
+                ) : (
+                  <PlaylistAddCheckIcon />
+                )}
+              </IconButton>
+            </div>
           </Box>
 
           <Box sx={{ overflow: 'hidden', height: '40vh' }}>

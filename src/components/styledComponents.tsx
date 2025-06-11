@@ -40,7 +40,6 @@ export const StyledMenuButton = styled(Button)(({ theme, variant }) => ({
 
 export const StyledRefreshButton = styled(StyledMenuButton)(({ theme }) => ({
   paddingTop: '1vh',
-  marginTop: '1vh',
   background: theme.palette.customColors.pink,
 }));
 

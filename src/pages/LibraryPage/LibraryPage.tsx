@@ -54,7 +54,7 @@ const LibraryPage: React.FC = () => {
     return playlists.map((playlist: Playlist) => {
       return {
         id: playlist.id,
-        mood: playlist.mood,
+        mood: playlist.mood ? playlist.mood : 'no mood',
       };
     });
   }, [playlists]);

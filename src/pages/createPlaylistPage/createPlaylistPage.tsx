@@ -7,6 +7,8 @@ import { CreatePlaylistFinish } from '../../components/createPlaylistFinish/crea
 import { getAiPlaylistCreationAnswer } from '../../services/aiService.ts';
 import { playlistService } from '../../services/playlistService.ts';
 import { Song } from '../../models/Playlist.ts';
+import Lottie from 'lottie-react';
+import loadingAnimation from './../../../public/assets/loading.json';
 
 interface SavedPlaylist {
   url?: string;
@@ -164,7 +166,16 @@ const CreatePlaylistPage: React.FC = () => {
           onClick={handleNext}
           disabled={(!isStepValid && activeStep === 0) || loading}
         >
-          {loading ? 'Loading...' : steps[activeStep].stepButtonText}
+          {loading ? (
+            <Lottie
+              animationData={loadingAnimation}
+              loop
+              autoplay
+              style={{ width: 24, height: 24 }} // Small size to fit inside button
+            />
+          ) : (
+            steps[activeStep].stepButtonText
+          )}
         </StyledMenuButton>
       </Box>
     </Box>

@@ -80,7 +80,8 @@ const EditProfileForm = () => {
     return (
       Object.values(errors).some((error) => error !== '') ||
       selectedGenres.length !== 3 ||
-      selectedArtists.length !== 3
+      selectedArtists.length !== 3 ||
+      !selectedSong
     );
   };
 

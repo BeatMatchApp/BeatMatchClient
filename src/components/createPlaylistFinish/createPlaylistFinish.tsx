@@ -2,7 +2,7 @@ import ShinyCard from '../ShinyCard/ShinyCard';
 import { StyledContentContainer, StyledPageTitle } from '../styledComponents';
 import { Box, Typography, Link } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import '../../styles/commons.css';
+import '../../App.css';
 
 interface Props {
   savedPlaylist: {

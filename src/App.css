@@ -10,6 +10,7 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 #root {
@@ -74,6 +75,13 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.text-elipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
 }
 
 .fullHeight {

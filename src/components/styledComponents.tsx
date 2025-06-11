@@ -43,6 +43,12 @@ export const StyledRefreshButton = styled(StyledMenuButton)(({ theme }) => ({
   background: theme.palette.customColors.pink,
 }));
 
+export const StyledSaveChangesButton = styled(StyledMenuButton)(({ theme }) => ({
+  paddingTop: '1vh',
+  background: theme.palette.customColors.blue,
+    color: 'white',
+}));
+
 export const StyledLoadingBox = styled(Box)({
   display: 'flex',
   justifyContent: 'center',

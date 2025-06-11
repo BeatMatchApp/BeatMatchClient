@@ -8,3 +8,4 @@ export const disabledColor: string = '#ccc';
 export const lightPurpleColor: string = '#94aee9';
 export const pinkColor: string = '#eb6895';
 export const lightPinkColor: string = '#eb689533';
+export const blueColor: string = '#4a90e2';

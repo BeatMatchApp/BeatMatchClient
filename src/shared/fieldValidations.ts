@@ -6,14 +6,14 @@ export const validateName = <T extends { name: string }>(
   name: string,
   setErrors: React.Dispatch<React.SetStateAction<T>>
 ) => {
-  const nameRegex = /^[\p{L}][\p{L}\s'\-]*$/u;
+  const nameRegex = /^[\p{L}][\p{L}\s'-]*$/u;
 
   if (!name.trim()) {
     setErrors((prev) => ({ ...prev, name: 'Name is required' }));
   } else if (!nameRegex.test(name)) {
     setErrors((prev) => ({
       ...prev,
-      name: 'Name can only contain letters,',
+      name: 'Name can only contain letters',
     }));
   } else {
     setErrors((prev) => ({ ...prev, name: '' }));

@@ -2,9 +2,9 @@ interface SetErrorsFunction<T> {
   (errors: (prev: T) => T): void;
 }
 
-export const validateName = <T extends { name: string }>(
+export const validateName = <T>(
   name: string,
-  setErrors: React.Dispatch<React.SetStateAction<T>>
+  setErrors: SetErrorsFunction<T>
 ) => {
   const nameRegex = /^[\p{L}][\p{L}\s'-]*$/u;
 

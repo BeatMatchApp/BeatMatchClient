@@ -120,6 +120,7 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
           label="Date of birth"
           format="dd/MM/yyyy"
           value={newUser.birthDate}
+          disableFuture
           onChange={(newDate) => {
             setNewUser((prevState) => ({ ...prevState, birthDate: newDate }));
             validateBirthDate<Errors>(newDate, setErrors);

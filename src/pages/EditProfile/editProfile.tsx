@@ -156,6 +156,7 @@ const EditProfileForm = () => {
           label="Date of birth"
           format="dd/MM/yyyy"
           value={userDetails.birthDate}
+          disableFuture
           onChange={(newDate) => {
             setUserDetails((prevState) => ({
               ...prevState,

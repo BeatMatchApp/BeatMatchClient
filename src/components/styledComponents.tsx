@@ -369,7 +369,7 @@ export const StyledMainBox = styled(Box)(() => ({
   height: '100vh',
   overflow: 'hidden',
   position: 'relative',
-  backgroundImage: `url('/assets/images/main-background.jpg')`,
+  backgroundImage: `url('../../public/assets/images/main-background.jpg')`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',

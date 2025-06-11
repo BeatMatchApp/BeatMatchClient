@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   TextField,
@@ -58,6 +58,12 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
     birthDate: '',
   });
 
+  useEffect(() => {
+    if (newUser.confirmPassword) {
+      validateConfirmPassword(newUser.confirmPassword);
+    }
+  }, [newUser.password, newUser.confirmPassword]);
+
   const validateConfirmPassword = (confirmPassword: string) => {
     if (confirmPassword !== newUser.password) {
       setErrors((prev) => ({
@@ -70,7 +76,7 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
   };
 
   const validatePassword = (password: string) => {
-    if (password.length <= 5) {
+    if (password.length < 5) {
       setErrors((prev) => ({
         ...prev,
         password: 'Must be at least 5 characters',
@@ -198,7 +204,6 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
           onChange={(e) => {
             const confirmPassword = e.target.value;
             setNewUser((prevState) => ({ ...prevState, confirmPassword }));
-            validateConfirmPassword(confirmPassword);
           }}
           InputProps={{
             endAdornment: (

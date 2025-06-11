@@ -2,12 +2,19 @@ interface SetErrorsFunction<T> {
   (errors: (prev: T) => T): void;
 }
 
-export const validateName = <T>(
+export const validateName = <T extends { name: string }>(
   name: string,
-  setErrors: SetErrorsFunction<T>
+  setErrors: React.Dispatch<React.SetStateAction<T>>
 ) => {
-  if (!name || name.trim() === '') {
+  const nameRegex = /^[\p{L}][\p{L}\s'\-]*$/u;
+
+  if (!name.trim()) {
     setErrors((prev) => ({ ...prev, name: 'Name is required' }));
+  } else if (!nameRegex.test(name)) {
+    setErrors((prev) => ({
+      ...prev,
+      name: 'Name can only contain letters,',
+    }));
   } else {
     setErrors((prev) => ({ ...prev, name: '' }));
   }

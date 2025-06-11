@@ -160,7 +160,7 @@ const LibraryPage: React.FC = () => {
           </Modal>
           <Box className="center" sx={{ mt: '10px' }}>
             <StyledMenuButton variant="contained" onClick={toggleMoodsModal}>
-              watch my mood board
+              discover my mood board
             </StyledMenuButton>
           </Box>
         </Box>

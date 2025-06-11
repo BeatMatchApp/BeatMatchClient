@@ -9,7 +9,7 @@ import {
   textLightColor,
   lightPurpleColor,
   pinkColor,
-  lightPinkColor,
+  lightPinkColor, blueColor,
 } from './colors';
 
 declare module '@mui/material/styles' {
@@ -25,6 +25,7 @@ declare module '@mui/material/styles' {
       default: string;
       lightPurple: string;
       lightPink: string;
+      blue: string;
     };
   }
   interface PaletteOptions {
@@ -40,6 +41,7 @@ declare module '@mui/material/styles' {
       default: string;
       lightPurple: string;
       lightPink: string;
+      blue: string;
     };
   }
 }
@@ -60,6 +62,7 @@ const theme = createTheme({
       pink: pinkColor,
       lightPurple: lightPurpleColor,
       lightPink: lightPinkColor,
+      blue: blueColor,
       default: '#e8f0fe',
     },
   },

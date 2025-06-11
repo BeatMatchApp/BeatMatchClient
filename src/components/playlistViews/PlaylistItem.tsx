@@ -27,7 +27,17 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({ playlist, onView, onEdit })
       <Box sx={{ display: 'flex' }} onClick={() => onView(playlist)}>
         <PlaylistAvatar variant="rounded">
           {playlist.imageUrl ? (
-              <img src={playlist.imageUrl} alt={playlist.name} style={{ objectFit: 'cover' }} />
+              <Box
+                  component="img"
+                  src={playlist.imageUrl}
+                  alt={playlist.name}
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    display: 'block',
+                  }}
+              />
           ): (<MusicNoteIcon sx={{ fontSize: 36, color: 'white' }} />)}
 
         </PlaylistAvatar>

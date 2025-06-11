@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
-import { Box, Typography, IconButton, Divider } from '@mui/material';
+import {
+  Box, Typography, IconButton, Divider,
+  Dialog, DialogActions, DialogContent,
+  DialogContentText, DialogTitle,
+} from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { Playlist } from '../../models/Playlist.ts';
+import SaveIcon from '@mui/icons-material/Save';
+import {Playlist, Song} from '../../models/Playlist.ts';
 import {
-  StyledPageSubtitle,
-  PlaylistTitle,
-  PlaylistDataTitle,
-  PlaylistDataText,
-  StyledRefreshButton,
-  StyledTextArea,
-  PlaylistDataBox,
+    StyledPageSubtitle,
+    PlaylistTitle,
+    PlaylistDataTitle,
+    PlaylistDataText,
+    StyledRefreshButton,
+    StyledTextArea,
+    PlaylistDataBox,
+    StyledSaveChangesButton, StyledMenuButton, StyledContentContainer,
 } from '../styledComponents';
 import ShinyCard from '../ShinyCard/ShinyCard.tsx';
 import { SongResult } from '../createPlaylistResults/songResult.tsx';
@@ -19,6 +25,10 @@ import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import './playlistDetails.css';
 import { pinkColor } from '../../styles/colors.ts';
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
+import Loader from '../Loader/Loader.tsx';
+import { refreshAiPlaylist } from '../../services/aiService.ts';
+import { playlistService } from '../../services/playlistService.ts';
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface PlaylistDetailsProps {
   playlist: Playlist;
@@ -34,11 +44,17 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
   const [dislikedSongs, setDislikedSongs] = useState<Set<number>>(new Set());
   const [requestText, setRequestText] = useState('');
   const [isRefreshDisabled, setIsRefreshDisabled] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [refreshedSongs, setRefreshedSongs] = useState<Array<any> | null>(null);
+  const [saveDialogOpen, setSaveDialogOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [currentPlaylist, setCurrentPlaylist] = useState<Playlist>(playlist);
 
-  const creationDate = new Date(playlist.creationDate).toLocaleDateString();
-  const lastUpdated = new Date(playlist.lastUpdatedDate).toLocaleDateString();
+  const creationDate = new Date(currentPlaylist.creationDate).toLocaleDateString();
+  const lastUpdated = new Date(currentPlaylist.lastUpdatedDate).toLocaleDateString();
 
-  const isAllSongDisliked = dislikedSongs.size === playlist.songs.length;
+  const currentSongs = refreshedSongs || currentPlaylist.songs;
+  const isAllSongDisliked = dislikedSongs.size === currentSongs.length;
 
   const onDislikeChange = (id: number) => {
     setDislikedSongs((prev) => {
@@ -54,25 +70,92 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
     });
   };
 
-  const handleRequestChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleRequestChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = event.target.value;
     setRequestText(value);
     setIsRefreshDisabled(value.trim().length === 0 && dislikedSongs.size === 0);
   };
 
-  const handleRefresh = () => {
-    console.log('Disliked songs:', dislikedSongs);
-    console.log('Request text:', requestText);
+  const handleRefresh = async () => {
+    if (dislikedSongs.size === 0 && !requestText.trim()) return;
+
+    setLoading(true);
+    try {
+      const songsForRefresh = currentSongs.map((song, index) => ({
+        name: song.name,
+        artist: song.artist,
+        trackUri: song.trackUri,
+        isReplace: dislikedSongs.has(index),
+      }));
+
+      const response = await refreshAiPlaylist({
+        mood: currentPlaylist.mood || '',
+        event: currentPlaylist.event || '',
+        songs: songsForRefresh,
+        requestChangesText: requestText,
+      });
+
+      if (response?.updatedPlaylist?.data) {
+        const updatedSongs = response.updatedPlaylist.data.map(
+            (song: Song, index: number) => ({
+              id: index,
+              name: song.name,
+              artist: song.artist,
+              trackUri: song.trackUri,
+            })
+        );
+        setRefreshedSongs(updatedSongs);
+        setDislikedSongs(new Set());
+        setRequestText('');
+      }
+    } catch (error) {
+      console.error('Error refreshing playlist:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const markAllForDisliked = () => {
-    setDislikedSongs(new Set(playlist.songs.map((_, index) => index)));
+    setDislikedSongs(new Set(currentSongs.map((_, index) => index)));
     setIsRefreshDisabled(false);
   };
 
   const removeAllFromDisliked = () => {
     setDislikedSongs(new Set());
-    setIsRefreshDisabled(true);
+    setIsRefreshDisabled(!requestText.trim());
+  };
+
+  const handleSaveClick = () => {
+    setSaveDialogOpen(true);
+  };
+
+  const handleSaveConfirm = async () => {
+    if (!refreshedSongs) return;
+
+    setIsSaving(true);
+    try {
+      const updatedPlaylist = await playlistService.updatePlaylist(currentPlaylist.id, {
+        songs: refreshedSongs.map(song => ({
+          name: song.name,
+          artist: song.artist,
+          trackUri: song.trackUri
+        }))
+      });
+
+      setRefreshedSongs(null);
+      setCurrentPlaylist(updatedPlaylist);
+
+    } catch (error) {
+      console.error('Error updating playlist:', error);
+    }
+    finally {
+        setIsSaving(false);
+        setSaveDialogOpen(false);
+    }
+  };
+
+  const handleSaveCancel = () => {
+    setSaveDialogOpen(false);
   };
 
   return (
@@ -81,10 +164,10 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
         <IconButton onClick={onBack} sx={{ mr: 1, color: '#715cf8' }}>
           <ArrowBackIcon />
         </IconButton>
-        <PlaylistTitle variant="h6">{playlist.name}</PlaylistTitle>
+        <PlaylistTitle variant="h6">{currentPlaylist.name}</PlaylistTitle>
         {onEdit && (
           <IconButton
-            onClick={() => onEdit(playlist)}
+            onClick={() => onEdit(currentPlaylist)}
             sx={{ ml: 'auto', color: '#715cf8' }}
           >
             <EditIcon />
@@ -106,15 +189,15 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
               <PlaylistDataText>{lastUpdated}</PlaylistDataText>
             </PlaylistDataBox>
             <PlaylistDataBox>
-              <PlaylistDataText>{playlist.songs.length} songs</PlaylistDataText>
+              <PlaylistDataText>{currentPlaylist.songs.length} songs</PlaylistDataText>
             </PlaylistDataBox>
 
-            {playlist.description && (
+            {currentPlaylist.description && (
               <Box>
                 <Divider sx={{ margin: '5px' }} />
                 <PlaylistDataTitle>Playlist Context:</PlaylistDataTitle>
                 <Typography variant="body2" sx={{ mt: 1, lineHeight: 1.6 }}>
-                  {playlist.description}
+                  {currentPlaylist.description}
                 </Typography>
               </Box>
             )}
@@ -122,85 +205,191 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
         </ShinyCard>
       </Box>
 
-      {playlist.songs.length === 0 ? (
-        <StyledPageSubtitle>
-          This playlist doesn't have any songs.
-        </StyledPageSubtitle>
-      ) : (
-        <>
-          <Box
-            className="center"
-            sx={{
-              paddingBottom: '1vh',
-              boxShadow: 'rgba(0, 0, 0, 0.45) 0px 12px 20px -20px',
-            }}
-          >
-            <StyledPageSubtitle sx={{ fontWeight: 'bold' }}>
-              Songs
+        {currentSongs.length === 0 ? (
+            <StyledPageSubtitle>
+              This playlist doesn't have any songs.
             </StyledPageSubtitle>
-            <div className="playlist-actions">
-              <StyledRefreshButton
-                disabled={isRefreshDisabled}
-                onClick={handleRefresh}
-                startIcon={<RefreshIcon />}
+        ) : (
+            <>
+              <Box
+                  className="center"
+                  sx={{
+                    paddingBottom: '1vh',
+                    boxShadow: 'rgba(0, 0, 0, 0.45) 0px 12px 20px -20px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}
               >
-                Refresh
-              </StyledRefreshButton>
+                <StyledPageSubtitle sx={{ fontWeight: 'bold' }}>
+                  Songs
+                </StyledPageSubtitle>
+                <div className="playlist-actions" style={{ width: '100%', position: 'relative' }}>
+                  <Box
+                      sx={{
+                        width: '200px',
+                        display: 'flex'
+                      }}
+                  >
+                    {refreshedSongs ? (
+                        <>
+                          <StyledRefreshButton
+                              disabled={isRefreshDisabled || loading}
+                              onClick={handleRefresh}
+                              startIcon={<RefreshIcon />}
+                              sx={{
+                                flex: '1',
+                                marginRight:"6px"
+                              }}
+                          >
+                            Refresh
+                          </StyledRefreshButton>
+                          <StyledSaveChangesButton
+                              onClick={handleSaveClick}
+                              startIcon={<SaveIcon />}
+                              sx={{
+                                flex: '1',
+                              }}
+                          >
+                            Save
+                          </StyledSaveChangesButton>
+                        </>
+                    ) : (
+                        <StyledRefreshButton
+                            disabled={isRefreshDisabled || loading}
+                            onClick={handleRefresh}
+                            startIcon={<RefreshIcon />}
+                            sx={{ width: '100%' }}
+                        >
+                          Refresh
+                        </StyledRefreshButton>
+                    )}
+                  </Box>
+                  <IconButton
+                      onClick={
+                        isAllSongDisliked ? removeAllFromDisliked : markAllForDisliked
+                      }
+                      disabled={loading}
+                      sx={{
+                        border: `1px solid ${pinkColor}`,
+                        color: pinkColor,
+                        height: '40px',
+                        width: '40px',
+                        position: 'absolute',
+                        right: '0',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                      }}
+                  >
+                    {isAllSongDisliked ? (
+                        <PlaylistRemoveIcon />
+                    ) : (
+                        <PlaylistAddCheckIcon />
+                    )}
+                  </IconButton>
+                </div>
+              </Box>
 
-              <IconButton
-                onClick={
-                  isAllSongDisliked ? removeAllFromDisliked : markAllForDisliked
-                }
-                sx={{
-                  border: `1px solid ${pinkColor}`,
-                  color: pinkColor,
-                  height: '40px',
-                  width: '40px',
-                  position: 'absolute',
-                  right: '0',
-                }}
-              >
-                {isAllSongDisliked ? (
-                  <PlaylistRemoveIcon />
-                ) : (
-                  <PlaylistAddCheckIcon />
-                )}
-              </IconButton>
-            </div>
-          </Box>
 
-          <Box sx={{ overflow: 'hidden', height: '40vh' }}>
-            <Box
+
+              <StyledContentContainer sx={{ height: '40vh' }}>
+                  {loading ? (
+                      <Loader />
+                  ) : (
+                      currentSongs.map((song, index) => (
+                          <Box className="center" sx={{ margin: '1vh' }} key={index}>
+                            <SongResult
+                                key={index}
+                                isDisliked={dislikedSongs.has(index)}
+                                song={song}
+                                onDislikeChange={() => onDislikeChange(index)}
+                            />
+                          </Box>
+                      ))
+                  )}
+              </StyledContentContainer>
+
+              <StyledTextArea
+                  minRows={4}
+                  placeholder="Add song requests or feedback for this playlist..."
+                  onChange={handleRequestChange}
+                  value={requestText}
+                  disabled={loading}
+              />
+            </>
+        )}
+        <Dialog
+            open={saveDialogOpen}
+            onClose={handleSaveCancel}
+
+        >
+          <DialogTitle
               sx={{
-                mb: '1vh',
-                justifySelf: 'center',
-                width: '100%',
-                height: '100%',
-                overflowY: 'scroll',
-                padding: '0 1.5vw 1vh 1vh',
+                fontWeight: 600,
+                color: '#2b2b2b',
+                textAlign: 'center',
+                fontSize: "1.3rem",
+                pt: 2
               }}
-            >
-              {playlist.songs.map((song, index) => (
-                <Box className="center" sx={{ margin: '1vh' }} key={index}>
-                  <SongResult
-                    key={index}
-                    isDisliked={dislikedSongs.has(index)}
-                    song={song}
-                    onDislikeChange={() => onDislikeChange(index)}
-                  />
-                </Box>
-              ))}
-            </Box>
-          </Box>
+          >
+            Save Your Changes
+          </DialogTitle>
 
-          <StyledTextArea
-            minRows={4}
-            placeholder="Add song requests or feedback for this playlist..."
-            onChange={() => handleRequestChange}
-          />
-        </>
-      )}
-    </Box>
+          <DialogContent sx={{ px: 3 }}>
+            <DialogContentText
+                sx={{
+                  color: '#5a5a5a',
+                  textAlign: 'center',
+                  fontSize: "0.95rem",
+                  mb: 2
+                }}
+            >
+              Are you sure you want to save the updated playlist?
+              This will replace the current songs in your playlist.
+            </DialogContentText>
+          </DialogContent>
+
+          <DialogActions
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                padding: '12px 16px 24px',
+                gap: 2
+              }}
+          >
+            <StyledMenuButton variant="outlined"
+                onClick={handleSaveCancel}
+                sx={{
+                  borderRadius: '8px',
+                  textTransform: 'none',
+                  padding: '8px 20px',
+                  fontWeight: 500,
+                  color: '#6c757d',
+                  border: '1px solid #dee2e6',
+                }}
+                disabled={isSaving}
+            >
+              Cancel
+            </StyledMenuButton>
+
+            <StyledMenuButton
+                onClick={handleSaveConfirm}
+                autoFocus
+                variant="contained"
+                disabled={isSaving}
+                startIcon={isSaving ? <CircularProgress size={20} color="inherit" /> : null}
+                sx={{
+                  borderRadius: '8px',
+                  textTransform: 'none',
+                  padding: '8px 24px',
+                  fontWeight: 500,
+                }}
+            >
+              {isSaving ? 'Saving...' : 'Save Playlist'}
+            </StyledMenuButton>
+          </DialogActions>
+        </Dialog>
+      </Box>
   );
 };
 

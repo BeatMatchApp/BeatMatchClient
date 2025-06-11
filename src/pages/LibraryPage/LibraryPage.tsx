@@ -152,7 +152,7 @@ const LibraryPage: React.FC = () => {
                 borderRadius: 5,
                 width: { xs: '90%', sm: '60%', md: '40%' },
                 overflowY: 'auto',
-                bgcolor: '#e0f3ff',
+                backgroundColor: '#e0f3ff',
               }}
             >
               <MoodPlaylistsChart playlists={playlistMoods} />

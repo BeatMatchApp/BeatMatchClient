@@ -10,6 +10,10 @@ export interface CreatePlaylistBody {
     songs: Song[];
 }
 
+export interface UpdatePlaylistBody {
+    songs: Song[];
+}
+
 class PlaylistService {
   async getUserPlaylists(): Promise<Playlist[]> {
     const response = await serverService.get(
@@ -24,6 +28,17 @@ class PlaylistService {
         `${envConfig.BACKEND_SERVICE_URL}/playlist`,
         {
           ...body
+        }
+    );
+
+    return response.data;
+  }
+  
+  async updatePlaylist(playlistId: string, body: Partial<UpdatePlaylistBody>): Promise<Playlist> {
+    const response = await serverService.put(
+        `${envConfig.BACKEND_SERVICE_URL}/playlist/${playlistId}`,
+        {
+            ...body
         }
     );
 

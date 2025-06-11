@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Box, TextField, Button } from '@mui/material';
+import {
+  Box,
+  TextField,
+  Button,
+  InputAdornment,
+  IconButton,
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import {
   StyledMenuButton,
@@ -16,6 +22,8 @@ import {
   validateName,
 } from '../../shared/fieldValidations';
 import { formatDate } from '../../shared/dateFormatter';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 interface Props {
   handleNextStep: () => void;
@@ -31,6 +39,8 @@ interface Errors {
 
 const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [newUser, setNewUser] = useState({
     name: '',
@@ -48,7 +58,7 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
     birthDate: '',
   });
 
-  const validatePassword = (confirmPassword: string) => {
+  const validateConfirmPassword = (confirmPassword: string) => {
     if (confirmPassword !== newUser.password) {
       setErrors((prev) => ({
         ...prev,
@@ -56,6 +66,17 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
       }));
     } else {
       setErrors((prev) => ({ ...prev, confirmPassword: '' }));
+    }
+  };
+
+  const validatePassword = (password: string) => {
+    if (password.length <= 5) {
+      setErrors((prev) => ({
+        ...prev,
+        password: 'Must be at least 5 characters',
+      }));
+    } else {
+      setErrors((prev) => ({ ...prev, password: '' }));
     }
   };
 
@@ -146,24 +167,50 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
         <TextField
           id="password"
           label="Password"
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           error={!!errors.password}
           helperText={errors.password}
+          sx={{ outline: 'none' }}
           onChange={(e) => {
             const password = e.target.value;
             setNewUser((prevState) => ({ ...prevState, password }));
+            validatePassword(password);
+          }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
           }}
         />
         <TextField
           id="confirmPassword"
           label="Confirm password"
-          type="password"
+          type={showConfirmPassword ? 'text' : 'password'}
           error={!!errors.confirmPassword}
           helperText={errors.confirmPassword}
           onChange={(e) => {
             const confirmPassword = e.target.value;
             setNewUser((prevState) => ({ ...prevState, confirmPassword }));
-            validatePassword(confirmPassword);
+            validateConfirmPassword(confirmPassword);
+          }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  edge="end"
+                >
+                  {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
           }}
         />
       </Box>

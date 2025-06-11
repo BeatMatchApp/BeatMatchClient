@@ -142,7 +142,7 @@ const LibraryPage: React.FC = () => {
               display: 'grid',
               gap: '2vh',
               overflowY: 'auto',
-              maxHeight: '75vh',
+              maxHeight: '72vh',
               pr: 1,
             }}
           >

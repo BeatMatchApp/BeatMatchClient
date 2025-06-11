@@ -156,7 +156,7 @@ const CreatePlaylistPage: React.FC = () => {
         ))}
       </Stepper>
 
-      <Box sx={{ mt: 4, minHeight: 100, mb: '10px' }}>
+      <Box sx={{ mt: 4, minHeight: 100, mb: '10px', padding: '0 1.5vh' }}>
         {steps[activeStep].StepContent()}
       </Box>
 

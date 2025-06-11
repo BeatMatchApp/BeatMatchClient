@@ -17,7 +17,7 @@ import {
     StyledRefreshButton,
     StyledTextArea,
     PlaylistDataBox,
-    StyledSaveChangesButton, StyledMenuButton, StyledContentContainer,
+    StyledSaveChangesButton, StyledMenuButton,
 } from '../styledComponents';
 import ShinyCard from '../ShinyCard/ShinyCard.tsx';
 import { SongResult } from '../createPlaylistResults/songResult.tsx';
@@ -292,7 +292,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
 
 
 
-              <StyledContentContainer sx={{ height: '40vh' }}>
+              <Box sx={{ height: '40vh', display: 'flex', flexDirection: 'column',  overflow: 'auto',maxwidth: '450px', }}>
                   {loading ? (
                       <Loader />
                   ) : (
@@ -307,7 +307,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
                           </Box>
                       ))
                   )}
-              </StyledContentContainer>
+              </Box>
 
               <StyledTextArea
                   minRows={4}

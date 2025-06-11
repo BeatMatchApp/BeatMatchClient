@@ -101,8 +101,8 @@ const CreatePlaylistPage: React.FC = () => {
         name: playlistName,
         songs: formattedSongs,
         description: '',
-        mood: mood,
-        event: event,
+        mood: mood ?? '',
+        event: event ?? '',
       });
 
       if (result?.url) {

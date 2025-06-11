@@ -292,6 +292,12 @@ export const PlaylistTitle = styled(Typography)(({ theme }) => ({
   marginBottom: 4,
 }));
 
+export const PlaylistDataBox = styled(Box)(() => ({
+  display: 'flex',
+  justifyContent: 'center',
+  gap: '3px',
+}));
+
 export const PlaylistDataTitle = styled(Typography)(({ theme }) => ({
   color: theme.palette.customColors.textMain,
   fontWeight: 'bold',
@@ -299,7 +305,6 @@ export const PlaylistDataTitle = styled(Typography)(({ theme }) => ({
 
 export const PlaylistDataText = styled(Typography)(({ theme }) => ({
   color: theme.palette.customColors.medium,
-  marginLeft: '5px',
 }));
 
 export const PlaylistMetaText = styled(Typography)({
@@ -369,9 +374,6 @@ export const StyledMainBox = styled(Box)(() => ({
   height: '100vh',
   overflow: 'hidden',
   position: 'relative',
-  backgroundImage: `url('../../public/assets/images/main-background.jpg')`,
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat',
-  backgroundAttachment: 'fixed',
+  display: 'flex',
+  flexDirection: 'column',
 }));

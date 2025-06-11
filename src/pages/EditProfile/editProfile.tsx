@@ -113,7 +113,7 @@ const EditProfileForm = () => {
       >
         <img
           width="100%"
-          src={`/assets/images/audio.png`}
+          src={`../../../public/assets/images/audio.png`}
           loading="lazy"
           className="logoImg"
         />

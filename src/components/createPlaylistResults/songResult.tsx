@@ -4,9 +4,10 @@ import {
   StyledSongResultText,
 } from '../styledComponents';
 import ShinyCard from '../ShinyCard/ShinyCard';
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import {Song} from "../../models/Playlist.ts";
+import RefreshIcon from '@mui/icons-material/Refresh';
+import { Song } from '../../models/Playlist.ts';
+import { CheckCircle } from '@mui/icons-material';
+import { lightPinkColor, pinkColor } from '../../styles/colors.ts';
 
 interface Props {
   song: Song;
@@ -15,26 +16,26 @@ interface Props {
 }
 
 export const SongResult: React.FC<Props> = ({
-                                              song,
-                                              isDisliked,
-                                              onDislikeChange,
-                                            }) => {
+  song,
+  isDisliked,
+  onDislikeChange,
+}) => {
+  const shinyCardColors = isDisliked
+    ? [pinkColor, lightPinkColor]
+    : ['#8d92f6', '#a2dfd0'];
   return (
-    <ShinyCard colors={['#8d92f6', '#a2dfd0']} small>
+    <ShinyCard colors={shinyCardColors} small>
       <StyledSongBox>
         <StyledSongResultText>{`${song.artist} - ${song.name}`}</StyledSongResultText>
         <StyledIconButton size="small" onClick={onDislikeChange}>
           {isDisliked ? (
-            <RemoveCircleIcon
+            <CheckCircle
               color="primary"
               fontSize="medium"
               sx={{ color: (theme) => theme.palette.customColors.pink }}
             />
           ) : (
-            <RadioButtonUncheckedIcon
-              fontSize="medium"
-              sx={{ color: 'grey' }}
-            />
+            <RefreshIcon fontSize="medium" sx={{ color: 'grey' }} />
           )}
         </StyledIconButton>
       </StyledSongBox>

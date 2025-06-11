@@ -14,6 +14,7 @@ import Loader from '../Loader/Loader.tsx';
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import { pinkColor } from '../../styles/colors.ts';
+import './createPlaylistResults.css';
 
 interface Props {
   songs: Song[];

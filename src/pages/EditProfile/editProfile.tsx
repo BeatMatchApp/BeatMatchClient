@@ -77,7 +77,11 @@ const EditProfileForm = () => {
   }, []);
 
   const disableSave = () => {
-    return Object.values(errors).some((error) => error !== '');
+    return (
+      Object.values(errors).some((error) => error !== '') ||
+      selectedGenres.length !== 3 ||
+      selectedArtists.length !== 3
+    );
   };
 
   const handleSave = async () => {

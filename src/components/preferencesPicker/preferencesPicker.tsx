@@ -96,6 +96,12 @@ const PreferencesPicker: React.FC<Props> = ({
       >
         Pick Your Favorite {preferencesName}!
       </Typography>
+      <Typography
+        variant="body2"
+        sx={{ color: (theme) => theme.palette.customColors.textSecondary }}
+      >
+        You Need To Pick 3 {preferencesName}
+      </Typography>
       <TextField
         label={`Search ${preferencesName}...`}
         variant="outlined"

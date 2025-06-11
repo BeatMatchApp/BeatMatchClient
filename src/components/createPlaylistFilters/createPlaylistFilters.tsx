@@ -1,8 +1,8 @@
-import {ChangeEvent, useEffect, useState} from 'react';
-import {ScrollableSelector} from '../scrollableSelector/scrollableSelector';
-import {getEvents, getMoods} from '../../services/metaService';
-import {StyledContentContainer, StyledPageTitle} from '../styledComponents';
-import {Box, TextField, Typography} from '@mui/material';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { ScrollableSelector } from '../scrollableSelector/scrollableSelector';
+import { getEvents, getMoods } from '../../services/metaService';
+import { StyledContentContainer, StyledPageTitle } from '../styledComponents';
+import { Box, TextField, Typography } from '@mui/material';
 import EventIcon from '@mui/icons-material/Event';
 import MoodIcon from '@mui/icons-material/Mood';
 
@@ -14,11 +14,11 @@ interface Props {
 }
 
 export const CreatePlaylistFilters: React.FC<Props> = ({
-                                                         onValidChange,
-                                                         onPlaylistNameChange,
-                                                         onMoodChange,
-                                                         onEventChange
-                                                       }) => {
+  onValidChange,
+  onPlaylistNameChange,
+  onMoodChange,
+  onEventChange,
+}) => {
   const [playlistName, setPlaylistName] = useState('');
   const [event, setEvent] = useState<string | null>(null);
   const [mood, setMood] = useState<string | null>(null);
@@ -59,12 +59,12 @@ export const CreatePlaylistFilters: React.FC<Props> = ({
   }, [playlistName, onPlaylistNameChange]);
 
   useEffect(() => {
-    if(!mood) return;
+    if (!mood) return;
     onMoodChange(mood);
   }, [mood, onMoodChange]);
 
   useEffect(() => {
-    if(!event) return;
+    if (!event) return;
     onEventChange(event);
   }, [event, onEventChange]);
 
@@ -77,9 +77,9 @@ export const CreatePlaylistFilters: React.FC<Props> = ({
 
     setPlaylistName(value);
     setError(
-        validatePlaylistName(value)
-            ? null
-            : 'Enter a valid playlist name (1–100 chars).'
+      validatePlaylistName(value)
+        ? null
+        : 'Enter a valid playlist name (1–100 chars).'
     );
   };
 
@@ -91,7 +91,11 @@ export const CreatePlaylistFilters: React.FC<Props> = ({
       <StyledPageTitle>{`Let's get started!`}</StyledPageTitle>
 
       <StyledContentContainer>
-        <Typography variant="h6" gutterBottom>
+        <Typography
+          variant="h6"
+          gutterBottom
+          sx={{ color: (theme) => theme.palette.customColors.textSecondary }}
+        >
           Playlist name
         </Typography>
         <TextField

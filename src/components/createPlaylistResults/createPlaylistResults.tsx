@@ -153,7 +153,7 @@ export const CreatePlaylistResults: React.FC<Props> = ({
         </div>
       </Box>
 
-      <StyledContentContainer sx={{ height: '55vh', paddingTop: 0 }}>
+      <StyledContentContainer sx={{ height: '40vh', paddingTop: 0 }}>
         {loading ? (
           <Loader />
         ) : (
@@ -167,14 +167,15 @@ export const CreatePlaylistResults: React.FC<Props> = ({
                 />
               </Box>
             ))}
-            <StyledTextArea
-              minRows={4}
-              placeholder="Any requests?"
-              onChange={(e) => setRequestText(e.target.value)}
-            />
           </Box>
         )}
       </StyledContentContainer>
+
+      <StyledTextArea
+        minRows={4}
+        placeholder="Any requests?"
+        onChange={(e) => setRequestText(e.target.value)}
+      />
     </Box>
   );
 };

@@ -1,13 +1,13 @@
-import {Playlist, Song} from "../models/Playlist";
-import {serverService} from "./httpCommon.ts";
-import {envConfig} from "../config/config.ts";
+import { Playlist, Song } from '../models/Playlist';
+import { serverService } from './httpCommon.ts';
+import { envConfig } from '../config/config.ts';
 
 export interface CreatePlaylistBody {
-    name: string;
-    description: string;
-    mood: string;
-    event: string;
-    songs: Song[];
+  name: string;
+  description: string;
+  mood?: string;
+  event?: string;
+  songs: Song[];
 }
 
 export interface UpdatePlaylistBody {
@@ -17,7 +17,7 @@ export interface UpdatePlaylistBody {
 class PlaylistService {
   async getUserPlaylists(): Promise<Playlist[]> {
     const response = await serverService.get(
-        `${envConfig.BACKEND_SERVICE_URL}/playlist`
+      `${envConfig.BACKEND_SERVICE_URL}/playlist`
     );
 
     return response.data || [];
@@ -25,10 +25,10 @@ class PlaylistService {
 
   async createPlaylist(body: CreatePlaylistBody): Promise<Playlist> {
     const response = await serverService.post(
-        `${envConfig.BACKEND_SERVICE_URL}/playlist`,
-        {
-          ...body
-        }
+      `${envConfig.BACKEND_SERVICE_URL}/playlist`,
+      {
+        ...body,
+      }
     );
 
     return response.data;

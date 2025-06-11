@@ -7,6 +7,8 @@ import { CreatePlaylistFinish } from '../../components/createPlaylistFinish/crea
 import { getAiPlaylistCreationAnswer } from '../../services/aiService.ts';
 import { playlistService } from '../../services/playlistService.ts';
 import { Song } from '../../models/Playlist.ts';
+import Lottie from 'lottie-react';
+import loadingAnimation from './../../../public/assets/loading.json';
 
 interface SavedPlaylist {
   url?: string;
@@ -89,13 +91,6 @@ const CreatePlaylistPage: React.FC = () => {
   };
 
   const savePlaylist = async () => {
-    if (!mood || !event) {
-      setSavedPlaylist({
-        error: true,
-        errorMessage: 'Mood and event must be selected to create a playlist.',
-      });
-      return;
-    }
     setLoading(true);
     try {
       const formattedSongs = songs.map((song) => ({
@@ -108,8 +103,8 @@ const CreatePlaylistPage: React.FC = () => {
         name: playlistName,
         songs: formattedSongs,
         description: '',
-        mood: mood,
-        event: event,
+        mood: mood ?? '',
+        event: event ?? '',
       });
 
       if (result?.url) {
@@ -171,7 +166,16 @@ const CreatePlaylistPage: React.FC = () => {
           onClick={handleNext}
           disabled={(!isStepValid && activeStep === 0) || loading}
         >
-          {loading ? 'Loading...' : steps[activeStep].stepButtonText}
+          {loading ? (
+            <Lottie
+              animationData={loadingAnimation}
+              loop
+              autoplay
+              style={{ width: 24, height: 24 }}
+            />
+          ) : (
+            steps[activeStep].stepButtonText
+          )}
         </StyledMenuButton>
       </Box>
     </Box>

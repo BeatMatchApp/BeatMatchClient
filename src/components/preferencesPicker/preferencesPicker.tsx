@@ -96,6 +96,12 @@ const PreferencesPicker: React.FC<Props> = ({
       >
         Pick Your Favorite {preferencesName}!
       </Typography>
+      <Typography
+        variant="body2"
+        sx={{ color: (theme) => theme.palette.customColors.textSecondary }}
+      >
+        Pick Your Top {MAX_PREFERENCES_AMOUNT} {preferencesName}
+      </Typography>
       <TextField
         label={`Search ${preferencesName}...`}
         variant="outlined"

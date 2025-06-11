@@ -171,7 +171,7 @@ const CreatePlaylistPage: React.FC = () => {
               animationData={loadingAnimation}
               loop
               autoplay
-              style={{ width: 24, height: 24 }} // Small size to fit inside button
+              style={{ width: 24, height: 24 }}
             />
           ) : (
             steps[activeStep].stepButtonText

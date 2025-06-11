@@ -28,6 +28,7 @@ import { formatDate } from '../../shared/dateFormatter';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import theme from '../../styles/consts';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { MAX_PREFERENCES_AMOUNT } from '../../shared/consts';
 
 interface Errors {
   name: string;
@@ -77,7 +78,12 @@ const EditProfileForm = () => {
   }, []);
 
   const disableSave = () => {
-    return Object.values(errors).some((error) => error !== '');
+    return (
+      Object.values(errors).some((error) => error !== '') ||
+      selectedGenres.length !== MAX_PREFERENCES_AMOUNT ||
+      selectedArtists.length !== MAX_PREFERENCES_AMOUNT ||
+      !selectedSong
+    );
   };
 
   const handleSave = async () => {
@@ -152,6 +158,7 @@ const EditProfileForm = () => {
           label="Date of birth"
           format="dd/MM/yyyy"
           value={userDetails.birthDate}
+          disableFuture
           onChange={(newDate) => {
             setUserDetails((prevState) => ({
               ...prevState,

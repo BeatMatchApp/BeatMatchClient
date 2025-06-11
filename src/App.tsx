@@ -11,6 +11,7 @@ import { MainPage } from './pages/MainPage/mainPage';
 import ProfileForm from './pages/ProfileForm/profileForm';
 import { ThemeProvider } from '@mui/material';
 import theme from './styles/consts';
+import { Navigate } from 'react-router-dom';
 
 function App() {
   return (
@@ -33,6 +34,10 @@ function App() {
                 <Route
                   path={NavigationRoutes.MAIN_PAGE + '/*'}
                   element={<MainPage />}
+                />
+                <Route
+                  path="*"
+                  element={<Navigate to={NavigationRoutes.HOME} replace />}
                 />
               </Routes>
               <ToastContainer position="bottom-center" />

@@ -10,7 +10,8 @@ import {
   PlaylistMetaText,
   StyledPlaylistChip,
   PlaylistTitle,
-  ActionIconButton, PlaylistDescriptionText,
+  ActionIconButton,
+  PlaylistDescriptionText,
 } from '../styledComponents.tsx';
 
 interface PlaylistItemProps {
@@ -19,54 +20,68 @@ interface PlaylistItemProps {
   onEdit?: (playlist: Playlist) => void;
 }
 
-const PlaylistItem: React.FC<PlaylistItemProps> = ({ playlist, onView, onEdit }) => {
-    const formattedDate = new Date(playlist.lastUpdatedDate).toLocaleDateString();
+const PlaylistItem: React.FC<PlaylistItemProps> = ({
+  playlist,
+  onView,
+  onEdit,
+}) => {
+  const formattedDate = new Date(playlist.lastUpdatedDate).toLocaleDateString();
 
   return (
-    <ShinyCard colors={['#8d92f6', '#a2dfd0']}>
-      <Box sx={{ display: 'flex' }} onClick={() => onView(playlist)}>
-        <PlaylistAvatar variant="rounded">
-          {playlist.imageUrl ? (
-              <img src={playlist.imageUrl} alt={playlist.name} style={{ objectFit: 'cover' }} />
-          ): (<MusicNoteIcon sx={{ fontSize: 36, color: 'white' }} />)}
+    <Box>
+      <ShinyCard colors={['#8d92f6', '#a2dfd0']}>
+        <Box
+          sx={{ display: 'flex', alignItems: 'center' }}
+          onClick={() => onView(playlist)}
+        >
+          <PlaylistAvatar variant="rounded">
+            {playlist.imageUrl ? (
+              <img
+                src={playlist.imageUrl}
+                alt={playlist.name}
+                style={{ objectFit: 'cover' }}
+              />
+            ) : (
+              <MusicNoteIcon sx={{ fontSize: 36, color: 'white' }} />
+            )}
+          </PlaylistAvatar>
 
-        </PlaylistAvatar>
+          <Box sx={{ flexGrow: 1, textAlign: 'start' }}>
+            <PlaylistTitle variant="h6">{playlist.name}</PlaylistTitle>
 
-        <Box sx={{ flexGrow: 1, textAlign: 'start' }}>
-          <PlaylistTitle variant="h6">{playlist.name}</PlaylistTitle>
+            <Stack
+              direction="row"
+              spacing={1.5}
+              alignItems="center"
+              sx={{ mb: 1 }}
+            >
+              <StyledPlaylistChip
+                size="small"
+                label={`${playlist.songs.length} songs`}
+              />
+              <PlaylistMetaText variant="body2" color="text.secondary">
+                <AccessTimeIcon sx={{ fontSize: 16, mr: 0.5 }} />
+                {formattedDate}
+              </PlaylistMetaText>
+            </Stack>
 
-          <Stack
-            direction="row"
-            spacing={1.5}
-            alignItems="center"
-            sx={{ mb: 1 }}
-          >
-            <StyledPlaylistChip
-              size="small"
-              label={`${playlist.songs.length} songs`}
-            />
-            <PlaylistMetaText variant="body2" color="text.secondary">
-              <AccessTimeIcon sx={{ fontSize: 16, mr: 0.5 }} />
-              {formattedDate}
-            </PlaylistMetaText>
-          </Stack>
+            {playlist.description && (
+              <PlaylistDescriptionText variant="body2" color="text.secondary">
+                {playlist.description}
+              </PlaylistDescriptionText>
+            )}
+          </Box>
 
-          {playlist.description && (
-            <PlaylistDescriptionText variant="body2" color="text.secondary">
-              {playlist.description}
-            </PlaylistDescriptionText>
-          )}
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {onEdit && (
+              <ActionIconButton onClick={() => onEdit(playlist)}>
+                <EditIcon />
+              </ActionIconButton>
+            )}
+          </Box>
         </Box>
-
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {onEdit && (
-            <ActionIconButton onClick={() => onEdit(playlist)}>
-              <EditIcon />
-            </ActionIconButton>
-          )}
-        </Box>
-      </Box>
-    </ShinyCard>
+      </ShinyCard>
+    </Box>
   );
 };
 

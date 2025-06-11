@@ -6,8 +6,15 @@ export const validateName = <T>(
   name: string,
   setErrors: SetErrorsFunction<T>
 ) => {
-  if (!name || name.trim() === '') {
+  const nameRegex = /^[\p{L}][\p{L}\s'-]*$/u;
+
+  if (!name.trim()) {
     setErrors((prev) => ({ ...prev, name: 'Name is required' }));
+  } else if (!nameRegex.test(name)) {
+    setErrors((prev) => ({
+      ...prev,
+      name: 'Name can only contain letters',
+    }));
   } else {
     setErrors((prev) => ({ ...prev, name: '' }));
   }

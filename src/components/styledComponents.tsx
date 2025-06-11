@@ -212,7 +212,6 @@ export const StyledSongResultText = styled(Typography)({
 export const StyledTextArea = styled(TextareaAutosize)(({ theme }) => ({
   marginTop: '2vh',
   padding: '1vh',
-  width: '90%',
   fontFamily: 'Poppins',
   resize: 'none',
   borderRadius: '10px',
@@ -221,6 +220,11 @@ export const StyledTextArea = styled(TextareaAutosize)(({ theme }) => ({
   overflow: 'hidden',
   borderColor: '#cccccc',
   color: theme.palette.customColors.textMain,
+  width: '80vw',
+
+  [theme.breakpoints.up('sm')]: {
+    width: '40vw',
+  },
 }));
 
 export const StyledSongContainer = styled(Box)(({ theme }) => ({

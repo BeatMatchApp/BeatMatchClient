@@ -54,7 +54,7 @@ const LibraryPage: React.FC = () => {
     return playlists.map((playlist: Playlist) => {
       return {
         id: playlist.id,
-        mood: playlist.mood,
+        mood: playlist.mood ? playlist.mood : 'no mood',
       };
     });
   }, [playlists]);
@@ -120,15 +120,32 @@ const LibraryPage: React.FC = () => {
       ),
     [error]
   );
+
   const playlistsList = useMemo(
     () => (
       <Box className="center">
-        <StyledPageTitle sx={{ marginBottom: '1vh' }}>
-          Your library
-        </StyledPageTitle>
-        <Divider sx={{ margin: '10px', width: '100%' }} />
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <Box sx={{ display: 'grid', gap: '2vh' }}>
+        <Box sx={{ width: '100%' }}>
+          <StyledPageTitle sx={{ marginBottom: '1vh' }}>
+            Your library
+          </StyledPageTitle>
+          <Divider sx={{ margin: '10px', width: '100%' }} />
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+          }}
+        >
+          <Box
+            sx={{
+              display: 'grid',
+              gap: '2vh',
+              overflowY: 'auto',
+              maxHeight: '72vh',
+              pr: 1,
+            }}
+          >
             {playlists.map((playlist) => (
               <PlaylistItem
                 key={playlist.id}

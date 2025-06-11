@@ -55,6 +55,7 @@ body {
   justify-content: center;
   align-items: center;
   margin: auto;
+  width: 50%;
 }
 
 .read-the-docs {
@@ -106,6 +107,15 @@ body {
 
 .MuiPickersTextField-root {
   width: 100%;
+}
+
+button:focus,
+button:focus-visible {
+  outline: none;
+}
+
+::-webkit-scrollbar {
+  width: 0;
 }
 
 .Toastify__progress-bar--success {

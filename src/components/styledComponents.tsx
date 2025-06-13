@@ -20,8 +20,6 @@ export const StyledMenuButton = styled(Button)(({ theme, variant }) => ({
   backgroundColor:
     variant === 'outlined' ? 'white' : theme.palette.customColors.medium,
   color: variant === 'outlined' ? theme.palette.customColors.medium : 'white',
-  width: 'fit-content',
-  minWidth: '100%',
   textTransform: 'none',
   outline: 'none',
   boxShadow: 'none',

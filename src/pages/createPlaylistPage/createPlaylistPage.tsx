@@ -148,36 +148,69 @@ const CreatePlaylistPage: React.FC = () => {
   };
 
   return (
-    <Box sx={{ marginTop: '3vh', height: '7vh' }}>
-      <Stepper activeStep={activeStep} alternativeLabel>
-        {steps.map((step) => (
-          <Step key={step.stepText}>
-            <StepLabel>{step.stepText}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
+    <Box
+      display="flex"
+      flexDirection="column"
+      sx={{ height: '100%', overflow: 'hidden' }}
+    >
+      <Box maxHeight="84%">
+        <Box sx={{ flexShrink: 0 }}>
+          <Stepper activeStep={activeStep} alternativeLabel>
+            {steps.map((step) => (
+              <Step key={step.stepText}>
+                <StepLabel>{step.stepText}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        </Box>
 
-      <Box sx={{ mt: 4, minHeight: 100, mb: '10px', padding: '0 1.5vh' }}>
-        {steps[activeStep].StepContent()}
+        <Box
+          sx={{
+            flexGrow: 1,
+            overflowY: 'auto',
+            px: '1.5vh',
+            maxHeight: '84%',
+          }}
+        >
+          {steps[activeStep].StepContent()}
+        </Box>
       </Box>
 
-      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        <StyledMenuButton
-          variant="contained"
-          onClick={handleNext}
-          disabled={(!isStepValid && activeStep === 0) || loading}
+      <Box
+        height="10%"
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          p: '3%',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+          }}
         >
-          {loading ? (
-            <Lottie
-              animationData={loadingAnimation}
-              loop
-              autoplay
-              style={{ width: 24, height: 24 }}
-            />
-          ) : (
-            steps[activeStep].stepButtonText
-          )}
-        </StyledMenuButton>
+          <Box>
+            <StyledMenuButton
+              variant="contained"
+              onClick={handleNext}
+              disabled={(!isStepValid && activeStep === 0) || loading}
+              sx={{ width: '100%' }}
+            >
+              {loading ? (
+                <Lottie
+                  animationData={loadingAnimation}
+                  loop
+                  autoplay
+                  style={{ width: 24, height: 24 }}
+                />
+              ) : (
+                steps[activeStep].stepButtonText
+              )}
+            </StyledMenuButton>
+          </Box>
+        </Box>
       </Box>
     </Box>
   );

@@ -115,7 +115,7 @@ export const CreatePlaylistResults: React.FC<Props> = ({
 
   return (
     <Box className="center">
-      <StyledPageTitle>Almost done! Make some changes</StyledPageTitle>
+      <StyledPageTitle>Almost done! any changes?</StyledPageTitle>
       <Box
         sx={{
           width: '100%',

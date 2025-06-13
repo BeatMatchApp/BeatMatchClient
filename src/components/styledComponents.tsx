@@ -43,11 +43,13 @@ export const StyledRefreshButton = styled(StyledMenuButton)(({ theme }) => ({
   background: theme.palette.customColors.pink,
 }));
 
-export const StyledSaveChangesButton = styled(StyledMenuButton)(({ theme }) => ({
-  paddingTop: '1vh',
-  background: theme.palette.customColors.blue,
+export const StyledSaveChangesButton = styled(StyledMenuButton)(
+  ({ theme }) => ({
+    paddingTop: '1vh',
+    background: theme.palette.customColors.blue,
     color: 'white',
-}));
+  })
+);
 
 export const StyledLoadingBox = styled(Box)({
   display: 'flex',
@@ -60,6 +62,10 @@ export const StyledPageTitle = styled((props: TypographyProps) => (
   color: theme.palette.customColors.textMain,
   textAlign: 'center',
   fontWeight: 'bold',
+
+  [`@media (max-height:700px)`]: {
+    fontSize: '1.5rem',
+  },
 }));
 
 export const StyledPageSubtitle = styled((props: TypographyProps) => (
@@ -67,6 +73,10 @@ export const StyledPageSubtitle = styled((props: TypographyProps) => (
 ))(({ theme }) => ({
   color: theme.palette.customColors.textSecondary,
   textAlign: 'center',
+
+  [`@media (max-height:700px)`]: {
+    fontSize: '1.2rem',
+  },
 }));
 
 export const StyledContentContainer = styled(Box)({
@@ -89,7 +99,7 @@ export const StyledSongBox = styled(Box)(({ theme }) => ({
   color: theme.palette.customColors.textSecondary,
   padding: '12px 16px',
   [theme.breakpoints.down('sm')]: {
-    padding: '10px 12px',
+    padding: '6px 10px',
   },
 }));
 
@@ -223,13 +233,16 @@ export const StyledTextArea = styled(TextareaAutosize)(({ theme }) => ({
   borderRadius: '10px',
   outline: 'none',
   boxShadow: 'none',
-  overflow: 'hidden',
+  overflowY: 'auto',
   borderColor: '#cccccc',
   color: theme.palette.customColors.textMain,
   width: '80vw',
 
   [theme.breakpoints.up('sm')]: {
     width: '40vw',
+  },
+  [`@media (max-height:700px)`]: {
+    height: '50px',
   },
 }));
 

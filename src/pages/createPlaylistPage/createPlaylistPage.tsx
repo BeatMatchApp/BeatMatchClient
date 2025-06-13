@@ -30,8 +30,8 @@ const CreatePlaylistPage: React.FC = () => {
 
   const steps = [
     {
-      stepText: "Let's get started!",
-      stepButtonText: 'Start creating my playlist',
+      stepText: "Let's do this!",
+      stepButtonText: 'Create my playlist!',
       StepContent: () => (
         <CreatePlaylistFilters
           onValidChange={setIsStepValid}
@@ -147,10 +147,10 @@ const CreatePlaylistPage: React.FC = () => {
   };
 
   return (
-    <Box sx={{ marginTop: '3vh', height: '7vh' }}>
+    <Box sx={{ marginTop: '10px' }}>
       <Stepper activeStep={activeStep} alternativeLabel>
         {steps.map((step) => (
-          <Step key={step.stepText}>
+          <Step key={step.stepText} sx={{ padding: '0' }}>
             <StepLabel>{step.stepText}</StepLabel>
           </Step>
         ))}

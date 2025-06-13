@@ -18,8 +18,10 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import EditProfileForm from '../EditProfile/editProfile';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { Box } from '@mui/material';
 import theme from '../../styles/consts';
+import { logout } from '../../services/userService';
 
 export const MainPage = () => {
   const navigate = useNavigate();
@@ -62,6 +64,15 @@ export const MainPage = () => {
     navigate(`${NavigationRoutes.MAIN_PAGE}${target}`);
   };
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate(NavigationRoutes.LOGIN);
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  };
+
   if (isLoading) {
     return <Loader />;
   }
@@ -69,6 +80,19 @@ export const MainPage = () => {
   return (
     <StyledMainBox>
       <NavBar sx={{ backgroundColor: 'transparent' }} position="fixed">
+        <Box
+          sx={{ position: 'absolute', left: '16px' }}
+          onClick={handleLogout}
+        >
+          <LogoutIcon
+            fontSize="large"
+            sx={{
+              color: theme.palette.customColors.medium,
+              cursor: 'pointer',
+            }}
+          />
+        </Box>
+
         <Box
           sx={{ position: 'absolute', right: '0' }}
           onClick={() => handleToggle(MenuNavigationRoutes.EDIT_PROFILE)}

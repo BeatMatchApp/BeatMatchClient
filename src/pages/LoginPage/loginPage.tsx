@@ -39,36 +39,44 @@ function LoginPage() {
 
   return (
     <Box className="center fullHeight">
-      <ShinyCard colors={['#8d92f6', '#a2dfd0']}>
-        <StyledPageTitle> Login </StyledPageTitle>
-        <StyledCardBox>
-          <TextField
-            id="email"
-            label="email"
-            error={!!emailError}
-            helperText={emailError}
-            onChange={(e) => {
-              const email = e.target.value;
-              setEmail(email);
-              validateEmail(email);
-            }}
-          />
-          <TextField
-            id="password"
-            label="Password"
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <StyledMenuButton onClick={handleLogin}>Login</StyledMenuButton>
-        </StyledCardBox>
+      <Box sx={{ width: { xs: '80vw', sm: '50vw' } }}>
+        <ShinyCard colors={['#8d92f6', '#a2dfd0']}>
+          <StyledPageTitle> Login </StyledPageTitle>
+          <StyledCardBox sx={{ gap: '10px' }}>
+            <TextField
+              id="email"
+              label="email"
+              error={!!emailError}
+              helperText={emailError}
+              onChange={(e) => {
+                const email = e.target.value;
+                setEmail(email);
+                validateEmail(email);
+              }}
+            />
+            <TextField
+              id="password"
+              label="Password"
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
-        <Button
-          sx={{ textTransform: 'none', width: '100%' }}
-          onClick={() => navigate(NavigationRoutes.PROFILE_FORM)}
-        >
-          Dont have an account? Register now!
-        </Button>
-      </ShinyCard>
+            <StyledMenuButton
+              sx={{ marginBottom: '10px' }}
+              onClick={handleLogin}
+            >
+              Login
+            </StyledMenuButton>
+          </StyledCardBox>
+
+          <Button
+            sx={{ textTransform: 'none', width: '100%' }}
+            onClick={() => navigate(NavigationRoutes.PROFILE_FORM)}
+          >
+            Dont have an account? Register now!
+          </Button>
+        </ShinyCard>
+      </Box>
     </Box>
   );
 }

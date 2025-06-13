@@ -111,7 +111,7 @@ export const MainPage = () => {
           </NavBar>
         </Grid>
         <Grid size="grow" sx={{ overflow: 'auto', height: '100%' }}>
-          <Container sx={{ height: '100%', padding: '0' }}>
+          <Container sx={{ height: '100%', padding: '5px' }}>
             <Routes>
               <Route path="/" element={<LibraryPage />} />
               <Route

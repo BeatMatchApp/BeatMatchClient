@@ -20,7 +20,8 @@ export const StyledMenuButton = styled(Button)(({ theme, variant }) => ({
   backgroundColor:
     variant === 'outlined' ? 'white' : theme.palette.customColors.medium,
   color: variant === 'outlined' ? theme.palette.customColors.medium : 'white',
-  width: '50vw',
+  width: 'fit-content',
+  minWidth: '100%',
   textTransform: 'none',
   outline: 'none',
   boxShadow: 'none',
@@ -34,7 +35,9 @@ export const StyledMenuButton = styled(Button)(({ theme, variant }) => ({
   maxHeight: '100%',
 
   [theme.breakpoints.up('sm')]: {
-    width: 'fit-content',
+    width: '30vw',
+    padding: '10px',
+    fontSize: 'large',
   },
 }));
 
@@ -77,9 +80,9 @@ export const StyledContentContainer = styled(Box)({
   justifyContent: 'space-around',
   textAlign: 'center',
   width: '100%',
+  height: '100%',
   overflow: 'auto',
   maxwidth: '450px',
-  padding: '1.5vh',
   boxSizing: 'border-box',
 });
 
@@ -358,8 +361,9 @@ export const StyledPageCard = styled(Card)(({ theme }) => ({
   flexDirection: 'column',
   padding: '3vh',
   display: 'flex',
-  margin: '0 auto',
   borderRadius: '15px',
+  overflow: 'auto',
+  margin: '10px',
 
   [theme.breakpoints.up('sm')]: {
     width: '50vw',

@@ -160,7 +160,11 @@ export const CreatePlaylistResults: React.FC<Props> = ({
         ) : (
           <Box className="center">
             {songs.map((song) => (
-              <Box className="center" sx={{ margin: '5px' }} key={song.id}>
+              <Box
+                className="center"
+                sx={{ margin: '5px', width: '100%' }}
+                key={song.id}
+              >
                 <SongResult
                   song={song}
                   isDisliked={dislikedSongs.has(song.id ?? 0)}

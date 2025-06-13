@@ -211,7 +211,7 @@ const LibraryPage: React.FC = () => {
       <StyledContentContainer>
         {selectedPlaylist ? (
           <PlaylistDetails
-            playlist={selectedPlaylist}
+            playlistId={selectedPlaylist.id}
             onBack={handleCloseDetailView}
           />
         ) : (

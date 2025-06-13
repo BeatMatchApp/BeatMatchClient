@@ -328,12 +328,6 @@ export const ActionIconButton = styled(IconButton)({
   },
 });
 
-export const StyledPlaylistChip = styled(Chip)(({ theme }) => ({
-  backgroundColor: theme.palette.customColors.pink,
-  color: 'white',
-  fontWeight: 500,
-}));
-
 export const PlaylistDescriptionText = styled(Typography)({
   overflow: 'hidden',
   textOverflow: 'ellipsis',

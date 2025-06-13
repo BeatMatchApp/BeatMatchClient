@@ -44,6 +44,14 @@ class PlaylistService {
 
     return response.data;
   }
+
+  async getPlaylistById(playlistId: string): Promise<Playlist | null> {
+    const response = await serverService.get(
+      `${envConfig.BACKEND_SERVICE_URL}/playlist/${playlistId}`
+    );
+
+    return response.data || null;
+  }
 }
 
 export const playlistService = new PlaylistService();

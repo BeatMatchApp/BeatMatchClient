@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  Box, Typography, IconButton, Divider,
-  Dialog, DialogActions, DialogContent,
-  DialogContentText, DialogTitle,
+    Box, Typography, IconButton, Divider,
+    Dialog, DialogActions, DialogContent,
+    DialogContentText, DialogTitle,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
@@ -31,30 +31,59 @@ import { playlistService } from '../../services/playlistService.ts';
 import CircularProgress from '@mui/material/CircularProgress';
 
 interface PlaylistDetailsProps {
-  playlist: Playlist;
-  onBack: () => void;
-  onEdit?: (playlist: Playlist) => void;
+    playlistId: string;
+    onBack: () => void;
+    onEdit?: (playlist: Playlist) => void;
 }
 
 const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
-  playlist,
-  onBack,
-  onEdit,
-}) => {
-  const [dislikedSongs, setDislikedSongs] = useState<Set<number>>(new Set());
-  const [requestText, setRequestText] = useState('');
-  const [isRefreshDisabled, setIsRefreshDisabled] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [refreshedSongs, setRefreshedSongs] = useState<Array<any> | null>(null);
-  const [saveDialogOpen, setSaveDialogOpen] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
-  const [currentPlaylist, setCurrentPlaylist] = useState<Playlist>(playlist);
+                                                         playlistId,
+                                                         onBack,
+                                                         onEdit,
+                                                         }) => {
+    const [dislikedSongs, setDislikedSongs] = useState<Set<number>>(new Set());
+    const [requestText, setRequestText] = useState('');
+    const [isRefreshDisabled, setIsRefreshDisabled] = useState(true);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [refreshedSongs, setRefreshedSongs] = useState<Array<any> | null>(null);
+    const [saveDialogOpen, setSaveDialogOpen] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
+    const [currentPlaylist, setCurrentPlaylist] = useState<Playlist | null>(null);
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const creationDate = new Date(currentPlaylist.creationDate).toLocaleDateString();
-  const lastUpdated = new Date(currentPlaylist.lastUpdatedDate).toLocaleDateString();
+    useEffect(() => {
+        const fetchPlaylistDetails = async () => {
+            setLoading(true);
+            setError(null);
 
-  const currentSongs = refreshedSongs || currentPlaylist.songs;
-  const isAllSongDisliked = dislikedSongs.size === currentSongs.length;
+            try {
+                if (playlistId) {
+                    const fetchedPlaylist = await playlistService.getPlaylistById(playlistId);
+                    if (fetchedPlaylist) {
+                        setCurrentPlaylist(fetchedPlaylist);
+                    } else {
+                        setError("Playlist not found");
+                    }
+                } else {
+                    setError("No playlist ID provided");
+                }
+            } catch (error) {
+                console.error('Error fetching playlist details:', error);
+                setError("Failed to load playlist. It may have been deleted.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPlaylistDetails();
+    }, [playlistId]);
+
+    const creationDate = currentPlaylist ? new Date(currentPlaylist.creationDate).toLocaleDateString() : '';
+    const lastUpdated = currentPlaylist ? new Date(currentPlaylist.lastUpdatedDate).toLocaleDateString() : '';
+
+    const currentSongs = refreshedSongs || (currentPlaylist?.songs || []);
+    const isAllSongDisliked = dislikedSongs.size === currentSongs.length;
 
   const onDislikeChange = (id: number) => {
     setDislikedSongs((prev) => {
@@ -78,8 +107,9 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
 
   const handleRefresh = async () => {
     if (dislikedSongs.size === 0 && !requestText.trim()) return;
+      if (!currentPlaylist) return;
 
-    setLoading(true);
+    setIsRefreshing(true);
     try {
       const songsForRefresh = currentSongs.map((song, index) => ({
         name: song.name,
@@ -111,7 +141,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
     } catch (error) {
       console.error('Error refreshing playlist:', error);
     } finally {
-      setLoading(false);
+      setIsRefreshing(false);
     }
   };
 
@@ -130,7 +160,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
   };
 
   const handleSaveConfirm = async () => {
-    if (!refreshedSongs) return;
+    if (!refreshedSongs || !currentPlaylist) return;
 
     setIsSaving(true);
     try {
@@ -158,7 +188,31 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
     setSaveDialogOpen(false);
   };
 
-  return (
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+                <Loader />
+            </Box>
+        );
+    }
+    if (error || !currentPlaylist) {
+        return (
+            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+                <Typography variant="h6" sx={{ mb: 2, color: '#ff5252' }}>
+                    {error || "Playlist not found"}
+                </Typography>
+                <StyledMenuButton
+                    onClick={onBack}
+                    startIcon={<ArrowBackIcon />}
+                    variant="outlined"
+                >
+                    Back to Playlists
+                </StyledMenuButton>
+            </Box>
+        );
+    }
+
+    return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
         <IconButton onClick={onBack} sx={{ mr: 1, color: '#715cf8' }}>
@@ -234,7 +288,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
                     {refreshedSongs ? (
                         <>
                           <StyledRefreshButton
-                              disabled={isRefreshDisabled || loading}
+                              disabled={isRefreshDisabled || isRefreshing}
                               onClick={handleRefresh}
                               startIcon={<RefreshIcon />}
                               sx={{
@@ -256,7 +310,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
                         </>
                     ) : (
                         <StyledRefreshButton
-                            disabled={isRefreshDisabled || loading}
+                            disabled={isRefreshDisabled || isRefreshing}
                             onClick={handleRefresh}
                             startIcon={<RefreshIcon />}
                             sx={{ width: '100%' }}
@@ -269,7 +323,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
                       onClick={
                         isAllSongDisliked ? removeAllFromDisliked : markAllForDisliked
                       }
-                      disabled={loading}
+                      disabled={isRefreshing}
                       sx={{
                         border: `1px solid ${pinkColor}`,
                         color: pinkColor,
@@ -290,31 +344,31 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
                 </div>
               </Box>
 
-
-
-              <Box sx={{ height: '40vh', display: 'flex', flexDirection: 'column',  overflow: 'auto',maxwidth: '450px', }}>
-                  {loading ? (
-                      <Loader />
-                  ) : (
-                      currentSongs.map((song, index) => (
-                          <Box className="center" sx={{ margin: '1vh' }} key={index}>
-                            <SongResult
-                                key={index}
-                                isDisliked={dislikedSongs.has(index)}
-                                song={song}
-                                onDislikeChange={() => onDislikeChange(index)}
-                            />
-                          </Box>
-                      ))
-                  )}
-              </Box>
+                <Box sx={{ height: '40vh', display: 'flex', flexDirection: 'column',  overflow: 'auto', maxWidth: '450px' }}>
+                    {isRefreshing ? (
+                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                            <Loader />
+                        </Box>
+                    ) : (
+                        currentSongs.map((song, index) => (
+                            <Box className="center" sx={{ margin: '1vh' }} key={index}>
+                                <SongResult
+                                    key={index}
+                                    isDisliked={dislikedSongs.has(index)}
+                                    song={song}
+                                    onDislikeChange={() => onDislikeChange(index)}
+                                />
+                            </Box>
+                        ))
+                    )}
+                </Box>
 
               <StyledTextArea
                   minRows={4}
                   placeholder="Add song requests or feedback for this playlist..."
                   onChange={handleRequestChange}
                   value={requestText}
-                  disabled={loading}
+                  disabled={isRefreshing}
               />
             </>
         )}

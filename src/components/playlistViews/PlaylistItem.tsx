@@ -1,14 +1,14 @@
 import React from 'react';
-import { Box, Stack } from '@mui/material';
+import { Box, Stack, Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import LaunchIcon from '@mui/icons-material/Launch';
 import { Playlist } from '../../models/Playlist.ts';
 import ShinyCard from '../ShinyCard/ShinyCard.tsx';
 import {
   PlaylistAvatar,
   PlaylistMetaText,
-  StyledPlaylistChip,
   PlaylistTitle,
   ActionIconButton,
   PlaylistDescriptionText,
@@ -26,6 +26,13 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
   onEdit,
 }) => {
   const formattedDate = new Date(playlist.lastUpdatedDate).toLocaleDateString();
+
+  const handleOpenInSpotify = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (playlist.url) {
+      window.open(playlist.url, '_blank');
+    }
+  };
 
   return (
     <Box>
@@ -52,8 +59,17 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
             )}
           </PlaylistAvatar>
 
-          <Box sx={{ flexGrow: 1, textAlign: 'start' }}>
-            <PlaylistTitle variant="h6">{playlist.name}</PlaylistTitle>
+            <Box sx={{ flexGrow: 1, textAlign: 'start', overflow: 'hidden' }}>
+              <PlaylistTitle
+                  variant="h6"
+                  sx={{
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                  }}
+              >
+                {playlist.name}
+              </PlaylistTitle>
 
             <Stack
               direction="row"
@@ -61,10 +77,6 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
               alignItems="center"
               sx={{ mb: 1 }}
             >
-              <StyledPlaylistChip
-                size="small"
-                label={`${playlist.songs.length} songs`}
-              />
               <PlaylistMetaText variant="body2" color="text.secondary">
                 <AccessTimeIcon sx={{ fontSize: 16, mr: 0.5 }} />
                 {formattedDate}
@@ -78,16 +90,36 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
             )}
           </Box>
 
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            {onEdit && (
-              <ActionIconButton onClick={() => onEdit(playlist)}>
-                <EditIcon />
-              </ActionIconButton>
-            )}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              {playlist.url && (
+                    <ActionIconButton
+                        onClick={handleOpenInSpotify}
+                        sx={{
+                          backgroundColor: '#1DB954',
+                          color: 'white',
+                          '&:hover': {
+                            backgroundColor: '#1AA34A',
+                          }
+                        }}
+                    >
+                      <LaunchIcon fontSize="small" />
+                    </ActionIconButton>
+              )}
+
+              {onEdit && (
+                  <Tooltip title="Edit playlist">
+                    <ActionIconButton onClick={(e) => {
+                      e.stopPropagation();
+                      onEdit(playlist);
+                    }}>
+                      <EditIcon />
+                    </ActionIconButton>
+                  </Tooltip>
+              )}
+            </Box>
           </Box>
-        </Box>
-      </ShinyCard>
-    </Box>
+        </ShinyCard>
+      </Box>
   );
 };
 

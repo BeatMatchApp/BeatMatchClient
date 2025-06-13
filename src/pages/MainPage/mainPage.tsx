@@ -67,7 +67,7 @@ export const MainPage = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      navigate(NavigationRoutes.LOGIN);
+      navigate(NavigationRoutes.REGISTER_SPOTIFY);
     } catch (error) {
       console.error('Error during logout:', error);
     }

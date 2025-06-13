@@ -22,6 +22,7 @@ const CreatePlaylistPage: React.FC = () => {
   const [playlistName, setPlaylistName] = useState('');
   const [mood, setMood] = useState<string | null>(null);
   const [event, setEvent] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [songs, setSongs] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [savedPlaylist, setSavedPlaylist] = useState<SavedPlaylist | null>(

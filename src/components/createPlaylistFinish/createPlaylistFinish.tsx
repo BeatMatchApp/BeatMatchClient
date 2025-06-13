@@ -61,7 +61,7 @@ export const CreatePlaylistFinish: React.FC<Props> = ({ savedPlaylist }) => {
 
   return (
     <Box className="center">
-      <StyledPageTitle sx={{ marginBottom: '2px' }}>
+      <StyledPageTitle sx={{ marginBottom: '10px' }}>
         Playlist created!
       </StyledPageTitle>
       <StyledContentContainer sx={{ color: 'white', alignItems: 'center' }}>

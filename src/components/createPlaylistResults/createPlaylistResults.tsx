@@ -114,7 +114,7 @@ export const CreatePlaylistResults: React.FC<Props> = ({
   };
 
   return (
-    <Box className="center">
+    <Box className="center" sx={{ padding: '5px' }}>
       <StyledPageTitle>Almost done! Make some changes</StyledPageTitle>
       <Box
         sx={{
@@ -128,6 +128,7 @@ export const CreatePlaylistResults: React.FC<Props> = ({
             disabled={isRefreshDisabled}
             onClick={changePlaylist}
             startIcon={<RefreshIcon />}
+            sx={{ width: { xs: '50vw', sm: '30vw' } }}
           >
             Refresh
           </StyledRefreshButton>
@@ -154,9 +155,11 @@ export const CreatePlaylistResults: React.FC<Props> = ({
         </div>
       </Box>
 
-      <StyledContentContainer sx={{ height: '40vh', paddingTop: 0 }}>
+      <StyledContentContainer sx={{ height: '60vh', paddingTop: 0 }}>
         {loading ? (
-          <Loader />
+          <Box sx={{ marginTop: '10%' }}>
+            <Loader height="100%" />
+          </Box>
         ) : (
           <Box className="center">
             {songs.map((song) => (
@@ -172,15 +175,14 @@ export const CreatePlaylistResults: React.FC<Props> = ({
                 />
               </Box>
             ))}
+            <StyledTextArea
+              minRows={4}
+              placeholder="Any requests?"
+              onChange={(e) => setRequestText(e.target.value)}
+            />
           </Box>
         )}
       </StyledContentContainer>
-
-      <StyledTextArea
-        minRows={4}
-        placeholder="Any requests?"
-        onChange={(e) => setRequestText(e.target.value)}
-      />
     </Box>
   );
 };

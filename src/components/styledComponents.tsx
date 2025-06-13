@@ -75,7 +75,7 @@ export const StyledPageSubtitle = styled((props: TypographyProps) => (
 export const StyledContentContainer = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'space-around',
+  justifyContent: 'start',
   textAlign: 'center',
   width: '100%',
   height: '100%',
@@ -228,12 +228,8 @@ export const StyledTextArea = styled(TextareaAutosize)(({ theme }) => ({
   boxShadow: 'none',
   overflow: 'hidden',
   borderColor: '#cccccc',
+  width: '-webkit-fill-available',
   color: theme.palette.customColors.textMain,
-  width: '80vw',
-
-  [theme.breakpoints.up('sm')]: {
-    width: '40vw',
-  },
 }));
 
 export const StyledSongContainer = styled(Box)(({ theme }) => ({

@@ -4,7 +4,11 @@ import { useDebounce } from 'use-debounce';
 import './PreferencesPicker.css';
 import { MAX_PREFERENCES_AMOUNT } from '../../shared/consts';
 import Preference from './Preference';
-import { StyledChip, StyledMenuButton } from '../styledComponents';
+import {
+  StyledCardBox,
+  StyledChip,
+  StyledMenuButton,
+} from '../styledComponents';
 import { toast } from 'react-toastify';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
@@ -180,14 +184,17 @@ const PreferencesPicker: React.FC<Props> = ({
         </Box>
 
         {!editMode && (
-          <StyledMenuButton
-            variant="contained"
-            disabled={!isMaxSelected}
-            onClick={handleMaxSelection}
-            sx={{ marginTop: '3vh' }}
-          >
-            keep going!
-          </StyledMenuButton>
+          <StyledCardBox>
+            <StyledMenuButton
+              variant="contained"
+              disabled={!isMaxSelected}
+              fullWidth
+              onClick={handleMaxSelection}
+              sx={{ marginTop: '3vh' }}
+            >
+              keep going!
+            </StyledMenuButton>
+          </StyledCardBox>
         )}
       </Box>
     </>

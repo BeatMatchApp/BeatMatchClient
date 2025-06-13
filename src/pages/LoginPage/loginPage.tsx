@@ -41,7 +41,7 @@ function LoginPage() {
     <Box className="center fullHeight">
       <Box sx={{ width: { xs: '80vw', sm: '50vw' } }}>
         <ShinyCard colors={['#8d92f6', '#a2dfd0']}>
-          <StyledPageTitle> Login </StyledPageTitle>
+          <StyledPageTitle sx={{ marginBottom: '10px' }}>Login</StyledPageTitle>
           <StyledCardBox sx={{ gap: '10px' }}>
             <TextField
               id="email"
@@ -61,10 +61,7 @@ function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
             />
 
-            <StyledMenuButton
-              sx={{ marginBottom: '10px' }}
-              onClick={handleLogin}
-            >
+            <StyledMenuButton onClick={handleLogin} fullWidth>
               Login
             </StyledMenuButton>
           </StyledCardBox>

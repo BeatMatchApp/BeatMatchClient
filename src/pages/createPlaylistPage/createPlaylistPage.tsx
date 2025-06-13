@@ -153,7 +153,7 @@ const CreatePlaylistPage: React.FC = () => {
       flexDirection="column"
       sx={{ height: '100%', overflow: 'hidden' }}
     >
-      <Box maxHeight="84%">
+      <Box maxHeight="90%">
         <Box sx={{ flexShrink: 0 }} height="fit-content">
           <Stepper activeStep={activeStep} alternativeLabel>
             {steps.map((step) => (
@@ -178,13 +178,19 @@ const CreatePlaylistPage: React.FC = () => {
         </Box>
       </Box>
 
-      <Box className="center" sx={{ height: '16%' }}>
-        <Box>
+      <Box
+        className="center"
+        sx={{
+          height: 'inherit',
+          justifyContent: 'center',
+        }}
+      >
+        <Box width="80%" sx={{ textAlign: 'center' }}>
           <StyledMenuButton
             variant="contained"
             onClick={handleNext}
             disabled={(!isStepValid && activeStep === 0) || loading}
-            sx={{ width: '100%', minWidth: '50vw' }}
+            fullWidth
           >
             {loading ? (
               <Lottie

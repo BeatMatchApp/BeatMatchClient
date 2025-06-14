@@ -1,15 +1,5 @@
-import React, { useState } from 'react';
-import {
-  Box,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  Stack,
-} from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import React from 'react';
+import {Box, IconButton, Stack} from '@mui/material';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Playlist } from '../../models/Playlist.ts';
@@ -17,65 +7,29 @@ import ShinyCard from '../ShinyCard/ShinyCard.tsx';
 import {
   PlaylistAvatar,
   PlaylistMetaText,
-  StyledPlaylistChip,
   PlaylistTitle,
-  ActionIconButton,
-  PlaylistDescriptionText,
-  StyledIconButton,
-  StyledMenuButton,
+  PlaylistDescriptionText, StyledPlaylistChip, PlaylistDateText,
 } from '../styledComponents.tsx';
-import { playlistService } from '../../services/playlistService.ts';
-import { toast } from 'react-toastify';
+import SpotifyIcon from "../../../public/assets/images/spotifyIcon.png";
 
 interface PlaylistItemProps {
   playlist: Playlist;
   onView: (playlist: Playlist) => void;
-  onDelete: (playlistId: string) => void;
-  onEdit?: (playlist: Playlist) => void;
 }
 
 const PlaylistItem: React.FC<PlaylistItemProps> = ({
   playlist,
   onView,
-  onDelete,
-  onEdit,
 }) => {
   const formattedDate = new Date(playlist.lastUpdatedDate).toLocaleDateString();
 
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-
-  const toggleDeleteDialog = (): void => {
-    setIsDeleteDialogOpen((prev) => !prev);
-  };
-
-  const openDeleteDialog = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ): void => {
+  const handleOpenInSpotify = (e: React.MouseEvent) => {
     e.stopPropagation();
-    toggleDeleteDialog();
-  };
-
-  const handleDeletePlaylist = async () => {
-    setIsDeleting(true);
-    try {
-      const deletedPlaylist = await playlistService.deletePlaylist(
-        playlist.id,
-        playlist.spotifyPlaylistId
-      );
-
-      if (deletedPlaylist) {
-        toast.info('Successfully deleted your playlist');
-        onDelete(playlist.id);
-      }
-    } catch (error) {
-      console.error('Error updating playlist:', error);
-      toast.error('Failed to delete your playlist');
-    } finally {
-      setIsDeleting(false);
-      toggleDeleteDialog();
+    if (playlist.url) {
+      window.open(playlist.url, '_blank');
     }
   };
+
   return (
     <Box>
       <ShinyCard colors={['#8d92f6', '#a2dfd0']}>
@@ -100,8 +54,18 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
               <MusicNoteIcon sx={{ fontSize: 36, color: 'white' }} />
             )}
           </PlaylistAvatar>
-          <Box sx={{ flexGrow: 1, textAlign: 'start' }}>
-            <PlaylistTitle variant="h6">{playlist.name}</PlaylistTitle>
+
+            <Box sx={{ flexGrow: 1, textAlign: 'start', overflow: 'hidden' }}>
+              <PlaylistTitle
+                  variant="h6"
+                  sx={{
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                  }}
+              >
+                {playlist.name}
+              </PlaylistTitle>
 
             <Stack
               direction="row"
@@ -110,12 +74,14 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
               sx={{ mb: 1 }}
             >
               <StyledPlaylistChip
-                size="small"
-                label={`${playlist.songs.length} songs`}
-              />
+                  label={playlist.mood}
+                  variant="outlined"
+                  size="small"
+                  sx={{ marginRight: 1, marginBottom: 1 }}/>
+
               <PlaylistMetaText variant="body2" color="text.secondary">
                 <AccessTimeIcon sx={{ fontSize: 16, mr: 0.5 }} />
-                {formattedDate}
+                <PlaylistDateText variant="body2" color="text.secondary" >{formattedDate}</PlaylistDateText>
               </PlaylistMetaText>
             </Stack>
 
@@ -125,79 +91,21 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
               </PlaylistDescriptionText>
             )}
           </Box>
-          <StyledIconButton size="small" onClick={(e) => openDeleteDialog(e)}>
-            <DeleteIcon
-              fontSize="medium"
-              sx={{ color: 'grey', paddingLeft: '6px' }}
-            />
-          </StyledIconButton>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            {onEdit && (
-              <ActionIconButton onClick={() => onEdit(playlist)}>
-                <EditIcon />
-              </ActionIconButton>
-            )}
+
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              {playlist.url && (
+                  <IconButton onClick={handleOpenInSpotify} sx={{ color: '#1DB954' }}>
+                    <img
+                        src={SpotifyIcon}
+                        alt="Spotify"
+                        style={{ width: 30, height: 30 }}
+                    />
+                  </IconButton>
+              )}
+            </Box>
           </Box>
-        </Box>
-      </ShinyCard>
-
-      <Dialog open={isDeleteDialogOpen} onClose={toggleDeleteDialog}>
-        <DialogContent sx={{ px: 3 }}>
-          <DialogContentText
-            sx={{
-              color: '#5a5a5a',
-              textAlign: 'center',
-              fontSize: '0.95rem',
-              mb: 2,
-            }}
-          >
-            Are you sure you want to delete the playlist? it will also be
-            deleted from your spotify account
-          </DialogContentText>
-        </DialogContent>
-
-        <DialogActions
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            padding: '12px 16px 24px',
-            gap: 2,
-          }}
-        >
-          <StyledMenuButton
-            variant="outlined"
-            onClick={toggleDeleteDialog}
-            sx={{
-              borderRadius: '8px',
-              textTransform: 'none',
-              padding: '8px 20px',
-              fontWeight: 500,
-              color: '#6c757d',
-              border: '1px solid #dee2e6',
-            }}
-          >
-            Cancel
-          </StyledMenuButton>
-
-          <StyledMenuButton
-            onClick={handleDeletePlaylist}
-            autoFocus
-            variant="contained"
-            startIcon={
-              isDeleting ? <CircularProgress size={20} color="inherit" /> : null
-            }
-            sx={{
-              borderRadius: '8px',
-              textTransform: 'none',
-              padding: '8px 24px',
-              fontWeight: 500,
-            }}
-          >
-            {isDeleting ? 'Deleting...' : 'Delete'}
-          </StyledMenuButton>
-        </DialogActions>
-      </Dialog>
-    </Box>
+        </ShinyCard>
+      </Box>
   );
 };
 

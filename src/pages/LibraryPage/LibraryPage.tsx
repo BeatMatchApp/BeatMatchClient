@@ -50,12 +50,6 @@ const LibraryPage: React.FC = () => {
     setSelectedPlaylist(null);
   };
 
-  const handleDeletePlaylist = (playlistId: string): void => {
-    setPlaylists((prevPlaylists) =>
-      prevPlaylists.filter((playlist: Playlist) => playlist.id !== playlistId)
-    );
-  };
-
   const playlistMoods: Pick<Playlist, 'id' | 'mood'>[] = useMemo(() => {
     return playlists.map((playlist: Playlist) => {
       return {
@@ -157,7 +151,6 @@ const LibraryPage: React.FC = () => {
                 key={playlist.id}
                 playlist={playlist}
                 onView={() => setSelectedPlaylist(playlist)}
-                onDelete={handleDeletePlaylist}
               />
             ))}
           </Box>
@@ -218,7 +211,7 @@ const LibraryPage: React.FC = () => {
       <StyledContentContainer>
         {selectedPlaylist ? (
           <PlaylistDetails
-            playlist={selectedPlaylist}
+            playlistId={selectedPlaylist.id}
             onBack={handleCloseDetailView}
           />
         ) : (

@@ -69,7 +69,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
                     setError("No playlist ID provided");
                 }
             } catch (error) {
-                console.error('Error fetching playlist details:', error);
+                console.log('Error fetching playlist details:', error);
                 setError("Failed to load playlist. It may have been deleted.");
             } finally {
                 setLoading(false);
@@ -190,14 +190,12 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
 
     if (loading) {
         return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
                 <Loader />
-            </Box>
         );
     }
     if (error || !currentPlaylist) {
         return (
-            <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+            <Box className={"center"} sx={{ height: '50vh' }}>
                 <Typography variant="h6" sx={{ mb: 2, color: '#ff5252' }}>
                     {error || "Playlist not found"}
                 </Typography>

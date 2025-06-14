@@ -1,29 +1,25 @@
 import React from 'react';
-import { Box, Stack, Tooltip } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
+import {Box, IconButton, Stack} from '@mui/material';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import LaunchIcon from '@mui/icons-material/Launch';
 import { Playlist } from '../../models/Playlist.ts';
 import ShinyCard from '../ShinyCard/ShinyCard.tsx';
 import {
   PlaylistAvatar,
   PlaylistMetaText,
   PlaylistTitle,
-  ActionIconButton,
-  PlaylistDescriptionText,
+  PlaylistDescriptionText, StyledPlaylistChip, PlaylistDateText,
 } from '../styledComponents.tsx';
+import SpotifyIcon from "../../../public/assets/images/spotifyIcon.png";
 
 interface PlaylistItemProps {
   playlist: Playlist;
   onView: (playlist: Playlist) => void;
-  onEdit?: (playlist: Playlist) => void;
 }
 
 const PlaylistItem: React.FC<PlaylistItemProps> = ({
   playlist,
   onView,
-  onEdit,
 }) => {
   const formattedDate = new Date(playlist.lastUpdatedDate).toLocaleDateString();
 
@@ -77,9 +73,15 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
               alignItems="center"
               sx={{ mb: 1 }}
             >
+              <StyledPlaylistChip
+                  label={playlist.mood}
+                  variant="outlined"
+                  size="small"
+                  sx={{ marginRight: 1, marginBottom: 1 }}/>
+
               <PlaylistMetaText variant="body2" color="text.secondary">
                 <AccessTimeIcon sx={{ fontSize: 16, mr: 0.5 }} />
-                {formattedDate}
+                <PlaylistDateText variant="body2" color="text.secondary" >{formattedDate}</PlaylistDateText>
               </PlaylistMetaText>
             </Stack>
 
@@ -92,29 +94,13 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               {playlist.url && (
-                    <ActionIconButton
-                        onClick={handleOpenInSpotify}
-                        sx={{
-                          backgroundColor: '#1DB954',
-                          color: 'white',
-                          '&:hover': {
-                            backgroundColor: '#1AA34A',
-                          }
-                        }}
-                    >
-                      <LaunchIcon fontSize="small" />
-                    </ActionIconButton>
-              )}
-
-              {onEdit && (
-                  <Tooltip title="Edit playlist">
-                    <ActionIconButton onClick={(e) => {
-                      e.stopPropagation();
-                      onEdit(playlist);
-                    }}>
-                      <EditIcon />
-                    </ActionIconButton>
-                  </Tooltip>
+                  <IconButton onClick={handleOpenInSpotify} sx={{ color: '#1DB954' }}>
+                    <img
+                        src={SpotifyIcon}
+                        alt="Spotify"
+                        style={{ width: 30, height: 30 }}
+                    />
+                  </IconButton>
               )}
             </Box>
           </Box>

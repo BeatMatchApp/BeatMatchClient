@@ -81,28 +81,29 @@ export const MainPage = () => {
     <StyledMainBox>
       <NavBar sx={{ backgroundColor: 'transparent' }} position="fixed">
         <Box
-          sx={{ position: 'absolute', left: '16px' }}
-          onClick={handleLogout}
-        >
-          <LogoutIcon
-            fontSize="large"
-            sx={{
-              color: theme.palette.customColors.medium,
-              cursor: 'pointer',
-            }}
-          />
-        </Box>
-
-        <Box
-          sx={{ position: 'absolute', right: '0' }}
+          sx={{ position: 'absolute', left: '0' }}
           onClick={() => handleToggle(MenuNavigationRoutes.EDIT_PROFILE)}
         >
           <ManageAccountsIcon
             fontSize="large"
             sx={{
-              marginRight: '5px',
+              marginLeft: '5px',
               color: theme.palette.customColors.medium,
             }}
+          />
+        </Box>
+
+        <Box
+            sx={{ position: 'absolute', right: '0' }}
+            onClick={handleLogout}
+        >
+          <LogoutIcon
+              fontSize="large"
+              sx={{
+                marginRight: '5px',
+                color: theme.palette.customColors.medium,
+                cursor: 'pointer',
+              }}
           />
         </Box>
 

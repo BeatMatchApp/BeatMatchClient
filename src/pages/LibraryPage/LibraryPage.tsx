@@ -157,7 +157,6 @@ const LibraryPage: React.FC = () => {
                 key={playlist.id}
                 playlist={playlist}
                 onView={() => setSelectedPlaylist(playlist)}
-                onDelete={handleDeletePlaylist}
               />
             ))}
           </Box>
@@ -220,6 +219,7 @@ const LibraryPage: React.FC = () => {
           <PlaylistDetails
             playlist={selectedPlaylist}
             onBack={handleCloseDetailView}
+            onDelete={handleDeletePlaylist}
           />
         ) : (
           <Box

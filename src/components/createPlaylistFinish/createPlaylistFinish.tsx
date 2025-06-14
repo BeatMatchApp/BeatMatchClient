@@ -60,7 +60,7 @@ export const CreatePlaylistFinish: React.FC<Props> = ({ savedPlaylist }) => {
   };
 
   return (
-    <Box className="center">
+    <Box className="center" sx={{ height: '55vh' }}>
       <StyledPageTitle sx={{ marginBottom: '10px' }}>
         Playlist created!
       </StyledPageTitle>

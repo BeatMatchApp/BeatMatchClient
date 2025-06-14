@@ -74,7 +74,7 @@ export const CreatePlaylistResults: React.FC<Props> = ({
   };
 
   const markAllForDisliked = () => {
-    setDislikedSongs(new Set(songs.map((_, index) => index)));
+    setDislikedSongs(new Set(songs.map((_, index) => index + 1)));
   };
 
   const removeAllFromDisliked = () => {

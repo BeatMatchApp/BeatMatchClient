@@ -398,7 +398,6 @@ export const StyledCardBox = styled(Box)(({ theme }) => ({
 
 export const StyledMainBox = styled(Box)(() => ({
   width: '100vw',
-  height: '100vh',
   overflow: 'hidden',
   position: 'relative',
   display: 'flex',

@@ -79,7 +79,7 @@ export const MainPage = () => {
 
   return (
     <Grid container spacing={1}>
-      <StyledMainBox>
+      <StyledMainBox className="full-page">
         <Grid sx={{ padding: '10px' }}>
           <NavBar sx={{ backgroundColor: 'transparent' }} position="fixed">
             <IconButton

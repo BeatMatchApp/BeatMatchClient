@@ -83,10 +83,10 @@ export const MainPage = () => {
         <Grid sx={{ padding: '10px' }}>
           <NavBar sx={{ backgroundColor: 'transparent' }} position="fixed">
             <IconButton
-              sx={{ position: 'absolute', right: '0' }}
-              onClick={handleLogout}
+              sx={{ position: 'absolute', left: '0' }}
+              onClick={() => handleToggle(MenuNavigationRoutes.EDIT_PROFILE)}
             >
-              <LogoutIcon
+              <ManageAccountsIcon
                 fontSize="large"
                 sx={{
                   color: theme.palette.customColors.medium,
@@ -122,9 +122,9 @@ export const MainPage = () => {
 
             <IconButton
               sx={{ position: 'absolute', right: '0' }}
-              onClick={() => handleToggle(MenuNavigationRoutes.EDIT_PROFILE)}
+              onClick={handleLogout}
             >
-              <ManageAccountsIcon
+              <LogoutIcon
                 fontSize="large"
                 sx={{
                   color: theme.palette.customColors.medium,

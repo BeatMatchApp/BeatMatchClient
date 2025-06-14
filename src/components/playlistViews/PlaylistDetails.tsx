@@ -248,7 +248,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
             </PlaylistDataBox>
             <PlaylistDataBox>
               <PlaylistDataText>
-                {currentPlaylist.event} - {currentPlaylist.songs.length} songs
+                {currentPlaylist.songs.length} songs
               </PlaylistDataText>
             </PlaylistDataBox>
           </Box>

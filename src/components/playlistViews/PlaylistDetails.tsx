@@ -52,6 +52,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
   const [requestText, setRequestText] = useState('');
   const [isRefreshDisabled, setIsRefreshDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [refreshedSongs, setRefreshedSongs] = useState<Array<any> | null>(null);
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);

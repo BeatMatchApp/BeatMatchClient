@@ -90,7 +90,11 @@ export const CreatePlaylistFilters: React.FC<Props> = ({
   return (
     <Box
       className="center"
-      sx={{ width: { xs: '100%', sm: '80%' }, margin: 'auto' }}
+      sx={{
+        width: { xs: '100%', sm: '80%' },
+        margin: 'auto',
+        padding: '20px 0 20px 0',
+      }}
     >
       <StyledPageTitle>{`Let's get started!`}</StyledPageTitle>
 

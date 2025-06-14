@@ -20,7 +20,6 @@ export const StyledMenuButton = styled(Button)(({ theme, variant }) => ({
   backgroundColor:
     variant === 'outlined' ? 'white' : theme.palette.customColors.medium,
   color: variant === 'outlined' ? theme.palette.customColors.medium : 'white',
-  width: '50vw',
   textTransform: 'none',
   outline: 'none',
   boxShadow: 'none',
@@ -34,7 +33,9 @@ export const StyledMenuButton = styled(Button)(({ theme, variant }) => ({
   maxHeight: '100%',
 
   [theme.breakpoints.up('sm')]: {
-    width: '20vw',
+    width: '30vw',
+    padding: '10px',
+    fontSize: 'large',
   },
 }));
 
@@ -82,12 +83,12 @@ export const StyledPageSubtitle = styled((props: TypographyProps) => (
 export const StyledContentContainer = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'space-around',
+  justifyContent: 'start',
   textAlign: 'center',
   width: '100%',
+  height: '100%',
   overflow: 'auto',
   maxwidth: '450px',
-  padding: '1.5vh',
   boxSizing: 'border-box',
 });
 
@@ -235,12 +236,8 @@ export const StyledTextArea = styled(TextareaAutosize)(({ theme }) => ({
   boxShadow: 'none',
   overflowY: 'auto',
   borderColor: '#cccccc',
+  width: '-webkit-fill-available',
   color: theme.palette.customColors.textMain,
-  width: '80vw',
-
-  [theme.breakpoints.up('sm')]: {
-    width: '40vw',
-  },
   [`@media (max-height:700px)`]: {
     height: '50px',
   },
@@ -369,8 +366,9 @@ export const StyledPageCard = styled(Card)(({ theme }) => ({
   flexDirection: 'column',
   padding: '3vh',
   display: 'flex',
-  margin: '0 auto',
   borderRadius: '15px',
+  overflow: 'auto',
+  margin: '10px',
 
   [theme.breakpoints.up('sm')]: {
     width: '50vw',

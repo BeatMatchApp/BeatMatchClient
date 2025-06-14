@@ -14,11 +14,11 @@ const ShinyCard: React.FC<ShinyCardProps> = ({ children, colors, small }) => {
       sx={{
         position: 'relative',
         borderRadius: '16px',
-        padding: small ? 1 : 2,
+        padding: small ? '1%' : '3%',
         backgroundColor: 'white',
         overflow: 'hidden',
         zIndex: 1,
-        width: { xs: '80vw', sm: '40vw' },
+        width: small ? '98%' : '92%',
         transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
 
         '&::before': {

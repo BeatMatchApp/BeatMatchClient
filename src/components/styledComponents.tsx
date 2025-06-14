@@ -198,7 +198,6 @@ export const StyledNavToggleGroup = styled('div')({
   backgroundColor: 'transparent',
   userSelect: 'none',
   display: 'flex',
-  gap: '16px',
   borderRadius: '30px',
   padding: '4px',
   border: '1px solid #ccc',

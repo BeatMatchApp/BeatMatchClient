@@ -30,12 +30,14 @@ import { toast } from 'react-toastify';
 interface PlaylistItemProps {
   playlist: Playlist;
   onView: (playlist: Playlist) => void;
+  onDelete: (playlistId: string) => void;
   onEdit?: (playlist: Playlist) => void;
 }
 
 const PlaylistItem: React.FC<PlaylistItemProps> = ({
   playlist,
   onView,
+  onDelete,
   onEdit,
 }) => {
   const formattedDate = new Date(playlist.lastUpdatedDate).toLocaleDateString();
@@ -64,6 +66,7 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
 
       if (deletedPlaylist) {
         toast.info('Successfully deleted your playlist');
+        onDelete(playlist.id);
       }
     } catch (error) {
       console.error('Error updating playlist:', error);

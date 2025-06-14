@@ -18,7 +18,7 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import EditProfileForm from '../EditProfile/editProfile';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { Box, Container, Grid } from '@mui/material';
+import { Container, Grid, IconButton } from '@mui/material';
 import theme from '../../styles/consts';
 
 export const MainPage = () => {
@@ -71,7 +71,7 @@ export const MainPage = () => {
       <StyledMainBox>
         <Grid sx={{ padding: '10px' }}>
           <NavBar sx={{ backgroundColor: 'transparent' }} position="fixed">
-            <Box
+            <IconButton
               sx={{ position: 'absolute', right: '0' }}
               onClick={() => handleToggle(MenuNavigationRoutes.EDIT_PROFILE)}
             >
@@ -81,7 +81,7 @@ export const MainPage = () => {
                   color: theme.palette.customColors.medium,
                 }}
               />
-            </Box>
+            </IconButton>
 
             <StyledNavToggleGroup>
               <StyledNavToggleButton

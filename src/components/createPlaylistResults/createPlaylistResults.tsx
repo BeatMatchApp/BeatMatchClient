@@ -1,6 +1,7 @@
 import {
   Box,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
@@ -9,6 +10,7 @@ import {
 import {
   StyledContentContainer,
   StyledGradientChatIcon,
+  StyledMenuButton,
   StyledPageTitle,
   StyledRefreshButton,
   StyledTextArea,
@@ -25,6 +27,8 @@ import { pinkColor } from '../../styles/colors.ts';
 import './createPlaylistResults.css';
 import theme from '../../styles/consts.ts';
 import ShinyCard from '../ShinyCard/ShinyCard.tsx';
+import { Badge } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 interface Props {
   songs: Song[];
@@ -45,6 +49,7 @@ export const CreatePlaylistResults: React.FC<Props> = ({
   const [requestText, setRequestText] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dislikedSongs, setDislikedSongs] = useState<Set<number>>(new Set());
+  const [dialogText, setDialogText] = useState('');
   const isRefreshDisabled = useMemo(
     () => dislikedSongs.size === 0,
     [dislikedSongs]
@@ -128,6 +133,11 @@ export const CreatePlaylistResults: React.FC<Props> = ({
     setIsDialogOpen(true);
   };
 
+  const handleSaveRequest = () => {
+    setRequestText(dialogText);
+    setIsDialogOpen(false);
+  };
+
   const GradientDefs = () => (
     <svg width="0" height="0">
       <defs>
@@ -146,7 +156,10 @@ export const CreatePlaylistResults: React.FC<Props> = ({
   const chatDialog = () => (
     <Dialog
       open={isDialogOpen}
-      onClose={() => setIsDialogOpen(false)}
+      onClose={() => {
+        setIsDialogOpen(false);
+        setDialogText(requestText);
+      }}
       PaperProps={{ sx: { borderRadius: '16px' } }}
     >
       <ShinyCard
@@ -180,10 +193,23 @@ export const CreatePlaylistResults: React.FC<Props> = ({
           <StyledTextArea
             minRows={4}
             placeholder="Tell the AI exactly what you want!"
-            onChange={(e) => setRequestText(e.target.value)}
-            value={requestText}
+            onChange={(e) => setDialogText(e.target.value)}
+            value={dialogText}
           />
         </DialogContent>
+
+        <DialogActions
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            padding: '12px 16px 24px',
+            gap: 2,
+          }}
+        >
+          <StyledMenuButton onClick={handleSaveRequest}>
+            Save Request
+          </StyledMenuButton>
+        </DialogActions>
       </ShinyCard>
     </Dialog>
   );
@@ -202,7 +228,24 @@ export const CreatePlaylistResults: React.FC<Props> = ({
           <Box sx={{ position: 'absolute', left: '0' }}>
             <GradientDefs />
             <IconButton onClick={openChatDialog}>
-              <StyledGradientChatIcon />
+              <Badge
+                invisible={!requestText.trim()}
+                overlap="circular"
+                badgeContent={
+                  <CheckCircleIcon
+                    sx={{
+                      width: 14,
+                      height: 14,
+                      color: theme.palette.customColors.pink,
+                      backgroundColor: 'white',
+                      borderRadius: '50%',
+                    }}
+                  />
+                }
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+              >
+                <StyledGradientChatIcon />
+              </Badge>
             </IconButton>
           </Box>
 

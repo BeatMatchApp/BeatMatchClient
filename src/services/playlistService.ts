@@ -11,7 +11,7 @@ export interface CreatePlaylistBody {
 }
 
 export interface UpdatePlaylistBody {
-    songs: Song[];
+  songs: Song[];
 }
 
 class PlaylistService {
@@ -33,13 +33,33 @@ class PlaylistService {
 
     return response.data;
   }
-  
-  async updatePlaylist(playlistId: string, body: Partial<UpdatePlaylistBody>): Promise<Playlist> {
+
+  async updatePlaylist(
+    playlistId: string,
+    body: Partial<UpdatePlaylistBody>
+  ): Promise<Playlist> {
     const response = await serverService.put(
-        `${envConfig.BACKEND_SERVICE_URL}/playlist/${playlistId}`,
-        {
-            ...body
-        }
+      `${envConfig.BACKEND_SERVICE_URL}/playlist/${playlistId}`,
+      {
+        ...body,
+      }
+    );
+
+    return response.data;
+  }
+
+  async deletePlaylist(
+    playlistId: string,
+    spotifyPlaylistId: string
+  ): Promise<Playlist> {
+    const response = await serverService.delete(
+      `${envConfig.BACKEND_SERVICE_URL}/playlist`,
+      {
+        data: {
+          playlistId,
+          spotifyPlaylistId,
+        },
+      }
     );
 
     return response.data;

@@ -340,10 +340,10 @@ export const PlaylistMetaText = styled(Typography)({
 });
 
 export const PlaylistDateText = styled(Typography)({
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-})
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+});
 
 export const StyledPlaylistChip = styled(Chip)(({ theme }) => ({
   backgroundColor: theme.palette.customColors.pink,

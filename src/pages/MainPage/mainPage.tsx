@@ -19,7 +19,9 @@ import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import EditProfileForm from '../EditProfile/editProfile';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Container, Grid, IconButton } from '@mui/material';
+import LogoutIcon from '@mui/icons-material/Logout';
 import theme from '../../styles/consts';
+import { logout } from '../../services/userService';
 
 export const MainPage = () => {
   const navigate = useNavigate();
@@ -62,6 +64,15 @@ export const MainPage = () => {
     navigate(`${NavigationRoutes.MAIN_PAGE}${target}`);
   };
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate(NavigationRoutes.REGISTER_SPOTIFY);
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  };
+
   if (isLoading) {
     return <Loader />;
   }
@@ -73,9 +84,9 @@ export const MainPage = () => {
           <NavBar sx={{ backgroundColor: 'transparent' }} position="fixed">
             <IconButton
               sx={{ position: 'absolute', right: '0' }}
-              onClick={() => handleToggle(MenuNavigationRoutes.EDIT_PROFILE)}
+              onClick={handleLogout}
             >
-              <ManageAccountsIcon
+              <LogoutIcon
                 fontSize="large"
                 sx={{
                   color: theme.palette.customColors.medium,
@@ -108,6 +119,18 @@ export const MainPage = () => {
                 />
               </StyledNavToggleButton>
             </StyledNavToggleGroup>
+
+            <IconButton
+              sx={{ position: 'absolute', right: '0' }}
+              onClick={() => handleToggle(MenuNavigationRoutes.EDIT_PROFILE)}
+            >
+              <ManageAccountsIcon
+                fontSize="large"
+                sx={{
+                  color: theme.palette.customColors.medium,
+                }}
+              />
+            </IconButton>
           </NavBar>
         </Grid>
         <Grid size="grow" sx={{ overflow: 'auto', height: '100%' }}>

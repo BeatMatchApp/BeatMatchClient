@@ -24,6 +24,14 @@ export const login = async (loginUserDetails: LoginUserDetails) => {
   return response;
 };
 
+export const logout = async () => {
+  const response = await serverService.post(
+    `${envConfig.BACKEND_SERVICE_URL}/auth/logout`
+  );
+
+  return response;
+};
+
 export const getUserDetails = async (): Promise<UserDetails> => {
   const response = await serverService.get(
     `${envConfig.BACKEND_SERVICE_URL}/user/details`

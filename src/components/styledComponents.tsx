@@ -334,14 +334,16 @@ export const PlaylistDataText = styled(Typography)(({ theme }) => ({
 export const PlaylistMetaText = styled(Typography)({
   display: 'flex',
   alignItems: 'center',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
 });
 
-export const ActionIconButton = styled(IconButton)({
-  color: '#715cf8',
-  '&:hover': {
-    backgroundColor: 'rgba(113, 92, 248, 0.1)',
-  },
-});
+export const PlaylistDateText = styled(Typography)({
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+})
 
 export const StyledPlaylistChip = styled(Chip)(({ theme }) => ({
   backgroundColor: theme.palette.customColors.pink,

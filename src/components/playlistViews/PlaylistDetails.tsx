@@ -277,7 +277,10 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
         <StyledIconButton size="small" onClick={(e) => openDeleteDialog(e)}>
           <DeleteIcon
             fontSize="medium"
-            sx={{ color: 'grey', paddingLeft: '6px' }}
+            sx={{
+              color: (theme) => theme.palette.customColors.medium,
+              paddingLeft: '6px',
+            }}
           />
         </StyledIconButton>
         {onEdit && (
@@ -509,7 +512,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
         <DialogContent sx={{ px: 3 }}>
           <DialogContentText
             sx={{
-              color: '#5a5a5a',
+              color: (theme) => theme.palette.customColors.textSecondary,
               textAlign: 'center',
               fontSize: '0.95rem',
               mb: 2,

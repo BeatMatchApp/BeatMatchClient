@@ -122,13 +122,18 @@ const ProfileForm: React.FC = () => {
               sx={{ marginTop: '3vh' }}
               disabled={!isPreferencesFilled}
               variant="contained"
+              fullWidth
               onClick={savePreferences}
             >
               Save my choices!
             </StyledMenuButton>
           )}
           {activeStep > 1 && (
-            <StyledMenuButton variant="outlined" onClick={handlePrevious}>
+            <StyledMenuButton
+              variant="outlined"
+              onClick={handlePrevious}
+              fullWidth
+            >
               Back
             </StyledMenuButton>
           )}

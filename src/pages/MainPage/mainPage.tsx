@@ -1,5 +1,5 @@
 import { useNavigate, useLocation, Routes, Route } from 'react-router-dom';
-import { NavBar, ContentContainer } from './styled';
+import { NavBar } from './styled';
 import { MenuNavigationRoutes } from '../../models/MenuNavigationRoutes';
 import { NavigationRoutes } from '../../models/NavigationRoutes';
 import {
@@ -18,8 +18,8 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import EditProfileForm from '../EditProfile/editProfile';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { Container, Grid, IconButton } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Box } from '@mui/material';
 import theme from '../../styles/consts';
 import { logout } from '../../services/userService';
 
@@ -78,76 +78,81 @@ export const MainPage = () => {
   }
 
   return (
-    <StyledMainBox>
-      <NavBar sx={{ backgroundColor: 'transparent' }} position="fixed">
-        <Box
-          sx={{ position: 'absolute', left: '0' }}
-          onClick={() => handleToggle(MenuNavigationRoutes.EDIT_PROFILE)}
-        >
-          <ManageAccountsIcon
-            fontSize="large"
-            sx={{
-              marginLeft: '5px',
-              color: theme.palette.customColors.medium,
-            }}
-          />
-        </Box>
+    <Grid container spacing={1}>
+      <StyledMainBox>
+        <Grid sx={{ padding: '10px' }}>
+          <NavBar sx={{ backgroundColor: 'transparent' }} position="fixed">
+            <IconButton
+              sx={{ position: 'absolute', left: '0' }}
+              onClick={() => handleToggle(MenuNavigationRoutes.EDIT_PROFILE)}
+            >
+              <ManageAccountsIcon
+                fontSize="large"
+                sx={{
+                  color: theme.palette.customColors.medium,
+                }}
+              />
+            </IconButton>
 
-        <Box
-            sx={{ position: 'absolute', right: '0' }}
-            onClick={handleLogout}
-        >
-          <LogoutIcon
-              fontSize="large"
-              sx={{
-                marginRight: '5px',
-                color: theme.palette.customColors.medium,
-                cursor: 'pointer',
-              }}
-          />
-        </Box>
+            <StyledNavToggleGroup>
+              <StyledNavToggleButton
+                selected={isCreate}
+                sx={{ display: 'flex', alignItems: 'center' }}
+                onClick={() => handleToggle(MenuNavigationRoutes.CREATE)}
+              >
+                Create
+                <AddCircleOutlineIcon
+                  fontSize="large"
+                  sx={{ marginRight: '5px' }}
+                />
+              </StyledNavToggleButton>
 
-        <StyledNavToggleGroup>
-          <StyledNavToggleButton
-            selected={isCreate}
-            sx={{ display: 'flex', alignItems: 'center' }}
-            onClick={() => handleToggle(MenuNavigationRoutes.CREATE)}
-          >
-            Create
-            <AddCircleOutlineIcon
-              fontSize="large"
-              sx={{ marginRight: '5px' }}
-            />
-          </StyledNavToggleButton>
+              <StyledNavToggleButton
+                selected={isPlaylists}
+                sx={{ display: 'flex', alignItems: 'center' }}
+                onClick={() => handleToggle(MenuNavigationRoutes.LIBRARY)}
+              >
+                Library
+                <LibraryMusicIcon
+                  fontSize="large"
+                  sx={{ marginRight: '5px' }}
+                />
+              </StyledNavToggleButton>
+            </StyledNavToggleGroup>
 
-          <StyledNavToggleButton
-            selected={isPlaylists}
-            sx={{ display: 'flex', alignItems: 'center' }}
-            onClick={() => handleToggle(MenuNavigationRoutes.LIBRARY)}
-          >
-            Library
-            <LibraryMusicIcon fontSize="large" sx={{ marginRight: '5px' }} />
-          </StyledNavToggleButton>
-        </StyledNavToggleGroup>
-      </NavBar>
-
-      <ContentContainer>
-        <Routes>
-          <Route path="/" element={<LibraryPage />} />
-          <Route
-            path={MenuNavigationRoutes.CREATE}
-            element={<CreatePlaylistPage />}
-          />
-          <Route
-            path={MenuNavigationRoutes.LIBRARY}
-            element={<LibraryPage />}
-          />
-          <Route
-            path={MenuNavigationRoutes.EDIT_PROFILE}
-            element={<EditProfileForm />}
-          />
-        </Routes>
-      </ContentContainer>
-    </StyledMainBox>
+            <IconButton
+              sx={{ position: 'absolute', right: '0' }}
+              onClick={handleLogout}
+            >
+              <LogoutIcon
+                fontSize="large"
+                sx={{
+                  color: theme.palette.customColors.medium,
+                }}
+              />
+            </IconButton>
+          </NavBar>
+        </Grid>
+        <Grid size="grow" sx={{ overflow: 'auto', height: '100%' }}>
+          <Container sx={{ height: '100%', padding: '5px' }}>
+            <Routes>
+              <Route path="/" element={<LibraryPage />} />
+              <Route
+                path={MenuNavigationRoutes.CREATE}
+                element={<CreatePlaylistPage />}
+              />
+              <Route
+                path={MenuNavigationRoutes.LIBRARY}
+                element={<LibraryPage />}
+              />
+              <Route
+                path={MenuNavigationRoutes.EDIT_PROFILE}
+                element={<EditProfileForm />}
+              />
+            </Routes>
+          </Container>
+        </Grid>
+      </StyledMainBox>
+    </Grid>
   );
 };

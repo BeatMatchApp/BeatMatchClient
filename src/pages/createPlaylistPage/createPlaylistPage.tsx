@@ -22,6 +22,7 @@ const CreatePlaylistPage: React.FC = () => {
   const [playlistName, setPlaylistName] = useState('');
   const [mood, setMood] = useState<string | null>(null);
   const [event, setEvent] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [songs, setSongs] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [savedPlaylist, setSavedPlaylist] = useState<SavedPlaylist | null>(
@@ -30,8 +31,8 @@ const CreatePlaylistPage: React.FC = () => {
 
   const steps = [
     {
-      stepText: "Let's get started!",
-      stepButtonText: 'Start creating my playlist',
+      stepText: "Let's do this!",
+      stepButtonText: 'Create my playlist!',
       StepContent: () => (
         <CreatePlaylistFilters
           onValidChange={setIsStepValid}
@@ -147,36 +148,63 @@ const CreatePlaylistPage: React.FC = () => {
   };
 
   return (
-    <Box sx={{ marginTop: '3vh', height: '7vh' }}>
-      <Stepper activeStep={activeStep} alternativeLabel>
-        {steps.map((step) => (
-          <Step key={step.stepText}>
-            <StepLabel>{step.stepText}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
+    <Box
+      display="flex"
+      flexDirection="column"
+      sx={{ height: '100%', overflow: 'hidden' }}
+    >
+      <Box maxHeight="90%">
+        <Box sx={{ flexShrink: 0 }} height="fit-content">
+          <Stepper activeStep={activeStep} alternativeLabel>
+            {steps.map((step) => (
+              <Step key={step.stepText} sx={{ padding: '0' }}>
+                <StepLabel>{step.stepText}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        </Box>
 
-      <Box sx={{ mt: 4, minHeight: 100, mb: '10px', padding: '0 1.5vh' }}>
-        {steps[activeStep].StepContent()}
+        <Box sx={{ height: '85%' }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              px: '1.5vh',
+              marginTop: '10px',
+              maxHeight: '100%',
+            }}
+          >
+            {steps[activeStep].StepContent()}
+          </Box>
+        </Box>
       </Box>
 
-      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        <StyledMenuButton
-          variant="contained"
-          onClick={handleNext}
-          disabled={(!isStepValid && activeStep === 0) || loading}
-        >
-          {loading ? (
-            <Lottie
-              animationData={loadingAnimation}
-              loop
-              autoplay
-              style={{ width: 24, height: 24 }}
-            />
-          ) : (
-            steps[activeStep].stepButtonText
-          )}
-        </StyledMenuButton>
+      <Box
+        className="center"
+        sx={{
+          height: 'inherit',
+          justifyContent: 'center',
+          zIndex: 5,
+        }}
+      >
+        <Box width="80%" sx={{ textAlign: 'center' }}>
+          <StyledMenuButton
+            variant="contained"
+            onClick={handleNext}
+            disabled={(!isStepValid && activeStep === 0) || loading}
+            fullWidth
+          >
+            {loading ? (
+              <Lottie
+                animationData={loadingAnimation}
+                loop
+                autoplay
+                style={{ width: 24, height: 24 }}
+              />
+            ) : (
+              steps[activeStep].stepButtonText
+            )}
+          </StyledMenuButton>
+        </Box>
       </Box>
     </Box>
   );

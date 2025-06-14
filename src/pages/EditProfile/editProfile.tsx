@@ -229,6 +229,7 @@ const EditProfileForm = () => {
             disabled={disableSave()}
             variant="contained"
             onClick={handleSave}
+            fullWidth
           >
             Save Changes
           </StyledMenuButton>

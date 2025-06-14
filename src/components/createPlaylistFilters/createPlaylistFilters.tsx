@@ -1,8 +1,12 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { ScrollableSelector } from '../scrollableSelector/scrollableSelector';
 import { getEvents, getMoods } from '../../services/metaService';
-import { StyledContentContainer, StyledPageTitle } from '../styledComponents';
-import { Box, TextField, Typography } from '@mui/material';
+import {
+  StyledContentContainer,
+  StyledPageSubtitle,
+  StyledPageTitle,
+} from '../styledComponents';
+import { Box, TextField } from '@mui/material';
 import EventIcon from '@mui/icons-material/Event';
 import MoodIcon from '@mui/icons-material/Mood';
 
@@ -86,18 +90,19 @@ export const CreatePlaylistFilters: React.FC<Props> = ({
   return (
     <Box
       className="center"
-      sx={{ width: { xs: '100%', sm: '80%' }, margin: 'auto' }}
+      sx={{
+        width: { xs: '100%', sm: '80%' },
+        margin: 'auto',
+        overflowY: 'auto',
+        height: '53vh',
+      }}
     >
-      <StyledPageTitle>{`Let's get started!`}</StyledPageTitle>
+      <StyledPageTitle
+        sx={{ mb: '2vh' }}
+      >{`Let's get started!`}</StyledPageTitle>
 
       <StyledContentContainer>
-        <Typography
-          variant="h6"
-          gutterBottom
-          sx={{ color: (theme) => theme.palette.customColors.textSecondary }}
-        >
-          Playlist name
-        </Typography>
+        <StyledPageSubtitle>Playlist name</StyledPageSubtitle>
         <TextField
           value={playlistName}
           onChange={handlePlaylistNameChange}
@@ -105,6 +110,17 @@ export const CreatePlaylistFilters: React.FC<Props> = ({
           error={!!error}
           helperText={error}
           fullWidth
+          variant="outlined"
+          InputProps={{
+            sx: {
+              height: '50px',
+              padding: 0,
+              fontSize: '1rem',
+              '& input': {
+                padding: '6px 8px',
+              },
+            },
+          }}
         />
 
         <ScrollableSelector

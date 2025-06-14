@@ -3,7 +3,6 @@ import {
   StyledContentContainer,
   StyledPageTitle,
   StyledRefreshButton,
-  StyledTextArea,
 } from '../styledComponents';
 import { SongResult } from './songResult';
 import { useEffect, useMemo, useState } from 'react';
@@ -15,6 +14,7 @@ import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import { pinkColor } from '../../styles/colors.ts';
 import './createPlaylistResults.css';
+import ChatDialog from '../chatDialog/chatDialog.tsx';
 
 interface Props {
   songs: Song[];
@@ -34,6 +34,7 @@ export const CreatePlaylistResults: React.FC<Props> = ({
   const [songs, setSongs] = useState<Song[]>([]);
   const [requestText, setRequestText] = useState('');
   const [dislikedSongs, setDislikedSongs] = useState<Set<number>>(new Set());
+
   const isRefreshDisabled = useMemo(
     () => dislikedSongs.size === 0,
     [dislikedSongs]
@@ -63,7 +64,7 @@ export const CreatePlaylistResults: React.FC<Props> = ({
   };
 
   const markAllForDisliked = () => {
-    setDislikedSongs(new Set(songs.map((_, index) => index)));
+    setDislikedSongs(new Set(songs.map((_, index) => index + 1)));
   };
 
   const removeAllFromDisliked = () => {
@@ -114,8 +115,8 @@ export const CreatePlaylistResults: React.FC<Props> = ({
   };
 
   return (
-    <Box className="center">
-      <StyledPageTitle>Almost done! Make some changes</StyledPageTitle>
+    <Box className="center" sx={{ height: '60vh' }}>
+      <StyledPageTitle>Almost done! any changes?</StyledPageTitle>
       <Box
         sx={{
           width: '100%',
@@ -124,43 +125,55 @@ export const CreatePlaylistResults: React.FC<Props> = ({
         }}
       >
         <div className="playlist-actions">
+          <Box sx={{ position: 'absolute', left: '0' }}>
+            <ChatDialog
+              requestText={requestText}
+              setRequestText={setRequestText}
+            />
+          </Box>
+
           <StyledRefreshButton
             disabled={isRefreshDisabled}
             onClick={changePlaylist}
             startIcon={<RefreshIcon />}
+            sx={{ width: { xs: '50vw', sm: '30vw' } }}
           >
             Refresh
           </StyledRefreshButton>
 
-          <IconButton
-            onClick={
-              isAllSongDisliked ? removeAllFromDisliked : markAllForDisliked
-            }
-            sx={{
-              border: `1px solid ${pinkColor}`,
-              color: pinkColor,
-              height: '40px',
-              width: '40px',
-              position: 'absolute',
-              right: '0',
-            }}
-          >
-            {isAllSongDisliked ? (
-              <PlaylistRemoveIcon />
-            ) : (
-              <PlaylistAddCheckIcon />
-            )}
-          </IconButton>
+          <Box sx={{ position: 'absolute', right: '0' }}>
+            <IconButton
+              onClick={
+                isAllSongDisliked ? removeAllFromDisliked : markAllForDisliked
+              }
+              sx={{
+                border: `1px solid ${pinkColor}`,
+                color: pinkColor,
+              }}
+            >
+              {isAllSongDisliked ? (
+                <PlaylistRemoveIcon />
+              ) : (
+                <PlaylistAddCheckIcon />
+              )}
+            </IconButton>
+          </Box>
         </div>
       </Box>
 
-      <StyledContentContainer sx={{ height: '40vh', paddingTop: 0 }}>
+      <StyledContentContainer sx={{ height: '60vh', paddingTop: 0 }}>
         {loading ? (
-          <Loader />
+          <Box sx={{ marginTop: '10%' }}>
+            <Loader height="100%" />
+          </Box>
         ) : (
           <Box className="center">
             {songs.map((song) => (
-              <Box className="center" sx={{ margin: '5px' }} key={song.id}>
+              <Box
+                className="center"
+                sx={{ margin: '5px', width: '100%' }}
+                key={song.id}
+              >
                 <SongResult
                   song={song}
                   isDisliked={dislikedSongs.has(song.id ?? 0)}
@@ -171,12 +184,6 @@ export const CreatePlaylistResults: React.FC<Props> = ({
           </Box>
         )}
       </StyledContentContainer>
-
-      <StyledTextArea
-        minRows={4}
-        placeholder="Any requests?"
-        onChange={(e) => setRequestText(e.target.value)}
-      />
     </Box>
   );
 };

@@ -217,14 +217,14 @@ const RegisterPage: React.FC<Props> = ({ handleNextStep }) => {
             ),
           }}
         />
+        <StyledMenuButton
+          sx={{ marginTop: '3vh', minWidth: '100%' }}
+          disabled={disableContinue()}
+          onClick={handleContinue}
+        >
+          {`Let's start!`}
+        </StyledMenuButton>
       </Box>
-      <StyledMenuButton
-        sx={{ marginTop: '3vh' }}
-        disabled={disableContinue()}
-        onClick={handleContinue}
-      >
-        {`Let's start!`}
-      </StyledMenuButton>
     </Box>
   );
 };

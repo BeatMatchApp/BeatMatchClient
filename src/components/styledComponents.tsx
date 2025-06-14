@@ -11,6 +11,7 @@ import {
   Typography,
   TypographyProps,
 } from '@mui/material';
+import ChatIcon from '@mui/icons-material/Chat';
 
 interface StyledChipProps {
   isSelected?: boolean;
@@ -20,7 +21,6 @@ export const StyledMenuButton = styled(Button)(({ theme, variant }) => ({
   backgroundColor:
     variant === 'outlined' ? 'white' : theme.palette.customColors.medium,
   color: variant === 'outlined' ? theme.palette.customColors.medium : 'white',
-  width: '50vw',
   textTransform: 'none',
   outline: 'none',
   boxShadow: 'none',
@@ -32,9 +32,16 @@ export const StyledMenuButton = styled(Button)(({ theme, variant }) => ({
     color: 'white',
   },
   maxHeight: '100%',
+  minWidth: '105px',
 
   [theme.breakpoints.up('sm')]: {
-    width: '20vw',
+    width: '30vw',
+    padding: '10px',
+    fontSize: 'large',
+  },
+  [`@media (max-width:400px)`]: {
+    maxWidth: '180px',
+    padding: '8px',
   },
 }));
 
@@ -43,11 +50,13 @@ export const StyledRefreshButton = styled(StyledMenuButton)(({ theme }) => ({
   background: theme.palette.customColors.pink,
 }));
 
-export const StyledSaveChangesButton = styled(StyledMenuButton)(({ theme }) => ({
-  paddingTop: '1vh',
-  background: theme.palette.customColors.blue,
+export const StyledSaveChangesButton = styled(StyledMenuButton)(
+  ({ theme }) => ({
+    paddingTop: '1vh',
+    background: theme.palette.customColors.blue,
     color: 'white',
-}));
+  })
+);
 
 export const StyledLoadingBox = styled(Box)({
   display: 'flex',
@@ -60,6 +69,10 @@ export const StyledPageTitle = styled((props: TypographyProps) => (
   color: theme.palette.customColors.textMain,
   textAlign: 'center',
   fontWeight: 'bold',
+
+  [`@media (max-height:700px)`]: {
+    fontSize: '1.5rem',
+  },
 }));
 
 export const StyledPageSubtitle = styled((props: TypographyProps) => (
@@ -67,17 +80,21 @@ export const StyledPageSubtitle = styled((props: TypographyProps) => (
 ))(({ theme }) => ({
   color: theme.palette.customColors.textSecondary,
   textAlign: 'center',
+
+  [`@media (max-height:700px)`]: {
+    fontSize: '1.2rem',
+  },
 }));
 
 export const StyledContentContainer = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'space-around',
+  justifyContent: 'start',
   textAlign: 'center',
   width: '100%',
+  height: '100%',
   overflow: 'auto',
   maxwidth: '450px',
-  padding: '1.5vh',
   boxSizing: 'border-box',
 });
 
@@ -89,7 +106,7 @@ export const StyledSongBox = styled(Box)(({ theme }) => ({
   color: theme.palette.customColors.textSecondary,
   padding: '12px 16px',
   [theme.breakpoints.down('sm')]: {
-    padding: '10px 12px',
+    padding: '6px 10px',
   },
 }));
 
@@ -181,7 +198,6 @@ export const StyledNavToggleGroup = styled('div')({
   backgroundColor: 'transparent',
   userSelect: 'none',
   display: 'flex',
-  gap: '16px',
   borderRadius: '30px',
   padding: '4px',
   border: '1px solid #ccc',
@@ -223,13 +239,12 @@ export const StyledTextArea = styled(TextareaAutosize)(({ theme }) => ({
   borderRadius: '10px',
   outline: 'none',
   boxShadow: 'none',
-  overflow: 'hidden',
+  overflowY: 'auto',
   borderColor: '#cccccc',
+  width: '-webkit-fill-available',
   color: theme.palette.customColors.textMain,
-  width: '80vw',
-
-  [theme.breakpoints.up('sm')]: {
-    width: '40vw',
+  [`@media (max-height:700px)`]: {
+    height: '50px',
   },
 }));
 
@@ -319,14 +334,16 @@ export const PlaylistDataText = styled(Typography)(({ theme }) => ({
 export const PlaylistMetaText = styled(Typography)({
   display: 'flex',
   alignItems: 'center',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
 });
 
-export const ActionIconButton = styled(IconButton)({
-  color: '#715cf8',
-  '&:hover': {
-    backgroundColor: 'rgba(113, 92, 248, 0.1)',
-  },
-});
+export const PlaylistDateText = styled(Typography)({
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+})
 
 export const StyledPlaylistChip = styled(Chip)(({ theme }) => ({
   backgroundColor: theme.palette.customColors.pink,
@@ -356,8 +373,9 @@ export const StyledPageCard = styled(Card)(({ theme }) => ({
   flexDirection: 'column',
   padding: '3vh',
   display: 'flex',
-  margin: '0 auto',
   borderRadius: '15px',
+  overflow: 'auto',
+  margin: '10px',
 
   [theme.breakpoints.up('sm')]: {
     width: '50vw',
@@ -385,4 +403,16 @@ export const StyledMainBox = styled(Box)(() => ({
   position: 'relative',
   display: 'flex',
   flexDirection: 'column',
+}));
+
+export const StyledGradientChatIcon = styled(ChatIcon)(() => ({
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  transition: 'transform 0.3s ease',
+  '&:hover': {
+    transform: 'scale(1.1)',
+  },
+  '& path': {
+    fill: 'url(#chatGradient)',
+  },
 }));

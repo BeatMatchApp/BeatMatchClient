@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
   IconButton,
-  Divider,
   Dialog,
   DialogActions,
   DialogContent,
@@ -22,7 +21,6 @@ import {
   PlaylistDataTitle,
   PlaylistDataText,
   StyledRefreshButton,
-  StyledTextArea,
   PlaylistDataBox,
   StyledSaveChangesButton,
   StyledMenuButton,
@@ -39,16 +37,19 @@ import { refreshAiPlaylist } from '../../services/aiService.ts';
 import { playlistService } from '../../services/playlistService.ts';
 import CircularProgress from '@mui/material/CircularProgress';
 import { toast } from 'react-toastify';
+import ChatDialog from '../chatDialog/chatDialog.tsx';
 
 interface PlaylistDetailsProps {
-  playlist: Playlist;
+  playlistId: string;
+  playlistSpotifyId: string;
   onBack: () => void;
   onDelete: (playlistId: string) => void;
   onEdit?: (playlist: Playlist) => void;
 }
 
 const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
-  playlist,
+  playlistId,
+  playlistSpotifyId,
   onBack,
   onDelete,
   onEdit,
@@ -56,23 +57,51 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
   const [dislikedSongs, setDislikedSongs] = useState<Set<number>>(new Set());
   const [requestText, setRequestText] = useState('');
   const [isRefreshDisabled, setIsRefreshDisabled] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [refreshedSongs, setRefreshedSongs] = useState<Array<any> | null>(null);
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [currentPlaylist, setCurrentPlaylist] = useState<Playlist>(playlist);
+  const [currentPlaylist, setCurrentPlaylist] = useState<Playlist | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const creationDate = new Date(
-    currentPlaylist.creationDate
-  ).toLocaleDateString();
-  const lastUpdated = new Date(
-    currentPlaylist.lastUpdatedDate
-  ).toLocaleDateString();
-
-  const currentSongs = refreshedSongs || currentPlaylist.songs;
+  const currentSongs = refreshedSongs || currentPlaylist?.songs || [];
   const isAllSongDisliked = dislikedSongs.size === currentSongs.length;
+  const creationDate = currentPlaylist
+    ? new Date(currentPlaylist.creationDate).toLocaleDateString()
+    : '';
+
+  useEffect(() => {
+    const fetchPlaylistDetails = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        if (playlistId) {
+          const fetchedPlaylist = await playlistService.getPlaylistById(
+            playlistId
+          );
+          if (fetchedPlaylist) {
+            setCurrentPlaylist(fetchedPlaylist);
+          } else {
+            setError('Playlist not found');
+          }
+        } else {
+          setError('No playlist ID provided');
+        }
+      } catch (error) {
+        console.log('Error fetching playlist details:', error);
+        setError('Failed to load playlist. It may have been deleted.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPlaylistDetails();
+  }, [playlistId]);
 
   const toggleDeleteDialog = (): void => {
     setIsDeleteDialogOpen((prev) => !prev);
@@ -89,13 +118,13 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
     setIsDeleting(true);
     try {
       const deletedPlaylist = await playlistService.deletePlaylist(
-        playlist.id,
-        playlist.spotifyPlaylistId
+        playlistId,
+        playlistSpotifyId
       );
 
       if (deletedPlaylist) {
         toast.success('Successfully deleted your playlist');
-        onDelete(playlist.id);
+        onDelete(playlistId);
         onBack();
       }
     } catch (error) {
@@ -121,18 +150,11 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
     });
   };
 
-  const handleRequestChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    const value = event.target.value;
-    setRequestText(value);
-    setIsRefreshDisabled(value.trim().length === 0 && dislikedSongs.size === 0);
-  };
-
   const handleRefresh = async () => {
     if (dislikedSongs.size === 0 && !requestText.trim()) return;
+    if (!currentPlaylist) return;
 
-    setLoading(true);
+    setIsRefreshing(true);
     try {
       const songsForRefresh = currentSongs.map((song, index) => ({
         name: song.name,
@@ -164,7 +186,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
     } catch (error) {
       console.error('Error refreshing playlist:', error);
     } finally {
-      setLoading(false);
+      setIsRefreshing(false);
     }
   };
 
@@ -183,7 +205,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
   };
 
   const handleSaveConfirm = async () => {
-    if (!refreshedSongs) return;
+    if (!refreshedSongs || !currentPlaylist) return;
 
     setIsSaving(true);
     try {
@@ -211,6 +233,26 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
   const handleSaveCancel = () => {
     setSaveDialogOpen(false);
   };
+
+  if (loading) {
+    return <Loader />;
+  }
+  if (error || !currentPlaylist) {
+    return (
+      <Box className={'center'} sx={{ height: '50vh' }}>
+        <Typography variant="h6" sx={{ mb: 2, color: '#ff5252' }}>
+          {error || 'Playlist not found'}
+        </Typography>
+        <StyledMenuButton
+          onClick={onBack}
+          startIcon={<ArrowBackIcon />}
+          variant="outlined"
+        >
+          Back to Playlists
+        </StyledMenuButton>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -258,24 +300,10 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
               <PlaylistDataText>{creationDate}</PlaylistDataText>
             </PlaylistDataBox>
             <PlaylistDataBox>
-              <PlaylistDataTitle> Last Updated: </PlaylistDataTitle>
-              <PlaylistDataText>{lastUpdated}</PlaylistDataText>
-            </PlaylistDataBox>
-            <PlaylistDataBox>
               <PlaylistDataText>
                 {currentPlaylist.songs.length} songs
               </PlaylistDataText>
             </PlaylistDataBox>
-
-            {currentPlaylist.description && (
-              <Box>
-                <Divider sx={{ margin: '5px' }} />
-                <PlaylistDataTitle>Playlist Context:</PlaylistDataTitle>
-                <Typography variant="body2" sx={{ mt: 1, lineHeight: 1.6 }}>
-                  {currentPlaylist.description}
-                </Typography>
-              </Box>
-            )}
           </Box>
         </ShinyCard>
       </Box>
@@ -296,13 +324,16 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
               alignItems: 'center',
             }}
           >
-            <StyledPageSubtitle sx={{ fontWeight: 'bold' }}>
-              Songs
-            </StyledPageSubtitle>
             <div
               className="playlist-actions"
               style={{ width: '100%', position: 'relative' }}
             >
+              <Box sx={{ position: 'absolute', left: '0' }}>
+                <ChatDialog
+                  requestText={requestText}
+                  setRequestText={setRequestText}
+                />
+              </Box>
               <Box
                 sx={{
                   width: '200px',
@@ -312,7 +343,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
                 {refreshedSongs ? (
                   <>
                     <StyledRefreshButton
-                      disabled={isRefreshDisabled || loading}
+                      disabled={isRefreshDisabled || isRefreshing}
                       onClick={handleRefresh}
                       startIcon={<RefreshIcon />}
                       sx={{
@@ -334,7 +365,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
                   </>
                 ) : (
                   <StyledRefreshButton
-                    disabled={isRefreshDisabled || loading}
+                    disabled={isRefreshDisabled || isRefreshing}
                     onClick={handleRefresh}
                     startIcon={<RefreshIcon />}
                     sx={{ width: '100%' }}
@@ -347,7 +378,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
                 onClick={
                   isAllSongDisliked ? removeAllFromDisliked : markAllForDisliked
                 }
-                disabled={loading}
+                disabled={isRefreshing}
                 sx={{
                   border: `1px solid ${pinkColor}`,
                   color: pinkColor,
@@ -370,15 +401,24 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
 
           <Box
             sx={{
-              height: '40vh',
+              height: '50vh',
               display: 'flex',
               flexDirection: 'column',
               overflow: 'auto',
               maxwidth: '450px',
             }}
           >
-            {loading ? (
-              <Loader />
+            {isRefreshing ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: '100%',
+                }}
+              >
+                <Loader />
+              </Box>
             ) : (
               currentSongs.map((song, index) => (
                 <Box className="center" sx={{ margin: '1vh' }} key={index}>
@@ -392,21 +432,13 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
               ))
             )}
           </Box>
-
-          <StyledTextArea
-            minRows={4}
-            placeholder="Add song requests or feedback for this playlist..."
-            onChange={handleRequestChange}
-            value={requestText}
-            disabled={loading}
-          />
         </>
       )}
       <Dialog open={saveDialogOpen} onClose={handleSaveCancel}>
         <DialogTitle
           sx={{
             fontWeight: 600,
-            color: '#2b2b2b',
+            color: (theme) => theme.palette.customColors.textMain,
             textAlign: 'center',
             fontSize: '1.3rem',
             pt: 2,
@@ -418,7 +450,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
         <DialogContent sx={{ px: 3 }}>
           <DialogContentText
             sx={{
-              color: '#5a5a5a',
+              color: (theme) => theme.palette.customColors.textSecondary,
               textAlign: 'center',
               fontSize: '0.95rem',
               mb: 2,

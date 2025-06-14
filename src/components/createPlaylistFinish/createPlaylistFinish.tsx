@@ -60,8 +60,10 @@ export const CreatePlaylistFinish: React.FC<Props> = ({ savedPlaylist }) => {
   };
 
   return (
-    <Box className="center">
-      <StyledPageTitle>Playlist created!</StyledPageTitle>
+    <Box className="center" sx={{ height: '55vh' }}>
+      <StyledPageTitle sx={{ marginBottom: '10px' }}>
+        Playlist created!
+      </StyledPageTitle>
       <StyledContentContainer sx={{ color: 'white', alignItems: 'center' }}>
         <ShinyCard colors={['#8d92f6', '#a2dfd0']}>
           <Box sx={{ padding: '5px 8px' }}>{renderContent()}</Box>

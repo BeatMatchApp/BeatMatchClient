@@ -50,12 +50,6 @@ const LibraryPage: React.FC = () => {
     setSelectedPlaylist(null);
   };
 
-  const handleDeletePlaylist = (playlistId: string): void => {
-    setPlaylists((prevPlaylists) =>
-      prevPlaylists.filter((playlist: Playlist) => playlist.id !== playlistId)
-    );
-  };
-
   const playlistMoods: Pick<Playlist, 'id' | 'mood'>[] = useMemo(() => {
     return playlists.map((playlist: Playlist) => {
       return {
@@ -69,40 +63,55 @@ const LibraryPage: React.FC = () => {
     setIsMoodsModalOpen((prev) => !prev);
   };
 
+  const handleDeletePlaylist = (playlistId: string): void => {
+    setPlaylists((prevPlaylists) =>
+      prevPlaylists.filter((playlist: Playlist) => playlist.id !== playlistId)
+    );
+  };
+
   const PlaylistSkeletons = useMemo(
     () => (
-      <Box sx={{ display: 'grid', width: { xs: '90vw', sm: '50vw' } }}>
-        <StyledPageTitle sx={{ marginBottom: '1vh' }}>
-          Your library
-        </StyledPageTitle>
-        <Divider sx={{ margin: '10px', width: '100%' }} />
-        <Box sx={{ display: 'grid', gap: '2vh' }}>
-          {[1, 2, 3].map((index) => (
-            <Card
-              key={index}
-              sx={{
-                borderRadius: 2,
-                transition: 'all 0.3s',
-                '&:hover': { transform: 'translateY(-4px)' },
-              }}
-            >
-              <CardContent sx={{ display: 'flex', padding: '1vh !important' }}>
-                <Skeleton
-                  variant="rounded"
-                  width={100}
-                  height={80}
-                  sx={{ mr: 2 }}
-                />
-                <Box sx={{ width: '100%' }}>
-                  <Skeleton variant="text" width="40%" sx={{ mb: 1 }} />
-                  <Stack direction="row" spacing={2} sx={{ mb: 1 }}>
-                    <Skeleton variant="text" width={100} height={24} />
-                  </Stack>
-                  <Skeleton variant="text" width="70%" />
-                </Box>
-              </CardContent>
-            </Card>
-          ))}
+      <Box className="center" sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%', height: '100%' }}>
+          <Box
+            className="center"
+            sx={{ height: '84%', justifyContent: 'start' }}
+          >
+            <StyledPageTitle sx={{ marginBottom: '1vh' }}>
+              Your library
+            </StyledPageTitle>
+            <Divider sx={{ my: '10px', width: '90%' }} />
+            <Box sx={{ display: 'grid', gap: '2vh', width: '90%' }}>
+              {[1, 2, 3].map((index) => (
+                <Card
+                  key={index}
+                  sx={{
+                    borderRadius: 2,
+                    transition: 'all 0.3s',
+                    '&:hover': { transform: 'translateY(-4px)' },
+                  }}
+                >
+                  <CardContent
+                    sx={{ display: 'flex', padding: '1vh !important' }}
+                  >
+                    <Skeleton
+                      variant="rounded"
+                      width={100}
+                      height={80}
+                      sx={{ mr: 2 }}
+                    />
+                    <Box sx={{ width: '100%' }}>
+                      <Skeleton variant="text" width="40%" sx={{ mb: 1 }} />
+                      <Stack direction="row" spacing={2} sx={{ mb: 1 }}>
+                        <Skeleton variant="text" width={100} height={24} />
+                      </Stack>
+                      <Skeleton variant="text" width="70%" />
+                    </Box>
+                  </CardContent>
+                </Card>
+              ))}
+            </Box>
+          </Box>
         </Box>
       </Box>
     ),
@@ -129,62 +138,74 @@ const LibraryPage: React.FC = () => {
 
   const playlistsList = useMemo(
     () => (
-      <Box className="center">
-        <Box sx={{ width: '100%' }}>
-          <StyledPageTitle sx={{ marginBottom: '1vh' }}>
-            Your library
-          </StyledPageTitle>
-          <Divider sx={{ margin: '10px', width: '100%' }} />
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            overflow: 'hidden',
-          }}
-        >
+      <Box className="center" sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%', height: '100%' }}>
           <Box
-            sx={{
-              display: 'grid',
-              gap: '2vh',
-              overflowY: 'auto',
-              maxHeight: '72vh',
-              pr: 1,
-            }}
+            className="center"
+            sx={{ height: '84%', justifyContent: 'start' }}
           >
-            {playlists.map((playlist) => (
-              <PlaylistItem
-                key={playlist.id}
-                playlist={playlist}
-                onView={() => setSelectedPlaylist(playlist)}
-              />
-            ))}
-          </Box>
-          <Modal
-            open={isMoodsModalOpen}
-            onClose={toggleMoodsModal}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
+            <StyledPageTitle sx={{ marginBottom: '1vh' }}>
+              Your library
+            </StyledPageTitle>
+            <Divider sx={{ my: '10px', width: '90%' }} />
             <Box
               sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                borderRadius: 5,
-                width: { xs: '90%', sm: '60%', md: '40%' },
-                overflowY: 'auto',
-                backgroundColor: '#e0f3ff',
+                display: 'flex',
+                flexDirection: 'column',
+                overflow: 'hidden',
+                width: '90%',
               }}
             >
-              <MoodPlaylistsChart playlists={playlistMoods} />
+              <Box
+                sx={{
+                  display: 'grid',
+                  gap: '2vh',
+                  overflowY: 'auto',
+                  maxHeight: '72vh',
+                }}
+              >
+                {playlists.map((playlist) => (
+                  <PlaylistItem
+                    key={playlist.id}
+                    playlist={playlist}
+                    onView={() => setSelectedPlaylist(playlist)}
+                  />
+                ))}
+              </Box>
+              <Modal
+                open={isMoodsModalOpen}
+                onClose={toggleMoodsModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    borderRadius: 5,
+                    width: { xs: '90%', sm: '60%', md: '40%' },
+                    overflowY: 'auto',
+                    backgroundColor: '#e0f3ff',
+                  }}
+                >
+                  <MoodPlaylistsChart playlists={playlistMoods} />
+                </Box>
+              </Modal>
             </Box>
-          </Modal>
-          <Box className="center" sx={{ mt: '10px' }}>
-            <StyledMenuButton variant="contained" onClick={toggleMoodsModal}>
-              discover my mood board
-            </StyledMenuButton>
+          </Box>
+
+          <Box className="center" sx={{ height: '16%' }}>
+            <Box width="80%">
+              <StyledMenuButton
+                fullWidth
+                variant="contained"
+                onClick={toggleMoodsModal}
+              >
+                My mood board :)
+              </StyledMenuButton>
+            </Box>
           </Box>
         </Box>
       </Box>
@@ -194,7 +215,7 @@ const LibraryPage: React.FC = () => {
 
   const emptyState = useMemo(
     () => (
-      <Box className="center" sx={{ marginTop: '5vh' }}>
+      <Box className="center" sx={{ marginTop: '5vh', width: '100%' }}>
         <StyledPageTitle>No playlists yet</StyledPageTitle>
         <StyledPageSubtitle variant="body1" color="text.secondary">
           Create your first playlist to get started!
@@ -211,13 +232,20 @@ const LibraryPage: React.FC = () => {
   };
 
   return (
-    <Box className="center" sx={{ width: { sm: '80%' }, margin: 'auto' }}>
+    <Box
+      sx={{
+        width: { sm: '80%' },
+        margin: 'auto',
+        height: '100%',
+      }}
+    >
       {errorAlert}
 
       <StyledContentContainer>
         {selectedPlaylist ? (
           <PlaylistDetails
-            playlist={selectedPlaylist}
+            playlistId={selectedPlaylist.id}
+            playlistSpotifyId={selectedPlaylist.spotifyPlaylistId}
             onBack={handleCloseDetailView}
             onDelete={handleDeletePlaylist}
           />
@@ -225,9 +253,8 @@ const LibraryPage: React.FC = () => {
           <Box
             sx={{
               width: '100%',
-              justifyContent: 'center',
               display: 'flex',
-              height: '90%',
+              height: '100%',
             }}
           >
             {libraryContent()}

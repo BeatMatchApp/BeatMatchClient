@@ -93,10 +93,13 @@ export const CreatePlaylistFilters: React.FC<Props> = ({
       sx={{
         width: { xs: '100%', sm: '80%' },
         margin: 'auto',
-        padding: '20px 0 20px 0',
+        overflowY: 'auto',
+        height: '53vh',
       }}
     >
-      <StyledPageTitle>{`Let's get started!`}</StyledPageTitle>
+      <StyledPageTitle
+        sx={{ mb: '2vh' }}
+      >{`Let's get started!`}</StyledPageTitle>
 
       <StyledContentContainer>
         <StyledPageSubtitle>Playlist name</StyledPageSubtitle>
@@ -110,8 +113,7 @@ export const CreatePlaylistFilters: React.FC<Props> = ({
           variant="outlined"
           InputProps={{
             sx: {
-              height: '6vh',
-              maxHeight: '6-px',
+              height: '50px',
               padding: 0,
               fontSize: '1rem',
               '& input': {

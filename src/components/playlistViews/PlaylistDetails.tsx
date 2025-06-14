@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import {
   Box,
-  Typography,
   IconButton,
-  Divider,
   Dialog,
   DialogActions,
   DialogContent,
@@ -60,9 +58,6 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
 
   const creationDate = new Date(
     currentPlaylist.creationDate
-  ).toLocaleDateString();
-  const lastUpdated = new Date(
-    currentPlaylist.lastUpdatedDate
   ).toLocaleDateString();
 
   const currentSongs = refreshedSongs || currentPlaylist.songs;
@@ -331,7 +326,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
         <DialogTitle
           sx={{
             fontWeight: 600,
-            color: '#2b2b2b',
+            color: (theme) => theme.palette.customColors.textMain,
             textAlign: 'center',
             fontSize: '1.3rem',
             pt: 2,
@@ -343,7 +338,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
         <DialogContent sx={{ px: 3 }}>
           <DialogContentText
             sx={{
-              color: '#5a5a5a',
+              color: (theme) => theme.palette.customColors.textSecondary,
               textAlign: 'center',
               fontSize: '0.95rem',
               mb: 2,

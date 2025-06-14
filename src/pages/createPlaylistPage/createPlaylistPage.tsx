@@ -168,7 +168,6 @@ const CreatePlaylistPage: React.FC = () => {
           <Box
             sx={{
               flexGrow: 1,
-              overflowY: 'auto',
               px: '1.5vh',
               marginTop: '10px',
               maxHeight: '100%',

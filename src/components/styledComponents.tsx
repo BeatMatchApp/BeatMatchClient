@@ -11,6 +11,7 @@ import {
   Typography,
   TypographyProps,
 } from '@mui/material';
+import ChatIcon from '@mui/icons-material/Chat';
 
 interface StyledChipProps {
   isSelected?: boolean;
@@ -401,4 +402,16 @@ export const StyledMainBox = styled(Box)(() => ({
   position: 'relative',
   display: 'flex',
   flexDirection: 'column',
+}));
+
+export const StyledGradientChatIcon = styled(ChatIcon)(() => ({
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  transition: 'transform 0.3s ease',
+  '&:hover': {
+    transform: 'scale(1.1)',
+  },
+  '& path': {
+    fill: 'url(#chatGradient)',
+  },
 }));

@@ -1,19 +1,8 @@
-import {
-  Box,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  IconButton,
-} from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import {
   StyledContentContainer,
-  StyledGradientChatIcon,
-  StyledMenuButton,
   StyledPageTitle,
   StyledRefreshButton,
-  StyledTextArea,
 } from '../styledComponents';
 import { SongResult } from './songResult';
 import { useEffect, useMemo, useState } from 'react';
@@ -25,10 +14,7 @@ import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import { pinkColor } from '../../styles/colors.ts';
 import './createPlaylistResults.css';
-import theme from '../../styles/consts.ts';
-import ShinyCard from '../ShinyCard/ShinyCard.tsx';
-import { Badge } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ChatDialog from '../chatDialog/chatDialog.tsx';
 
 interface Props {
   songs: Song[];
@@ -47,9 +33,8 @@ export const CreatePlaylistResults: React.FC<Props> = ({
 }) => {
   const [songs, setSongs] = useState<Song[]>([]);
   const [requestText, setRequestText] = useState('');
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [dislikedSongs, setDislikedSongs] = useState<Set<number>>(new Set());
-  const [dialogText, setDialogText] = useState('');
+
   const isRefreshDisabled = useMemo(
     () => dislikedSongs.size === 0,
     [dislikedSongs]
@@ -129,91 +114,6 @@ export const CreatePlaylistResults: React.FC<Props> = ({
     }
   };
 
-  const openChatDialog = () => {
-    setIsDialogOpen(true);
-  };
-
-  const handleSaveRequest = () => {
-    setRequestText(dialogText);
-    setIsDialogOpen(false);
-  };
-
-  const GradientDefs = () => (
-    <svg width="0" height="0">
-      <defs>
-        <linearGradient id="chatGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor={theme.palette.customColors.pink} />
-          <stop
-            offset="50%"
-            stopColor={theme.palette.customColors.lightPurple}
-          />
-          <stop offset="100%" stopColor={theme.palette.customColors.medium} />
-        </linearGradient>
-      </defs>
-    </svg>
-  );
-
-  const chatDialog = () => (
-    <Dialog
-      open={isDialogOpen}
-      onClose={() => {
-        setIsDialogOpen(false);
-        setDialogText(requestText);
-      }}
-      PaperProps={{ sx: { borderRadius: '16px' } }}
-    >
-      <ShinyCard
-        colors={['#8d92f6', '#a2dfd0']}
-        sx={{ padding: 0, width: '100%', borderRadius: '16px' }}
-      >
-        <DialogTitle
-          sx={{
-            fontWeight: 600,
-            color: (theme) => theme.palette.customColors.textMain,
-            textAlign: 'center',
-            fontSize: '1.3rem',
-            pt: 2,
-          }}
-        >
-          Have a Request?
-        </DialogTitle>
-
-        <DialogContent sx={{ px: 3 }}>
-          <DialogContentText
-            sx={{
-              color: (theme) => theme.palette.customColors.textSecondary,
-              textAlign: 'center',
-              fontSize: '0.95rem',
-              mb: 2,
-            }}
-          >
-            Add any special requests for the AI here — they’ll be considered
-            when you click refresh!
-          </DialogContentText>
-          <StyledTextArea
-            minRows={4}
-            placeholder="Tell the AI exactly what you want!"
-            onChange={(e) => setDialogText(e.target.value)}
-            value={dialogText}
-          />
-        </DialogContent>
-
-        <DialogActions
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            padding: '12px 16px 24px',
-            gap: 2,
-          }}
-        >
-          <StyledMenuButton onClick={handleSaveRequest}>
-            Save Request
-          </StyledMenuButton>
-        </DialogActions>
-      </ShinyCard>
-    </Dialog>
-  );
-
   return (
     <Box className="center" sx={{ height: '60vh' }}>
       <StyledPageTitle>Almost done! any changes?</StyledPageTitle>
@@ -226,27 +126,10 @@ export const CreatePlaylistResults: React.FC<Props> = ({
       >
         <div className="playlist-actions">
           <Box sx={{ position: 'absolute', left: '0' }}>
-            <GradientDefs />
-            <IconButton onClick={openChatDialog}>
-              <Badge
-                invisible={!requestText.trim()}
-                overlap="circular"
-                badgeContent={
-                  <CheckCircleIcon
-                    sx={{
-                      width: 14,
-                      height: 14,
-                      color: theme.palette.customColors.pink,
-                      backgroundColor: 'white',
-                      borderRadius: '50%',
-                    }}
-                  />
-                }
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-              >
-                <StyledGradientChatIcon />
-              </Badge>
-            </IconButton>
+            <ChatDialog
+              requestText={requestText}
+              setRequestText={setRequestText}
+            />
           </Box>
 
           <StyledRefreshButton
@@ -300,8 +183,6 @@ export const CreatePlaylistResults: React.FC<Props> = ({
             ))}
           </Box>
         )}
-
-        {chatDialog()}
       </StyledContentContainer>
     </Box>
   );

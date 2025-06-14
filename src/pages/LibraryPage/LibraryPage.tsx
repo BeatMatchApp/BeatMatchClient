@@ -63,6 +63,12 @@ const LibraryPage: React.FC = () => {
     setIsMoodsModalOpen((prev) => !prev);
   };
 
+  const handleDeletePlaylist = (playlistId: string): void => {
+    setPlaylists((prevPlaylists) =>
+      prevPlaylists.filter((playlist: Playlist) => playlist.id !== playlistId)
+    );
+  };
+
   const PlaylistSkeletons = useMemo(
     () => (
       <Box className="center" sx={{ width: '100%' }}>
@@ -239,7 +245,9 @@ const LibraryPage: React.FC = () => {
         {selectedPlaylist ? (
           <PlaylistDetails
             playlistId={selectedPlaylist.id}
+            playlistSpotifyId={selectedPlaylist.spotifyPlaylistId}
             onBack={handleCloseDetailView}
+            onDelete={handleDeletePlaylist}
           />
         ) : (
           <Box

@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import {
   Box,
+  Typography,
   IconButton,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Typography,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import SaveIcon from '@mui/icons-material/Save';
 import { Playlist, Song } from '../../models/Playlist.ts';
@@ -23,6 +24,7 @@ import {
   PlaylistDataBox,
   StyledSaveChangesButton,
   StyledMenuButton,
+  StyledIconButton,
 } from '../styledComponents';
 import ShinyCard from '../ShinyCard/ShinyCard.tsx';
 import { SongResult } from '../createPlaylistResults/songResult.tsx';
@@ -34,17 +36,22 @@ import Loader from '../Loader/Loader.tsx';
 import { refreshAiPlaylist } from '../../services/aiService.ts';
 import { playlistService } from '../../services/playlistService.ts';
 import CircularProgress from '@mui/material/CircularProgress';
+import { toast } from 'react-toastify';
 import ChatDialog from '../chatDialog/chatDialog.tsx';
 
 interface PlaylistDetailsProps {
   playlistId: string;
+  playlistSpotifyId: string;
   onBack: () => void;
+  onDelete: (playlistId: string) => void;
   onEdit?: (playlist: Playlist) => void;
 }
 
 const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
   playlistId,
+  playlistSpotifyId,
   onBack,
+  onDelete,
   onEdit,
 }) => {
   const [dislikedSongs, setDislikedSongs] = useState<Set<number>>(new Set());
@@ -58,6 +65,8 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
   const [isSaving, setIsSaving] = useState(false);
   const [currentPlaylist, setCurrentPlaylist] = useState<Playlist | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const currentSongs = refreshedSongs || currentPlaylist?.songs || [];
   const isAllSongDisliked = dislikedSongs.size === currentSongs.length;
@@ -93,6 +102,39 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
 
     fetchPlaylistDetails();
   }, [playlistId]);
+
+  const toggleDeleteDialog = (): void => {
+    setIsDeleteDialogOpen((prev) => !prev);
+  };
+
+  const openDeleteDialog = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): void => {
+    e.stopPropagation();
+    toggleDeleteDialog();
+  };
+
+  const handleDeletePlaylist = async () => {
+    setIsDeleting(true);
+    try {
+      const deletedPlaylist = await playlistService.deletePlaylist(
+        playlistId,
+        playlistSpotifyId
+      );
+
+      if (deletedPlaylist) {
+        toast.success('Successfully deleted your playlist');
+        onDelete(playlistId);
+        onBack();
+      }
+    } catch (error) {
+      console.error('Error updating playlist:', error);
+      toast.error('Failed to delete your playlist');
+    } finally {
+      setIsDeleting(false);
+      toggleDeleteDialog();
+    }
+  };
 
   const onDislikeChange = (id: number) => {
     setDislikedSongs((prev) => {
@@ -214,11 +256,33 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-        <IconButton onClick={onBack} sx={{ mr: 1, color: '#715cf8' }}>
-          <ArrowBackIcon />
-        </IconButton>
-        <PlaylistTitle variant="h6">{currentPlaylist.name}</PlaylistTitle>
+      <Box
+        sx={{
+          display: 'flex',
+          mb: 2,
+          justifyContent: 'space-between',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <IconButton onClick={onBack} sx={{ mr: 1, color: '#715cf8' }}>
+            <ArrowBackIcon />
+          </IconButton>
+          <PlaylistTitle variant="h6">{currentPlaylist.name}</PlaylistTitle>
+        </Box>
+        <StyledIconButton size="small" onClick={(e) => openDeleteDialog(e)}>
+          <DeleteIcon
+            fontSize="medium"
+            sx={{
+              color: (theme) => theme.palette.customColors.medium,
+              paddingLeft: '6px',
+            }}
+          />
+        </StyledIconButton>
         {onEdit && (
           <IconButton
             onClick={() => onEdit(currentPlaylist)}
@@ -440,6 +504,63 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
             }}
           >
             {isSaving ? 'Saving...' : 'Save Playlist'}
+          </StyledMenuButton>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={isDeleteDialogOpen} onClose={toggleDeleteDialog}>
+        <DialogContent sx={{ px: 3 }}>
+          <DialogContentText
+            sx={{
+              color: (theme) => theme.palette.customColors.textSecondary,
+              textAlign: 'center',
+              fontSize: '0.95rem',
+              mb: 2,
+            }}
+          >
+            Are you sure you want to delete the playlist? it will also be
+            deleted from your spotify account
+          </DialogContentText>
+        </DialogContent>
+
+        <DialogActions
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            padding: '12px 16px 24px',
+            gap: 2,
+          }}
+        >
+          <StyledMenuButton
+            variant="outlined"
+            onClick={toggleDeleteDialog}
+            sx={{
+              borderRadius: '8px',
+              textTransform: 'none',
+              padding: '8px 20px',
+              fontWeight: 500,
+              color: '#6c757d',
+              border: '1px solid #dee2e6',
+            }}
+          >
+            Cancel
+          </StyledMenuButton>
+
+          <StyledMenuButton
+            onClick={handleDeletePlaylist}
+            autoFocus
+            variant="contained"
+            startIcon={
+              isDeleting ? <CircularProgress size={20} color="inherit" /> : null
+            }
+            sx={{
+              borderRadius: '8px',
+              textTransform: 'none',
+              padding: '8px 24px',
+              fontWeight: 500,
+            }}
+          >
+            {isDeleting ? 'Deleting...' : 'Delete'}
           </StyledMenuButton>
         </DialogActions>
       </Dialog>

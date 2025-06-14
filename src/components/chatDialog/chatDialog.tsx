@@ -63,7 +63,6 @@ const ChatDialog: React.FC<Props> = ({ requestText, setRequestText }) => {
               color: (theme) => theme.palette.customColors.textSecondary,
               textAlign: 'center',
               fontSize: '0.95rem',
-              mb: 2,
             }}
           >
             Add any special requests for the AI here — they’ll be considered
@@ -82,7 +81,6 @@ const ChatDialog: React.FC<Props> = ({ requestText, setRequestText }) => {
             display: 'flex',
             justifyContent: 'center',
             padding: '12px 16px 24px',
-            gap: 2,
           }}
         >
           <StyledMenuButton onClick={handleSaveRequest}>

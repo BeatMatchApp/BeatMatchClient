@@ -20,7 +20,6 @@ import {
   PlaylistDataTitle,
   PlaylistDataText,
   StyledRefreshButton,
-  StyledTextArea,
   PlaylistDataBox,
   StyledSaveChangesButton,
   StyledMenuButton,
@@ -35,6 +34,7 @@ import Loader from '../Loader/Loader.tsx';
 import { refreshAiPlaylist } from '../../services/aiService.ts';
 import { playlistService } from '../../services/playlistService.ts';
 import CircularProgress from '@mui/material/CircularProgress';
+import ChatDialog from '../chatDialog/chatDialog.tsx';
 
 interface PlaylistDetailsProps {
   playlistId: string;
@@ -106,14 +106,6 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
       setIsRefreshDisabled(newSet.size === 0 && !requestText.trim());
       return newSet;
     });
-  };
-
-  const handleRequestChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    const value = event.target.value;
-    setRequestText(value);
-    setIsRefreshDisabled(value.trim().length === 0 && dislikedSongs.size === 0);
   };
 
   const handleRefresh = async () => {
@@ -275,6 +267,12 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
               className="playlist-actions"
               style={{ width: '100%', position: 'relative' }}
             >
+              <Box sx={{ position: 'absolute', left: '0' }}>
+                <ChatDialog
+                  requestText={requestText}
+                  setRequestText={setRequestText}
+                />
+              </Box>
               <Box
                 sx={{
                   width: '200px',
@@ -342,7 +340,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
 
           <Box
             sx={{
-              height: '40vh',
+              height: '50vh',
               display: 'flex',
               flexDirection: 'column',
               overflow: 'auto',
@@ -373,14 +371,6 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
               ))
             )}
           </Box>
-
-          <StyledTextArea
-            minRows={4}
-            placeholder="Add song requests or feedback for this playlist..."
-            onChange={handleRequestChange}
-            value={requestText}
-            disabled={isRefreshing}
-          />
         </>
       )}
       <Dialog open={saveDialogOpen} onClose={handleSaveCancel}>

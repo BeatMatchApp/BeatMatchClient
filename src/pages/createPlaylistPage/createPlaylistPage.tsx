@@ -183,6 +183,7 @@ const CreatePlaylistPage: React.FC = () => {
         sx={{
           height: 'inherit',
           justifyContent: 'center',
+          zIndex: 5,
         }}
       >
         <Box width="80%" sx={{ textAlign: 'center' }}>

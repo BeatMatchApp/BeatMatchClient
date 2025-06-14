@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, IconButton, Stack} from '@mui/material';
+import { Box, IconButton, Stack } from '@mui/material';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Playlist } from '../../models/Playlist.ts';
@@ -8,19 +8,18 @@ import {
   PlaylistAvatar,
   PlaylistMetaText,
   PlaylistTitle,
-  PlaylistDescriptionText, StyledPlaylistChip, PlaylistDateText,
+  PlaylistDescriptionText,
+  StyledPlaylistChip,
+  PlaylistDateText,
 } from '../styledComponents.tsx';
-import SpotifyIcon from "../../../public/assets/images/spotifyIcon.png";
+import SpotifyIcon from '../../../public/assets/images/spotifyIcon.png';
 
 interface PlaylistItemProps {
   playlist: Playlist;
   onView: (playlist: Playlist) => void;
 }
 
-const PlaylistItem: React.FC<PlaylistItemProps> = ({
-  playlist,
-  onView,
-}) => {
+const PlaylistItem: React.FC<PlaylistItemProps> = ({ playlist, onView }) => {
   const formattedDate = new Date(playlist.lastUpdatedDate).toLocaleDateString();
 
   const handleOpenInSpotify = (e: React.MouseEvent) => {
@@ -55,17 +54,17 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
             )}
           </PlaylistAvatar>
 
-            <Box sx={{ flexGrow: 1, textAlign: 'start', overflow: 'hidden' }}>
-              <PlaylistTitle
-                  variant="h6"
-                  sx={{
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap'
-                  }}
-              >
-                {playlist.name}
-              </PlaylistTitle>
+          <Box sx={{ flexGrow: 1, textAlign: 'start', overflow: 'hidden' }}>
+            <PlaylistTitle
+              variant="h6"
+              sx={{
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {playlist.name}
+            </PlaylistTitle>
 
             <Stack
               direction="row"
@@ -73,15 +72,20 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
               alignItems="center"
               sx={{ mb: 1 }}
             >
-              <StyledPlaylistChip
+              {playlist.mood && (
+                <StyledPlaylistChip
                   label={playlist.mood}
                   variant="outlined"
                   size="small"
-                  sx={{ marginRight: 1, marginBottom: 1 }}/>
+                  sx={{ marginRight: 1, marginBottom: 1 }}
+                />
+              )}
 
               <PlaylistMetaText variant="body2" color="text.secondary">
                 <AccessTimeIcon sx={{ fontSize: 16, mr: 0.5 }} />
-                <PlaylistDateText variant="body2" color="text.secondary" >{formattedDate}</PlaylistDateText>
+                <PlaylistDateText variant="body2" color="text.secondary">
+                  {formattedDate}
+                </PlaylistDateText>
               </PlaylistMetaText>
             </Stack>
 
@@ -92,20 +96,23 @@ const PlaylistItem: React.FC<PlaylistItemProps> = ({
             )}
           </Box>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              {playlist.url && (
-                  <IconButton onClick={handleOpenInSpotify} sx={{ color: '#1DB954' }}>
-                    <img
-                        src={SpotifyIcon}
-                        alt="Spotify"
-                        style={{ width: 30, height: 30 }}
-                    />
-                  </IconButton>
-              )}
-            </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            {playlist.url && (
+              <IconButton
+                onClick={handleOpenInSpotify}
+                sx={{ color: '#1DB954' }}
+              >
+                <img
+                  src={SpotifyIcon}
+                  alt="Spotify"
+                  style={{ width: 30, height: 30 }}
+                />
+              </IconButton>
+            )}
           </Box>
-        </ShinyCard>
-      </Box>
+        </Box>
+      </ShinyCard>
+    </Box>
   );
 };
 

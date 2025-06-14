@@ -197,7 +197,7 @@ const LibraryPage: React.FC = () => {
                 variant="contained"
                 onClick={toggleMoodsModal}
               >
-                Discover my mood board
+                My mood board :)
               </StyledMenuButton>
             </Box>
           </Box>

@@ -170,6 +170,7 @@ const CreatePlaylistPage: React.FC = () => {
               flexGrow: 1,
               overflowY: 'auto',
               px: '1.5vh',
+              marginTop: '10px',
               maxHeight: '100%',
             }}
           >

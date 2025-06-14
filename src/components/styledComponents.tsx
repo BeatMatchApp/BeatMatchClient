@@ -31,11 +31,16 @@ export const StyledMenuButton = styled(Button)(({ theme, variant }) => ({
     color: 'white',
   },
   maxHeight: '100%',
+  minWidth: '105px',
 
   [theme.breakpoints.up('sm')]: {
     width: '30vw',
     padding: '10px',
     fontSize: 'large',
+  },
+  [`@media (max-width:400px)`]: {
+    maxWidth: '180px',
+    padding: '8px',
   },
 }));
 

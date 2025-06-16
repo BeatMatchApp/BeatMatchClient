@@ -12,8 +12,24 @@ import ProfileForm from './pages/ProfileForm/profileForm';
 import { ThemeProvider } from '@mui/material';
 import theme from './styles/consts';
 import { Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 function App() {
+  useEffect(() => {
+    const setVisibleScreenHeight = () => {
+      const vh: number = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+
+    setVisibleScreenHeight();
+
+    window.addEventListener('resize', setVisibleScreenHeight);
+
+    return () => {
+      window.removeEventListener('resize', setVisibleScreenHeight);
+    };
+  }, []);
+
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <ThemeProvider theme={theme}>

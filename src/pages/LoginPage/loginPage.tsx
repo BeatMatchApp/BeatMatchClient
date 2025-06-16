@@ -38,7 +38,7 @@ function LoginPage() {
   };
 
   return (
-    <Box className="center fullHeight">
+    <Box className="center full-page">
       <Box sx={{ width: { xs: '80vw', sm: '50vw' } }}>
         <ShinyCard colors={['#8d92f6', '#a2dfd0']}>
           <StyledPageTitle sx={{ marginBottom: '10px' }}>Login</StyledPageTitle>

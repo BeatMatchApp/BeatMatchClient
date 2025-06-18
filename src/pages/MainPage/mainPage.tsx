@@ -83,7 +83,6 @@ export const MainPage = () => {
         <Grid sx={{ padding: '10px' }}>
           <NavBar sx={{ backgroundColor: 'transparent' }} position="fixed">
             <IconButton
-              sx={{ position: 'absolute', left: '0' }}
               onClick={() => handleToggle(MenuNavigationRoutes.EDIT_PROFILE)}
             >
               <ManageAccountsIcon
@@ -120,10 +119,7 @@ export const MainPage = () => {
               </StyledNavToggleButton>
             </StyledNavToggleGroup>
 
-            <IconButton
-              sx={{ position: 'absolute', right: '0' }}
-              onClick={handleLogout}
-            >
+            <IconButton onClick={handleLogout}>
               <LogoutIcon
                 fontSize="large"
                 sx={{

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const NavBar = styled(AppBar)`
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   direction: rtl;
   box-shadow: none;

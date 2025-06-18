@@ -115,7 +115,7 @@ export const CreatePlaylistResults: React.FC<Props> = ({
   };
 
   return (
-    <Box className="center" sx={{ height: '60vh' }}>
+    <Box className="center">
       <StyledPageTitle>Almost done! any changes?</StyledPageTitle>
       <Box
         sx={{
@@ -161,7 +161,9 @@ export const CreatePlaylistResults: React.FC<Props> = ({
         </div>
       </Box>
 
-      <StyledContentContainer sx={{ height: '60vh', paddingTop: 0 }}>
+      <StyledContentContainer
+        sx={{ height: 'calc(var(--vh, 1vh) * 45)', paddingTop: 0 }}
+      >
         {loading ? (
           <Box sx={{ marginTop: '10%' }}>
             <Loader height="100%" />

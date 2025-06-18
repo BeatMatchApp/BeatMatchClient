@@ -404,7 +404,7 @@ const PlaylistDetails: React.FC<PlaylistDetailsProps> = ({
 
           <Box
             sx={{
-              height: '50vh',
+              height: 'calc(var(--vh, 1vh) * 45)',
               display: 'flex',
               flexDirection: 'column',
               overflow: 'auto',
